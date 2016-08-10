@@ -10,8 +10,8 @@
 #    ░          ░  ░   ░     ░  ░            ░    ░  ░        
 #  ░                        
 #
-# version 	0.1-alpha
-# date    	2016-08-09
+# version 	0.2-alpha
+# date    	2016-08-10
 # function	masternode setup script
 #			This scripts needs to be run as root
 # 			to make services start persistent
@@ -29,7 +29,6 @@ SETUP_MNODES_COUNT=3
 ########################################
 # Dont change anything here if unsure!
 ########################################
-# SYNX specific stuff
 # only one masternode by default
 SETUP_MNODES_COUNT=${SETUP_MNODES_COUNT:-1}
 MNODE_INBOUND_PORT=${MNODE_INBOUND_PORT:-9999}
@@ -38,6 +37,7 @@ MNODE_CONF_BASE=${MNODE_CONF_BASE:-/etc/masternodes}
 MNODE_DATA_BASE=${MNODE_DATA_BASE:-/var/lib/masternodes}
 MNODE_USER=${MNODE_USER:-masternode}
 MNODE_HELPER="/usr/local/bin/restart_masternodes.sh"
+MNODE_DAEMON=${MNODE_DAEMON:-/usr/local/bin/darknetd}
 
 # Git related stuff
 GIT_PROJECT=darknet
@@ -71,7 +71,6 @@ function check_distro() {
 	fi
 }
 
-
 function install_packages() {
 	# development and build packages
 	echo "Package installation!"
@@ -92,31 +91,36 @@ function swaphack() {
 }
 
 function build_mn_from_source() {
-    # daemon not found compile it
-	if [ ! -f /usr/local/bin/darknetd ]; then
-		mkdir -p /opt/code/; cd /opt/code
-		# directory does not exist, git clone
-		if [ -d /opt/code/${GIT_PROJECT} ]; then
+	# daemon not found compile it
+	if [ ! -f ${MNODE_DAEMON} ]; then
+		# if code directory does not exists, we create it clone the src
+		if [ ! -d /opt/code/${GIT_PROJECT} ]; then
+			mkdir -p /opt/code && cd /opt/code
 			git clone ${GIT_URL} ${GIT_PROJECT}
-		# directory does exist, git pull and cleanup			
-		else
-			cd /opt/code/${GIT_PROJECT}
-			git pull
-			make clean
-		fi		
+		fi	
+		# compilation starts here, parameters later	
 		echo -e "Starting the compilation process, stay tuned"
 		cd /opt/code/${GIT_PROJECT} && ./autogen.sh
 		./configure --enable-tests=no --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
 		if make; then
-			echo "compilation successful, running install target"
-			make install	
+			echo "compilation successful, running install and clean target"
+			make install
 		else
 			echo "Damn, compilation failed. Exit!"	
 			exit 1
 		fi
 	else
-		echo "daemon already in place at /usr/local/bin/darknetd, not compiling"	
+		echo "daemon already in place at ${MNODE_DAEMON}, not compiling"	
 	fi
+}
+
+function install_mn_packages() {
+	# not yet included, testing
+	# packages install to /usr/bin, src to /usr/local/bin
+	apt-add-repository ppa:shaun-mcbride/darknet
+	apt-get update
+	apt-get install darknetd
+	apt-get install darknet-cli
 }
 
 function prepare_mn_interfaces() {
@@ -207,7 +211,7 @@ function create_systemd_configuration() {
          	
 			Type=forking
 			PIDFile=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}/${GIT_PROJECT}.pid
-			ExecStart=/usr/local/bin/darknetd -daemon -pid=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}/${GIT_PROJECT}.pid \
+			ExecStart=${MNODE_DAEMON} -daemon -pid=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}/${GIT_PROJECT}.pid \
 			-conf=${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf -datadir=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}
        		 
 			Restart=always
@@ -269,6 +273,8 @@ function final_call() {
 	# note outstanding tasks that need manual work
 	echo "There is still work to do in the configuration templates."
 	echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
+	echo "Add your masternode private keys now."
+	echo "eg in /etc/masternodes/darknet_n1.conf"	
 	# systemctl command to work with mnodes here 
 	echo "#!/bin/bash" > ${MNODE_HELPER}
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
