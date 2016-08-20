@@ -99,7 +99,7 @@ function build_mn_from_source() {
 		# compilation starts here, parameters later	
 		echo -e "Starting the compilation process, stay tuned"
 		cd /opt/code/${GIT_PROJECT} && ./autogen.sh
-		source ../.config/${1}/${1}.compile
+		source ../.config/${CODENAME}/${CODENAME}.compile
 		if make; then
 			echo "compilation successful, running install and clean target"
 			make install
