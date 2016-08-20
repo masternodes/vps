@@ -98,7 +98,7 @@ function build_mn_from_source() {
 		fi	
 		# compilation starts here, parameters later	
 		echo -e "Starting the compilation process, stay tuned"
-		source ../.config/${CODENAME}/${CODENAME}.compile
+		source ${PWD}/.config/${CODENAME}/${CODENAME}.compile
 		if make; then
 			echo "compilation successful, running install and clean target"
 			make install
