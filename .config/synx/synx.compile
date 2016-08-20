@@ -1,0 +1,2 @@
+#!/bin/bash
+./configure --disable-dependency-tracking --enable-tests=no --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"

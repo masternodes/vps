@@ -1,17 +1,13 @@
 #!/bin/bash
-# ▓█████▄  ▄▄▄       ██▀███   ██ ▄█▀ ███▄    █ ▓█████▄▄▄█████▓
-# ▒██▀ ██▌▒████▄    ▓██ ▒ ██▒ ██▄█▒  ██ ▀█   █ ▓█   ▀▓  ██▒ ▓▒
-# ░██   █▌▒██  ▀█▄  ▓██ ░▄█ ▒▓███▄░ ▓██  ▀█ ██▒▒███  ▒ ▓██░ ▒░
-# ░▓█▄   ▌░██▄▄▄▄██ ▒██▀▀█▄  ▓██ █▄ ▓██▒  ▐▌██▒▒▓█  ▄░ ▓██▓ ░ 
-# ░▒████▓  ▓█   ▓██▒░██▓ ▒██▒▒██▒ █▄▒██░   ▓██░░▒████▒ ▒██▒ ░ 
-#  ▒▒▓  ▒  ▒▒   ▓▒█░░ ▒▓ ░▒▓░▒ ▒▒ ▓▒░ ▒░   ▒ ▒ ░░ ▒░ ░ ▒ ░░   
-#  ░ ▒  ▒   ▒   ▒▒ ░  ░▒ ░ ▒░░ ░▒ ▒░░ ░░   ░ ▒░ ░ ░  ░   ░    
-#  ░ ░  ░   ░   ▒     ░░   ░ ░ ░░ ░    ░   ░ ░    ░    ░      
-#    ░          ░  ░   ░     ░  ░            ░    ░  ░        
-#  ░                        
+# ███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ ███╗   ██╗ ██████╗ ██████╗ ███████╗
+# ████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗████╗  ██║██╔═══██╗██╔══██╗██╔════╝
+# ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝██╔██╗ ██║██║   ██║██║  ██║█████╗  
+# ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗██║╚██╗██║██║   ██║██║  ██║██╔══╝  
+# ██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║██║ ╚████║╚██████╔╝██████╔╝███████╗
+# ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚ @marsmensch ╝ ╚ 2016 ╝                    
 #
-# version 	0.2-alpha
-# date    	2016-08-10
+# version 	0.3-alpha
+# date    	2016-08-20
 # function	masternode setup script
 #			This scripts needs to be run as root
 # 			to make services start persistent
@@ -22,8 +18,10 @@
 # BTC  1PboFDkBsW2i968UnehWwcSrM9Djq5LcLB
 # DNET DBGBYLz484dWBb5wtk5gFVdJ8rGFfcob7R
 # SYNX SSKYwMhQQt9DcWozt7zA1tR3DmRuw1gT6b
-#
-#
+# DASH Xt1W8cVPxnx9xVmfe1yYM9e5DKumPQHaV5
+# MUE  7KV3NUX4g7rgEDHVfBttRWcxk3hrqGR4pH
+# MOJO MTfuWof2NMDPh57U18yniVzpaS2cq4nFFt
+
 SETUP_MNODES_COUNT=3
 
 ########################################
@@ -38,11 +36,7 @@ MNODE_DATA_BASE=${MNODE_DATA_BASE:-/var/lib/masternodes}
 MNODE_USER=${MNODE_USER:-masternode}
 MNODE_HELPER="/usr/local/bin/restart_masternodes.sh"
 MNODE_DAEMON=${MNODE_DAEMON:-/usr/local/bin/darknetd}
-
-# Git related stuff
-GIT_PROJECT=darknet
-GIT_URL=git://github.com/Darknet-Crypto/Darknet.git
-PROG_VERSION=master
+MNODE_SWAPSIZE=${MNODE_SWAPSIZE:-5000}
 
 # DISTRO specific stuff
 SYSTEMD_CONF=${SYSTEMD_CONF:-/etc/systemd/system}
@@ -73,6 +67,7 @@ function check_distro() {
 
 function install_packages() {
 	# development and build packages
+	# these are common on all cryptos
 	echo "Package installation!"
 	apt-get -qq update
 	apt-get -qqy -o=Dpkg::Use-Pty=0 install build-essential protobuf-compiler \
@@ -84,10 +79,13 @@ function install_packages() {
 function swaphack() { 
 	# needed because ant servers are ants
 	rm -f /var/swap.img
-	dd if=/dev/zero of=/var/swap.img bs=1024k count=3000
+	dd if=/dev/zero of=/var/swap.img bs=1024k count=${MNODE_SWAPSIZE}
 	chmod 0600 /var/swap.img
 	mkswap /var/swap.img
-	swapon /var/swap.img	
+	swapon /var/swap.img
+	echo '/var/swap.img none swap sw 0 0' | tee -a /etc/fstab
+	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
+	echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf	
 }
 
 function build_mn_from_source() {
@@ -101,7 +99,7 @@ function build_mn_from_source() {
 		# compilation starts here, parameters later	
 		echo -e "Starting the compilation process, stay tuned"
 		cd /opt/code/${GIT_PROJECT} && ./autogen.sh
-		./configure --enable-tests=no --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+		source ../.config/${1}/${1}.compile
 		if make; then
 			echo "compilation successful, running install and clean target"
 			make install
@@ -114,14 +112,14 @@ function build_mn_from_source() {
 	fi
 }
 
-function install_mn_packages() {
-	# not yet included, testing
-	# packages install to /usr/bin, src to /usr/local/bin
-	apt-add-repository ppa:shaun-mcbride/darknet
-	apt-get update
-	apt-get install darknetd
-	apt-get install darknet-cli
-}
+#function install_mn_packages() {
+#	# not yet included, testing
+#	# packages install to /usr/bin, src to /usr/local/bin
+#	apt-add-repository ppa:shaun-mcbride/darknet
+#	apt-get update
+#	apt-get install darknetd
+#	apt-get install darknet-cli
+#}
 
 function prepare_mn_interfaces() {
 	# vultr specific, needed to work
@@ -137,6 +135,7 @@ function prepare_mn_interfaces() {
 	done
 	
 	# restarting network services to enable the new interfaces
+	# a short sleep seems to be required to pickup the new interfaces
 	service networking restart
 }
 
@@ -256,16 +255,12 @@ function cleanup_after() {
 
 function showbanner() {
 cat << "EOF"
-▓█████▄  ▄▄▄       ██▀███   ██ ▄█▀ ███▄    █ ▓█████▄▄▄█████▓
-▒██▀ ██▌▒████▄    ▓██ ▒ ██▒ ██▄█▒  ██ ▀█   █ ▓█   ▀▓  ██▒ ▓▒
-░██   █▌▒██  ▀█▄  ▓██ ░▄█ ▒▓███▄░ ▓██  ▀█ ██▒▒███  ▒ ▓██░ ▒░
-░▓█▄   ▌░██▄▄▄▄██ ▒██▀▀█▄  ▓██ █▄ ▓██▒  ▐▌██▒▒▓█  ▄░ ▓██▓ ░ 
-░▒████▓  ▓█   ▓██▒░██▓ ▒██▒▒██▒ █▄▒██░   ▓██░░▒████▒ ▒██▒ ░ 
- ▒▒▓  ▒  ▒▒   ▓▒█░░ ▒▓ ░▒▓░▒ ▒▒ ▓▒░ ▒░   ▒ ▒ ░░ ▒░ ░ ▒ ░░   
- ░ ▒  ▒   ▒   ▒▒ ░  ░▒ ░ ▒░░ ░▒ ▒░░ ░░   ░ ▒░ ░ ░  ░   ░    
- ░ ░  ░   ░   ▒     ░░   ░ ░ ░░ ░    ░   ░ ░    ░    ░      
-   ░          ░  ░   ░     ░ (@marsmensch)2016  ░  ░        
- ░                      				
+███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ ███╗   ██╗ ██████╗ ██████╗ ███████╗
+████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗████╗  ██║██╔═══██╗██╔══██╗██╔════╝
+██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝██╔██╗ ██║██║   ██║██║  ██║█████╗  
+██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗██║╚██╗██║██║   ██║██║  ██║██╔══╝  
+██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║██║ ╚████║╚██████╔╝██████╔╝███████╗
+╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚ @marsmensch ╝ ╚ 2016 ╝                  				
 EOF
 }
 
