@@ -2,3 +2,4 @@
 cd /opt/code/${GIT_PROJECT}/src
 make -f makefile.unix USE_UPNP=-
 #strip mojocoind
+cp mojocoind ${MNODE_DAEMON}
