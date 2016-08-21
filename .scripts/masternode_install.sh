@@ -165,6 +165,7 @@ function configure_firewall() {
 	ufw default deny
 	ufw logging on
 	ufw allow ${SSH_INBOUND_PORT}/tcp
+	# KISS, its always the same port for all interfaces
 	ufw allow ${MNODE_INBOUND_PORT}/tcp
 	# This will only allow 6 connections every 30 seconds from the same IP address.
 	ufw limit OpenSSH	

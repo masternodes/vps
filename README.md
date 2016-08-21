@@ -33,11 +33,13 @@ For example, when installing three DNET masternodes:
    Change to this user with the command "su masternode" (loged in as root)
 
 # Todo
-* rewrite for config templates and support DNET, DASH and SYNX
 * document the vultr signup and setup procedure
-* currently not fully idempotent, be careful when running it often
 * provide a delete / uninstall flag
-* create a logfile 
+* create a logfile
+
+# Errors
+* currently not fully idempotent
+* fix first time compilation fail (PATH / ENV errors)
 
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
@@ -46,4 +48,7 @@ Ping me at contact@marsmenschen.com for questions and send some crypto my way if
 BTC  1PboFDkBsW2i968UnehWwcSrM9Djq5LcLB
 DNET DBGBYLz484dWBb5wtk5gFVdJ8rGFfcob7R
 SYNX SSKYwMhQQt9DcWozt7zA1tR3DmRuw1gT6b
+DASH Xt1W8cVPxnx9xVmfe1yYM9e5DKumPQHaV5
+MUE  7KV3NUX4g7rgEDHVfBttRWcxk3hrqGR4pH
+MOJO MTfuWof2NMDPh57U18yniVzpaS2cq4nFFt
 ```
