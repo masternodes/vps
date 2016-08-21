@@ -180,7 +180,7 @@ function create_mn_configuration() {
 			rpcuser=${GIT_PROJECT}rpc
 			rpcpassword=${PASS}
 			rpcallowip=127.0.0.1
-			rpcport=444${NUM}
+			rpcport=555${NUM}
 			server=1
 			listen=1
 			daemon=1
@@ -190,10 +190,7 @@ function create_mn_configuration() {
 			maxconnections=256
 			gen=0
 			masternode=1
-			masternodeprivkey=HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_${NUM}
-			addnode=108.61.151.69
-			addnode=173.245.158.8
-			addnode=coin-server.com			
+			masternodeprivkey=HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_${GIT_PROJECT}_${NUM}	
 		EOF
 	done
 }
@@ -271,10 +268,11 @@ EOF
 
 function final_call() {
 	# note outstanding tasks that need manual work
+    echo "************! ALMOST DONE !******************************"	
 	echo "There is still work to do in the configuration templates."
 	echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
 	echo "Add your masternode private keys now."
-	echo "eg in /etc/masternodes/darknet_n1.conf"	
+	echo "eg in /etc/masternodes/${GIT_PROJECT}_n1.conf"	
 	# systemctl command to work with mnodes here 
 	echo "#!/bin/bash" > ${MNODE_HELPER}
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
