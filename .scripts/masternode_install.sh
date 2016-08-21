@@ -22,8 +22,6 @@
 # MUE  7KV3NUX4g7rgEDHVfBttRWcxk3hrqGR4pH
 # MOJO MTfuWof2NMDPh57U18yniVzpaS2cq4nFFt
 
-SETUP_MNODES_COUNT=3
-
 ########################################
 # Dont change anything here if unsure!
 ########################################
@@ -100,8 +98,12 @@ function build_mn_from_source() {
 			echo "compilation successful, running install and clean target"
 			make install
 		else
-			echo "Damn, compilation failed. Exit!"	
-			exit 1
+			if [ $? -eq 2 ]; then
+    			echo "no proper make target"
+    		else 
+    			echo "Damn, compilation failed. Exit!"	
+				exit 1	
+			fi
 		fi
 	else
 		echo "daemon already in place at ${MNODE_DAEMON}, not compiling"	
