@@ -90,36 +90,33 @@ function swaphack() {
 }
 
 function build_mn_from_source() {
-
-	echo "************"
-	echo "I AM IN $PWD"
-	echo "************"	
-	# daemon not found compile it
-	if [ ! -f ${MNODE_DAEMON} ]; then
-		# if code directory does not exists, we create it clone the src
-		if [ ! -d code/${GIT_PROJECT} ]; then
-			mkdir -p code && cd code
-			git clone ${GIT_URL} ${GIT_PROJECT}
-		fi	
-		# always make sure we are in the source root dir
-		cd code/${GIT_PROJECT}
-		# compilation starts here, parameters later	
-		echo -e "Starting the compilation process, stay tuned"
-		source ../.config/${CODENAME}/${CODENAME}.compile
-		if make; then
-			echo "compilation successful, running install and clean target"
-			make install
-		else
-			if [ $? -eq 2 ]; then
-    			echo "no proper make target"
-    		else 
-    			echo "Damn, compilation failed. Exit!"	
-				exit 1	
-			fi
-		fi
-	else
-		echo "daemon already in place at ${MNODE_DAEMON}, not compiling"	
-	fi
+        # daemon not found compile it
+        if [ ! -f ${MNODE_DAEMON} ]; then
+                # if code directory does not exists, we create it clone the src
+                if [ ! -d code/${GIT_PROJECT} ]; then
+                        mkdir -p code && cd code
+                        git clone ${GIT_URL} ${GIT_PROJECT}
+                        cd ${GIT_PROJECT}
+                fi
+                # always make sure we are in the source root dir
+                cd code/${GIT_PROJECT}
+                # compilation starts here, parameters later
+                echo -e "Starting the compilation process, stay tuned"
+                source ../../.config/${CODENAME}/${CODENAME}.compile
+                if make; then
+                        echo "compilation successful, running install and clean target"
+                        make install
+                else
+                        if [ $? -eq 2 ]; then
+                        echo "no proper make target"
+                else
+                        echo "Damn, compilation failed. Exit!"
+                                exit 1
+                        fi
+                fi
+        else
+                echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
+        fi
 }
 
 #function install_mn_packages() {

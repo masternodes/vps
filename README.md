@@ -40,6 +40,9 @@ For example, when installing three DNET masternodes:
 # Errors
 * currently not fully idempotent
 * fix first time compilation fail (PATH / ENV errors)
+* imporove networking auto-configuration
+	=> check if interfaces are already configured
+	=> check for ways to randomly get enough ip addresses rfom the ipv6 range
 
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
