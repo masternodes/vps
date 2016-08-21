@@ -102,7 +102,7 @@ function build_mn_from_source() {
 			git clone ${GIT_URL} ${GIT_PROJECT}
 		fi	
 		# always make sure we are in the source root dir
-		cd /opt/code/${GIT_PROJECT}
+		cd code/${GIT_PROJECT}
 		# compilation starts here, parameters later	
 		echo -e "Starting the compilation process, stay tuned"
 		source ${PWD}/.config/${CODENAME}/${CODENAME}.compile
