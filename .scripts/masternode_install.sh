@@ -68,7 +68,12 @@ function install_packages() {
 	# these are common on all cryptos
 	echo "Package installation!"
 	apt-get -qq update
-	apt-get -qqy -o=Dpkg::Use-Pty=0 install build-essential libboost-all-dev libtool automake autotools-dev autoconf pkg-config libssl-dev libgmp3-dev libevent-dev bsdmainutils
+	apt-get -qqy -o=Dpkg::Use-Pty=0 install build-essential g++ \
+	protobuf-compiler libboost-all-dev autotools-dev \
+    automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
+    make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
+    libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
+    libgmp3-dev libevent-dev
 }
 
 function swaphack() { 
