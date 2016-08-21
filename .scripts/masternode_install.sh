@@ -90,13 +90,19 @@ function swaphack() {
 }
 
 function build_mn_from_source() {
+
+	echo "************"
+	echo "I AM IN $PWD"
+	echo "************"	
 	# daemon not found compile it
 	if [ ! -f ${MNODE_DAEMON} ]; then
 		# if code directory does not exists, we create it clone the src
-		if [ ! -d /opt/code/${GIT_PROJECT} ]; then
-			mkdir -p /opt/code && cd /opt/code
+		if [ ! -d code/${GIT_PROJECT} ]; then
+			mkdir -p code && cd code
 			git clone ${GIT_URL} ${GIT_PROJECT}
 		fi	
+		# always make sure we are in the source root dir
+		cd /opt/code/${GIT_PROJECT}
 		# compilation starts here, parameters later	
 		echo -e "Starting the compilation process, stay tuned"
 		source ${PWD}/.config/${CODENAME}/${CODENAME}.compile

@@ -1,4 +1,3 @@
 #!/bin/bash
-cd /opt/code/${GIT_PROJECT}
 ./autogen.sh
 ./configure --disable-dependency-tracking --enable-tests=no --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
