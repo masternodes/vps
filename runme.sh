@@ -37,6 +37,7 @@ usage() {
     echo `basename $0`: ERROR: $* 1>&2
     echo usage: `basename $0` '[dnet] OR [mojo] OR [mue] OR [synx] OR [dash] + HOWMANY' 1>&2
     echo '=> for 5 dnet masternodes run:' `basename $0` 'dnet 5' 1>&2
+    echo 'Report bugs to: @marsmensch'
     exit 1
 }
 
