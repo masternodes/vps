@@ -44,8 +44,11 @@ usage() {
 
 source_config() {
 	if [ -f ${SETUP_CONF_FILE} ]; then
+		echo "read default config"	
+		source .config/default.env
+		echo "apply config file for ${1}"		
 		source "${SETUP_CONF_FILE}"
-		echo "read config file for ${1}"
+		echo "running installer script"		
 		source .scripts/masternode_install.sh ${1}
 	else
 		echo "required file ${SETUP_CONF_FILE} does not exist, abort!"

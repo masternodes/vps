@@ -36,13 +36,14 @@ For example, when installing three DNET masternodes:
 * document the vultr signup and setup procedure
 * provide a delete / uninstall flag
 * create a logfile
+* instert coin images into readme
+* insert vultr signup reflink
+* outsource common variables in commin source file
 
 # Errors
-* currently not fully idempotent
-* fix first time compilation fail (PATH / ENV errors)
-* imporove networking auto-configuration
-	=> check if interfaces are already configured
-	=> check for ways to randomly get enough ip addresses rfom the ipv6 range
+* currently not fully idempotent (cfengine?)
+* check if relevant interface already exists (sed) before writing to interfaces file
+
 
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
