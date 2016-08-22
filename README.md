@@ -39,6 +39,7 @@ For example, when installing three DNET masternodes:
 * instert coin images into readme
 * insert vultr signup reflink
 * outsource common variables in commin source file
+* check if masternode user already exists before creation
 
 # Errors
 * currently not fully idempotent (cfengine?)

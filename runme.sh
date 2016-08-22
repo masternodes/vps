@@ -78,7 +78,7 @@ case "${1}" in
 		;;
 	bts)
 		echo you picked BTS
-		source_config synx
+		source_config bitsend
 		;;		
 	dash)
 		echo you picked DASH
