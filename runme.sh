@@ -36,7 +36,7 @@
 
 usage() {
     echo `basename $0`: ERROR: $* 1>&2
-    echo usage: `basename $0` '[dnet] OR [mojo] OR [mue] OR [synx] OR [dash] OR [bts]  + HOWMANY' 1>&2
+    echo usage: `basename $0` '[dnet] OR [mojo] OR [mue] OR [synx] OR [dash] OR [bitsend]  + HOWMANY' 1>&2
     echo '=> for 5 dnet masternodes run:' `basename $0` 'dnet 5' 1>&2
     echo 'Report bugs to: @marsmensch'
     exit 1
@@ -76,8 +76,8 @@ case "${1}" in
 		echo you picked SYNX
 		source_config synx
 		;;
-	bts)
-		echo you picked BTS
+	bitsend)
+		echo you picked BITSEND
 		source_config bitsend
 		;;		
 	dash)
