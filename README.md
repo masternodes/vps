@@ -40,6 +40,7 @@ For example, when installing three DNET masternodes:
 * insert vultr signup reflink
 * outsource common variables in commin source file
 * check if masternode user already exists before creation
+* add all flags everywhere ./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
 
 # Errors
 * currently not fully idempotent (cfengine?)
