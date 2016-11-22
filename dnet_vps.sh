@@ -11,7 +11,7 @@
 #  ░                        
 #
 # version 	0.2-alpha
-# date    	2016-08-10
+# date    	2016-11-22
 # function	masternode setup script
 #			This scripts needs to be run as root
 # 			to make services start persistent
@@ -31,7 +31,7 @@ SETUP_MNODES_COUNT=3
 ########################################
 # only one masternode by default
 SETUP_MNODES_COUNT=${SETUP_MNODES_COUNT:-1}
-MNODE_INBOUND_PORT=${MNODE_INBOUND_PORT:-9999}
+MNODE_INBOUND_PORT=${MNODE_INBOUND_PORT:-51472}
 SSH_INBOUND_PORT=${SSH_INBOUND_PORT:-22}
 MNODE_CONF_BASE=${MNODE_CONF_BASE:-/etc/masternodes}
 MNODE_DATA_BASE=${MNODE_DATA_BASE:-/var/lib/masternodes}
@@ -78,7 +78,8 @@ function install_packages() {
 	apt-get -qqy -o=Dpkg::Use-Pty=0 install build-essential protobuf-compiler \
     automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
     make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
-    libcurl3-dev libudev-dev libqt4-dev libqrencode-dev bsdmainutils
+    libcurl3-dev libudev-dev qtbase5-dev libqt5gui5 libqt5core5a libqt5dbus5 \
+    qttools5-dev qttools5-dev-tools libprotobuf-dev libqrencode-dev bsdmainutils
 }
 
 function swaphack() { 
