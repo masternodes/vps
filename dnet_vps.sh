@@ -102,7 +102,7 @@ function build_mn_from_source() {
 		# compilation starts here, parameters later	
 		echo -e "Starting the compilation process, stay tuned"
 		cd /opt/code/${GIT_PROJECT} && ./autogen.sh
-		./configure --enable-tests=no --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+		./configure --enable-tests=no --with-incompatible-bdb --with-gui=qt5 CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
 		if make; then
 			echo "compilation successful, running install and clean target"
 			make install
