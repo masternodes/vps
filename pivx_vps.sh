@@ -7,8 +7,8 @@
 # ██║     ██║ ╚████╔╝ ██╔╝ ██╗
 # ╚═╝     ╚═╝  ╚═══╝  ╚═╝  ╚═╝           
 #
-# version 	0.31-beta
-# date    	2017-03-20
+# version 	0.32-beta
+# date    	2017-03-21
 # function	masternode setup script
 #			This scripts needs to be run as root
 # 			to make services start persistent
@@ -19,7 +19,7 @@
 # BTC  1PboFDkBsW2i968UnehWwcSrM9Djq5LcLB
 # PIVX DQS4rk57bteJ42FSNSPpwqHUoNhx4ywfQc
 #
-SETUP_NODES_COUNT=2
+SETUP_NODES_COUNT=1
 
 ########################################
 # Dont change anything here if unsure!
@@ -48,8 +48,6 @@ ETH_INTERFACE=${ETH_INTERFACE:-ens3}
 
 # Useful variables
 DATE_STAMP="$(date +%y-%m-%d-%s)"
-# im an not very proud of this
-IPV6_INT_BASE="$(ip -6 addr | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^::1 | grep -v ^fe80 | cut -f1-4 -d':')"
 
 function check_distro() {
 	# currently only for Ubuntu 16.04
@@ -162,7 +160,7 @@ function create_node_dirs() {
     # individual data dirs for now to avoid problems
     echo "Creating masternode directories"
     mkdir -p ${NODE_CONF_BASE}
-	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+	for NUM in $(seq 1 ${SETUP_NODES_COUNT}); do
 		echo "creating data directory ${NODE_DATA_BASE}/${CODENAME}${NUM}"
 		mkdir -p ${NODE_DATA_BASE}/${CODENAME}${NUM}
 	done    
@@ -196,13 +194,15 @@ function create_node_configuration() {
 			server=1
 			listen=1
 			daemon=1
-			bind=[${IPV6_INT_BASE}::${NUM}]:${NODE_INBOUND_PORT}
 			logtimestamps=1
 			mnconflock=0
 			maxconnections=256
 			gen=0
 			masternode=1
-			masternodeprivkey=HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_${NUM}		
+			# add some doc references here
+			masternodeprivkey=HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_${NUM}
+			# add some examples here
+			bind=[HERE_GOES_YOUR_MASTERNODE_IP_ADDRESS_FOR_MASTERNODE_${NUM}]:${NODE_INBOUND_PORT}		
 		EOF
 	done
 }
@@ -254,8 +254,8 @@ function create_systemd_configuration() {
 }
 
 function set_permissions() {
-    echo "running chown -R ${NODE_USER}:${NODE_USER} ${NODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ${NODE_DATA_BASE}/${CODENAME}${NUM}"
-	chown -R ${NODE_USER}:${NODE_USER} ${NODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ${NODE_DATA_BASE}/${CODENAME}${NUM}
+    echo "running chown -R ${NODE_USER}:${NODE_USER} ${NODE_CONF_BASE}/${CODENAME}_n*.conf ${NODE_DATA_BASE}/${CODENAME}*"
+	chown -R ${NODE_USER}:${NODE_USER} ${NODE_CONF_BASE}/${CODENAME}_n*.conf ${NODE_DATA_BASE}/${CODENAME}*
 }
 
 function cleanup_after() {
@@ -280,13 +280,15 @@ function cleanup_after() {
 function showbanner() {
 tput sgr0
 cat <<-EOF
-    ${SCVERSION}
+    ${SCVERSION} for ${VERSION_ID}
 	██████╗ ██╗██╗   ██╗██╗  ██╗
 	██╔══██╗██║██║   ██║╚██╗██╔╝
 	██████╔╝██║██║   ██║ ╚███╔╝ 
 	██╔═══╝ ██║╚██╗ ██╔╝ ██╔██╗ 
 	██║     ██║ ╚████╔╝ ██╔╝ ██╗
-	╚═╝     ╚═╝  ╚═══╝  ╚═╝  ╚═╝                    				
+	╚═╝     ╚═╝  ╚═══╝  ╚═╝  ╚═╝
+	feel free to donate PIVX for my work
+	DQS4rk57bteJ42FSNSPpwqHUoNhx4ywfQc                    				
 EOF
 }
 
