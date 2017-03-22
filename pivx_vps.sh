@@ -302,9 +302,9 @@ function final_call() {
 	echo "eg in /etc/pivx_n1.conf"	
 	# systemctl command to work with mnodes here 
 	echo "#!/bin/bash" > ${NODE_HELPER}
-	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${NODE_HELPER}
-		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${NODE_HELPER}
+	for NUM in $(seq 1 ${SETUP_NODES_COUNT}); do
+		echo "systemctl enable ${CODENAME}_n${NUM}" >> ${NODE_HELPER}
+		echo "systemctl restart ${CODENAME}_n${NUM}" >> ${NODE_HELPER}
 	done
 	chmod u+x ${NODE_HELPER}
 	tput sgr0
