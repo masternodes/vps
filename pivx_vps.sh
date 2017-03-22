@@ -288,6 +288,7 @@ cat <<-EOF
 	██╔═══╝ ██║╚██╗ ██╔╝ ██╔██╗ 
 	██║     ██║ ╚████╔╝ ██╔╝ ██╗
 	╚═╝     ╚═╝  ╚═══╝  ╚═╝  ╚═╝
+	(@marsmensch)2017
 	feel free to donate PIVX for my work
 	DQS4rk57bteJ42FSNSPpwqHUoNhx4ywfQc                    				
 EOF
@@ -323,7 +324,8 @@ main() {
     create_systemd_configuration 
     set_permissions
     cleanup_after
-    showbanner     
+    showbanner
+    final_call     
 }
 
 main "$@"
