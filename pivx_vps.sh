@@ -7,8 +7,8 @@
 # ██║     ██║ ╚████╔╝ ██╔╝ ██╗
 # ╚═╝     ╚═╝  ╚═══╝  ╚═╝  ╚═╝           
 #
-# version 	0.32-beta
-# date    	2017-03-21
+# version 	0.33-beta
+# date    	2017-03-22
 # function	masternode setup script
 #			This scripts needs to be run as root
 # 			to make services start persistent
@@ -35,6 +35,7 @@ NODE_USER=${NODE_USER:-pivxd}
 NODE_INBOUND_PORT=${NODE_INBOUND_PORT:-51472}
 NODE_SWAPSIZE=${NODE_SWAPSIZE:-5000}
 NODE_DAEMON=${NODE_DAEMON:-/usr/local/bin/pivxd}
+NODE_HELPER="/usr/local/bin/restart_masternodes.sh"
 
 # Git related stuff
 CODENAME=pivx
@@ -290,6 +291,22 @@ cat <<-EOF
 	feel free to donate PIVX for my work
 	DQS4rk57bteJ42FSNSPpwqHUoNhx4ywfQc                    				
 EOF
+}
+
+function final_call() {
+	# note outstanding tasks that need manual work
+	echo "There is still work to do in the configuration templates."
+	echo "These are located at ${NODE_CONF_BASE}, one per masternode."
+	echo "Add your masternode private keys now."
+	echo "eg in /etc/pivx_n1.conf"	
+	# systemctl command to work with mnodes here 
+	echo "#!/bin/bash" > ${NODE_HELPER}
+	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${NODE_HELPER}
+		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${NODE_HELPER}
+	done
+	chmod u+x ${NODE_HELPER}
+	tput sgr0
 }
 
 main() {
