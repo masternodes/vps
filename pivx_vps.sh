@@ -7,8 +7,8 @@
 # ██║     ██║ ╚████╔╝ ██╔╝ ██╗
 # ╚═╝     ╚═╝  ╚═══╝  ╚═╝  ╚═╝           
 #
-# version 	0.33-beta
-# date    	2017-03-22
+# version 	0.34-beta
+# date    	2017-04-06
 # function	masternode setup script
 #			This scripts needs to be run as root
 # 			to make services start persistent
@@ -40,7 +40,7 @@ NODE_HELPER="/usr/local/bin/restart_masternodes.sh"
 # Git related stuff
 CODENAME=pivx
 GIT_URL=https://github.com/PIVX-Project/PIVX.git
-SCVERSION="v2.1.6-stable"
+SCVERSION="v2.1.6"
 
 # DISTRO specific stuff
 SYSTEMD_CONF=${SYSTEMD_CONF:-/etc/systemd/system}
@@ -200,10 +200,14 @@ function create_node_configuration() {
 			maxconnections=256
 			gen=0
 			masternode=1
-			# add some doc references here
-			masternodeprivkey=HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_${NUM}
-			# add some examples here
-			bind=[HERE_GOES_YOUR_MASTERNODE_IP_ADDRESS_FOR_MASTERNODE_${NUM}]:${NODE_INBOUND_PORT}		
+			# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			# START ENTER YOUR MASTERNODE PRIVATE KEY HERE
+			# masternodeprivkey=INVALID_MASTERNODE_KEY_REPLACE_ME
+			# STOP ENTER YOUR MASTERNODE PRIVATE KEY HERE			
+			# !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			#
+			# only needed when multiple masternodes run on one host, add some examples here
+			# bind=[HERE_GOES_YOUR_MASTERNODE_IP_ADDRESS_FOR_MASTERNODE_${NUM}]:${NODE_INBOUND_PORT}		
 		EOF
 	done
 }
@@ -288,9 +292,9 @@ cat <<-EOF
 	██╔═══╝ ██║╚██╗ ██╔╝ ██╔██╗ 
 	██║     ██║ ╚████╔╝ ██╔╝ ██╗
 	╚═╝     ╚═╝  ╚═══╝  ╚═╝  ╚═╝
-	(@marsmensch)2017
-	feel free to donate PIVX for my work
-	DQS4rk57bteJ42FSNSPpwqHUoNhx4ywfQc                    				
+	(@marsmensch)2017, feel free to donate PIVX for my work
+	DQS4rk57bteJ42FSNSPpwqHUoNhx4ywfQc                   
+	 				
 EOF
 }
 
@@ -303,6 +307,10 @@ function final_call() {
 	# systemctl command to work with mnodes here 
 	echo "#!/bin/bash" > ${NODE_HELPER}
 	for NUM in $(seq 1 ${SETUP_NODES_COUNT}); do
+        echo "if grep -q INVALID_MASTERNODE_KEY_REPLACE_ME ${NODE_CONF_BASE}/${CODENAME}_n${NUM}.conf; then" >> ${NODE_HELPER}
+        echo "  echo please replace the default key in ${NODE_CONF_BASE}/${CODENAME}_n${NUM}.conf" >> ${NODE_HELPER}
+        echo "  exit 1" >> ${NODE_HELPER}
+        echo "fi" >> ${NODE_HELPER}
 		echo "systemctl enable ${CODENAME}_n${NUM}" >> ${NODE_HELPER}
 		echo "systemctl restart ${CODENAME}_n${NUM}" >> ${NODE_HELPER}
 	done
