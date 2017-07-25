@@ -1,17 +1,12 @@
 #!/bin/bash
-# ▓█████▄  ▄▄▄       ██▀███   ██ ▄█▀ ███▄    █ ▓█████▄▄▄█████▓
-# ▒██▀ ██▌▒████▄    ▓██ ▒ ██▒ ██▄█▒  ██ ▀█   █ ▓█   ▀▓  ██▒ ▓▒
-# ░██   █▌▒██  ▀█▄  ▓██ ░▄█ ▒▓███▄░ ▓██  ▀█ ██▒▒███  ▒ ▓██░ ▒░
-# ░▓█▄   ▌░██▄▄▄▄██ ▒██▀▀█▄  ▓██ █▄ ▓██▒  ▐▌██▒▒▓█  ▄░ ▓██▓ ░ 
-# ░▒████▓  ▓█   ▓██▒░██▓ ▒██▒▒██▒ █▄▒██░   ▓██░░▒████▒ ▒██▒ ░ 
-#  ▒▒▓  ▒  ▒▒   ▓▒█░░ ▒▓ ░▒▓░▒ ▒▒ ▓▒░ ▒░   ▒ ▒ ░░ ▒░ ░ ▒ ░░   
-#  ░ ▒  ▒   ▒   ▒▒ ░  ░▒ ░ ▒░░ ░▒ ▒░░ ░░   ░ ▒░ ░ ░  ░   ░    
-#  ░ ░  ░   ░   ▒     ░░   ░ ░ ░░ ░    ░   ░ ░    ░    ░      
-#    ░          ░  ░   ░     ░  ░            ░    ░  ░        
-#  ░                        
-#
-# version 	0.2-alpha
-# date    	2016-11-22
+#      _ _               _       
+#  ___(_) |__   ___ ___ (_)_ __  
+# / __| | '_ \ / __/ _ \| | '_ \ 
+# \__ \ | |_) | (_| (_) | | | | |
+# |___/_|_.__/ \___\___/|_|_| |_|
+#                               
+# version 	0.1-alpha
+# date    	2017-05-06
 # function	masternode setup script
 #			This scripts needs to be run as root
 # 			to make services start persistent
@@ -20,29 +15,28 @@
 #
 # tips
 # BTC  1PboFDkBsW2i968UnehWwcSrM9Djq5LcLB
-# DNET DBGBYLz484dWBb5wtk5gFVdJ8rGFfcob7R
-# SYNX SSKYwMhQQt9DcWozt7zA1tR3DmRuw1gT6b
 #
 #
-SETUP_MNODES_COUNT=3
+#SETUP_MNODES_COUNT=1
 
 ########################################
 # Dont change anything here if unsure!
 ########################################
 # only one masternode by default
 SETUP_MNODES_COUNT=${SETUP_MNODES_COUNT:-1}
-MNODE_INBOUND_PORT=${MNODE_INBOUND_PORT:-51472}
+MNODE_INBOUND_PORT=${MNODE_INBOUND_PORT:-1945}
 SSH_INBOUND_PORT=${SSH_INBOUND_PORT:-22}
 MNODE_CONF_BASE=${MNODE_CONF_BASE:-/etc/masternodes}
 MNODE_DATA_BASE=${MNODE_DATA_BASE:-/var/lib/masternodes}
 MNODE_USER=${MNODE_USER:-masternode}
 MNODE_HELPER="/usr/local/bin/restart_masternodes.sh"
-MNODE_DAEMON=${MNODE_DAEMON:-/usr/local/bin/darknetd}
+MNODE_DAEMON=${MNODE_DAEMON:-/usr/local/bin/sibcoind}
+NODE_SWAPSIZE=${NODE_SWAPSIZE:-5000}
 
 # Git related stuff
-GIT_PROJECT=darknet
-GIT_URL=git://github.com/Darknet-Crypto/Darknet.git
-PROG_VERSION=master
+GIT_PROJECT="sibcoin"
+GIT_URL="https://github.com/ivansib/sibcoin.git"
+SCVERSION="v0.16.1.1"
 
 # DISTRO specific stuff
 SYSTEMD_CONF=${SYSTEMD_CONF:-/etc/systemd/system}
@@ -73,55 +67,65 @@ function check_distro() {
 
 function install_packages() {
 	# development and build packages
+	# these are common on all cryptos
 	echo "Package installation!"
 	apt-get -qq update
 	apt-get -qqy -o=Dpkg::Use-Pty=0 install build-essential protobuf-compiler \
     automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
     make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
-    libcurl3-dev libudev-dev qtbase5-dev libqt5gui5 libqt5core5a libqt5dbus5 \
-    qttools5-dev qttools5-dev-tools libprotobuf-dev libqrencode-dev bsdmainutils
+    libcurl3-dev libudev-dev libqt4-dev libqrencode-dev bsdmainutils qt5-default \
+    libqjson-dev libqjson0 qtdeclarative5-dev libqrencode-dev qtbase5-dev \
+    libqt5opengl5-dev libevent-dev pkg-config
 }
 
 function swaphack() { 
-	# needed because ant servers are ants
-	rm -f /var/swap.img
-	dd if=/dev/zero of=/var/swap.img bs=1024k count=3000
-	chmod 0600 /var/swap.img
-	mkswap /var/swap.img
-	swapon /var/swap.img	
+	#check if swap is available
+	if free | awk '/^Swap:/ {exit !$2}'; then
+		echo "Already have swap"
+	else
+		echo "No swap"
+		# needed because ant servers are ants
+		rm -f /var/swap.img
+		dd if=/dev/zero of=/var/swap.img bs=1024k count=${NODE_SWAPSIZE}
+		chmod 0600 /var/swap.img
+		mkswap /var/swap.img
+		swapon /var/swap.img
+		echo '/var/swap.img none swap sw 0 0' | tee -a /etc/fstab
+		echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
+		echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		
+	fi
 }
 
 function build_mn_from_source() {
 	# daemon not found compile it
 	if [ ! -f ${MNODE_DAEMON} ]; then
-		# if code directory does not exists, we create it clone the src
-		if [ ! -d /opt/code/${GIT_PROJECT} ]; then
-			mkdir -p /opt/code && cd /opt/code
-			git clone ${GIT_URL} ${GIT_PROJECT}
-		fi	
-		# compilation starts here, parameters later	
-		echo -e "Starting the compilation process, stay tuned"
-		cd /opt/code/${GIT_PROJECT} && ./autogen.sh
-		./configure --enable-tests=no --with-incompatible-bdb --with-gui=qt5 CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
-		if make; then
-			echo "compilation successful, running install and clean target"
-			make install
-		else
-			echo "Damn, compilation failed. Exit!"	
-			exit 1
-		fi
+			# if code directory does not exists, we create it and clone the src
+			if [ ! -d /opt/code/${GIT_PROJECT} ]; then
+				mkdir -p /opt/code/ && cd /opt/code/
+				# full clone
+				git clone ${GIT_URL} ${GIT_PROJECT}
+				# always make sure we are in the source root dir
+				cd /opt/code/${GIT_PROJECT}
+				# get the latest release tag
+				#GIT_REL_TAG=$(git tag | sort -n | tail -1)
+				git checkout tags/${SCVERSION}
+			fi
+			# compilation starts here, parameters later	
+			echo -e "Starting the compilation process, stay tuned"
+			cd /opt/code/${GIT_PROJECT} && ./autogen.sh
+			./configure --enable-tests=no --with-incompatible-bdb \
+			--enable-glibc-back-compat --with-gui=no \
+			CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+			if make; then
+				echo "compilation successful, running install and clean target"
+				make install
+			else
+				echo "Damn, compilation failed. Exit!"	
+				exit 1
+			fi
 	else
 		echo "daemon already in place at ${MNODE_DAEMON}, not compiling"	
 	fi
-}
-
-function install_mn_packages() {
-	# not yet included, testing
-	# packages install to /usr/bin, src to /usr/local/bin
-	apt-add-repository ppa:shaun-mcbride/darknet
-	apt-get update
-	apt-get install darknetd
-	apt-get install darknet-cli
 }
 
 function prepare_mn_interfaces() {
@@ -188,10 +192,7 @@ function create_mn_configuration() {
 			maxconnections=256
 			gen=0
 			masternode=1
-			masternodeprivkey=HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_${NUM}
-			addnode=108.61.151.69
-			addnode=173.245.158.8
-			addnode=coin-server.com			
+			masternodeprivkey=HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_${NUM}		
 		EOF
 	done
 }
@@ -257,16 +258,12 @@ function cleanup_after() {
 
 function showbanner() {
 cat << "EOF"
-▓█████▄  ▄▄▄       ██▀███   ██ ▄█▀ ███▄    █ ▓█████▄▄▄█████▓
-▒██▀ ██▌▒████▄    ▓██ ▒ ██▒ ██▄█▒  ██ ▀█   █ ▓█   ▀▓  ██▒ ▓▒
-░██   █▌▒██  ▀█▄  ▓██ ░▄█ ▒▓███▄░ ▓██  ▀█ ██▒▒███  ▒ ▓██░ ▒░
-░▓█▄   ▌░██▄▄▄▄██ ▒██▀▀█▄  ▓██ █▄ ▓██▒  ▐▌██▒▒▓█  ▄░ ▓██▓ ░ 
-░▒████▓  ▓█   ▓██▒░██▓ ▒██▒▒██▒ █▄▒██░   ▓██░░▒████▒ ▒██▒ ░ 
- ▒▒▓  ▒  ▒▒   ▓▒█░░ ▒▓ ░▒▓░▒ ▒▒ ▓▒░ ▒░   ▒ ▒ ░░ ▒░ ░ ▒ ░░   
- ░ ▒  ▒   ▒   ▒▒ ░  ░▒ ░ ▒░░ ░▒ ▒░░ ░░   ░ ▒░ ░ ░  ░   ░    
- ░ ░  ░   ░   ▒     ░░   ░ ░ ░░ ░    ░   ░ ░    ░    ░      
-   ░          ░  ░   ░     ░ (@marsmensch)2016  ░  ░        
- ░                      				
+       _ _               _       
+   ___(_) |__   ___ ___ (_)_ __  
+  / __| | '_ \ / __/ _ \| | '_ \ 
+  \__ \ | |_) | (_| (_) | | | | |
+  |___/_|_.__/ \___\___/|_|_| |_|   
+  (@marsmensch)2017                          				
 EOF
 }
 
@@ -275,7 +272,7 @@ function final_call() {
 	echo "There is still work to do in the configuration templates."
 	echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
 	echo "Add your masternode private keys now."
-	echo "eg in /etc/masternodes/darknet_n1.conf"	
+	echo "eg in /etc/masternodes/sibcoin_n1.conf"	
 	# systemctl command to work with mnodes here 
 	echo "#!/bin/bash" > ${MNODE_HELPER}
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
