@@ -37,18 +37,18 @@ usage() {
 source_config() {
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		echo "read default config"	
-		source .config/default.env
+		source config/default.env
 		echo "apply config file for ${1}"		
 		source "${SETUP_CONF_FILE}"
 		echo "running installer script"		
-		source .scripts/masternode_install.sh ${1}
+		source scripts/masternode_install.sh ${1}
 	else
 		echo "required file ${SETUP_CONF_FILE} does not exist, abort!"
 		exit 1   
 	fi
 }
 
-SETUP_CONF_FILE=".config/${1}/${1}.env"
+SETUP_CONF_FILE="config/${1}/${1}.env"
 SETUP_MNODES_COUNT=${2}
 
 case "${1}" in
