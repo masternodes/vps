@@ -118,6 +118,7 @@ function build_mn_from_source() {
                         cd ${GIT_PROJECT}
                 fi
                 # always make sure we are in the source root dir
+                echo $CWD $PWD
                 cd ${CODE_DIR}/${GIT_PROJECT}
                 # compilation starts here, parameters later
                 echo -e "Starting the compilation process, stay tuned"
