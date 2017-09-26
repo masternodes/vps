@@ -91,7 +91,7 @@ function prepare_mn_interfaces() {
 	# vultr specific, needed to work
 	sed -ie '/iface ${ETH_INTERFACE} inet6 auto/s/^/#/' ${NETWORK_CONFIG}
     # move current config out of the way first
-    mv ${NETWORK_CONFIG} ${NETWORK_CONFIG}.${DATE_STAMP}.bkp
+    cp ${NETWORK_CONFIG} ${NETWORK_CONFIG}.${DATE_STAMP}.bkp
     
 	# create the additional ipv6 interfaces 
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
