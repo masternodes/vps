@@ -89,11 +89,8 @@ function build_mn_from_source() {
                         git clone ${GIT_URL} ${GIT_PROJECT}
                         cd ${GIT_PROJECT}
                 fi
-                echo "teh dir: $CWD $PWD"
-                # compilation starts here, parameters later
                 echo -e "Starting the compilation process, stay tuned"
-                echo "DIR:  $PWD $CWD xxxxxxxx"
-                source ../../config/${CODENAME}/${CODENAME}.compile
+                source config/${CODENAME}/${CODENAME}.compile
                 
                 # check the return code for the compilation work                
                 if [ ! $? -eq 0 ]; then
