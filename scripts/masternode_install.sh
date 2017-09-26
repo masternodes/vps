@@ -45,13 +45,13 @@ IPV6_INT_BASE="$(ip -6 addr | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep
 
 echo "DEBUG"
 echo "xxxxxxxxxxxxxxxxxxx"
-echo $CODENAME
-echo $MNODE_DAEMON
-echo $SETUP_MNODES_COUNT
-echo $GIT_URL
-echo $GIT_PROJECT
-echo $SCVERSION
-echo $NETWORK_BASE_TAG
+echo "CODENAME" $CODENAME
+echo "MNODE_DAEMON" $MNODE_DAEMON
+echo "SETUP_MNODES_COUNT" $SETUP_MNODES_COUNT
+echo "GIT_URL" $GIT_URL
+echo "GIT_PROJECT" $GIT_PROJECT
+echo "SCVERSION" $SCVERSION
+echo "NETWORK_BASE_TAG" $NETWORK_BASE_TAG
 echo "xxxxxxxxxxxxxxxxxxx"
 
 #SETUP_MNODES_COUNT=${SETUP_MNODES_COUNT:-1}

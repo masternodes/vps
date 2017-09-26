@@ -40,6 +40,18 @@ source_config() {
 		source config/default.env
 		echo "apply config file for ${1}"		
 		source "${SETUP_CONF_FILE}"
+
+		echo "DEBUG"
+        echo "xxxxxxxxxxxxxxxxxxx"
+        echo "CODENAME" $CODENAME
+        echo "MNODE_DAEMON" $MNODE_DAEMON
+        echo "SETUP_MNODES_COUNT" $SETUP_MNODES_COUNT
+        echo "GIT_URL" $GIT_URL
+        echo "GIT_PROJECT" $GIT_PROJECT
+        echo "SCVERSION" $SCVERSION
+        echo "NETWORK_BASE_TAG" $NETWORK_BASE_TAG
+        echo "xxxxxxxxxxxxxxxxxxx"
+
 		echo "running installer script"		
 		source scripts/masternode_install.sh ${1}
 	else
