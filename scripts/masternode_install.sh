@@ -50,28 +50,22 @@ function install_packages() {
     libgmp3-dev libevent-dev
 }
 
-if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/swap.img" ];then
-         echo "No proper swap, creating it"
-else
-         echo "All good, we have a swap"
-fi
-
 function swaphack() { 
-	#check if swap is available
-	if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
-		echo "No proper swap, creating it"
-		# needed because ant servers are ants
-		rm -f /var/mnode_swap.img
-		dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${MNODE_SWAPSIZE}
-		chmod 0600 /var/mnode_swap.img
-		mkswap /var/mnode_swap.img
-		swapon /var/mnode_swap.img
-		echo '/var/mnode_swap.img none swap sw 0 0' | tee -a /etc/fstab
-		echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
-		echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		
-	else
-		echo "All good, we have a swap"	
-	fi
+#check if swap is available
+if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
+	echo "No proper swap, creating it"
+	# needed because ant servers are ants
+	rm -f /var/mnode_swap.img
+	dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${MNODE_SWAPSIZE}
+	chmod 0600 /var/mnode_swap.img
+	mkswap /var/mnode_swap.img
+	swapon /var/mnode_swap.img
+	echo '/var/mnode_swap.img none swap sw 0 0' | tee -a /etc/fstab
+	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
+	echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		
+else
+	echo "All good, we have a swap"	
+fi
 }
 
 function build_mn_from_source() {
