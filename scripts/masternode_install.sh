@@ -121,6 +121,7 @@ function build_mn_from_source() {
                 cd ${CODE_DIR}/${GIT_PROJECT}
                 # compilation starts here, parameters later
                 echo -e "Starting the compilation process, stay tuned"
+                echo "DIR:  $PWD $CWD xxxxxxxx"
                 source ../../.config/${CODENAME}/${CODENAME}.compile
                 if make; then
                         echo "compilation successful, running install and clean target"
