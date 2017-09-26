@@ -29,6 +29,7 @@
 usage() {
     echo `basename $0`: ERROR: $* 1>&2
     echo usage: `basename $0` '[pivx] OR [mojo] OR [mue] OR [synx] OR [dash] OR [bitsend]  + HOWMANY' 1>&2
+    echo "currently supported masternode coins: << nice ascii wordlist here >>"
     echo '=> for 5 pivx masternodes run:' `basename $0` 'pivx 5' 1>&2
     echo 'Report bugs to: @marsmensch'
     exit 1
@@ -63,31 +64,7 @@ source_config() {
 SETUP_CONF_FILE="config/${1}/${1}.env"
 SETUP_MNODES_COUNT=${2}
 
-case "${1}" in
-	pivx)
-		echo you picked PIVX
-		source_config pivx
-		;;
-	sib)
-		echo you picked SIB
-		source_config sib
-		;;
-	mue)
-		echo you picked MUE
-		source_config mue
-		;;
-	synx)
-		echo you picked SYNX
-		source_config synx
-		;;
-	bitsend)
-		echo you picked BITSEND
-		source_config bitsend
-		;;		
-	dash)
-		echo you picked DASH
-		source_config dash
-		;;  
-	* ) usage "bad argument $1"
-		;;
-esac
+# put in main at a later point in time
+echo you picked PIVX
+source_config ${1}
+

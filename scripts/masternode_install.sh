@@ -52,6 +52,7 @@ echo "GIT_URL" $GIT_URL
 echo "GIT_PROJECT" $GIT_PROJECT
 echo "SCVERSION" $SCVERSION
 echo "NETWORK_BASE_TAG" $NETWORK_BASE_TAG
+echo "CODE_DIR" $CODE_DIR
 echo "xxxxxxxxxxxxxxxxxxx"
 
 #SETUP_MNODES_COUNT=${SETUP_MNODES_COUNT:-1}
@@ -111,13 +112,13 @@ function build_mn_from_source() {
         # daemon not found compile it
         if [ ! -f ${MNODE_DAEMON} ]; then
                 # if code directory does not exists, we create it clone the src
-                if [ ! -d code/${GIT_PROJECT} ]; then
-                        mkdir -p code && cd code
+                if [ ! -d ${CODE_DIR}/${GIT_PROJECT} ]; then
+                        mkdir -p ${CODE_DIR} && cd ${CODE_DIR}
                         git clone ${GIT_URL} ${GIT_PROJECT}
                         cd ${GIT_PROJECT}
                 fi
                 # always make sure we are in the source root dir
-                cd code/${GIT_PROJECT}
+                cd ${CODE_DIR}/${GIT_PROJECT}
                 # compilation starts here, parameters later
                 echo -e "Starting the compilation process, stay tuned"
                 source ../../.config/${CODENAME}/${CODENAME}.compile
