@@ -90,7 +90,8 @@ function build_mn_from_source() {
                         cd ${GIT_PROJECT}
                 fi
                 echo -e "Starting the compilation process, stay tuned"
-                source config/${CODENAME}/${CODENAME}.compile
+                cd ${CODE_DIR}/${GIT_PROJECT}
+                source ../../config/${CODENAME}/${CODENAME}.compile
                 
                 # check the return code for the compilation work                
                 if [ ! $? -eq 0 ]; then
