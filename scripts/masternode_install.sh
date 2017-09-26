@@ -90,6 +90,7 @@ function build_mn_from_source() {
                         cd ${GIT_PROJECT}
                 fi
                 echo -e "Starting the compilation process, stay tuned"
+                echo "TEST $PWD $CWD"
                 source ../../config/${CODENAME}/${CODENAME}.compile
                 
                 # check the return code for the compilation work                
