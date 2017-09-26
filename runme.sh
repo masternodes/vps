@@ -54,6 +54,6 @@ SETUP_CONF_FILE="config/${1}/${1}.env"
 SETUP_MNODES_COUNT=${2}
 
 # put in main at a later point in time
-echo you picked PIVX
+echo "You picked: ${1}"
 source_config ${1}
 
