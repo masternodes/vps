@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	0.3-alpha
-# date    	2017-07-25
+# version 	0.4-alpha
+# date    	2017-09-26
 #
 # function	masternode setup script
 #			This scripts needs to be run as root
@@ -16,25 +16,6 @@
 #
 # Twitter 	@marsmensch
 #
-
-########################################
-# Dont change anything here if unsure!
-########################################
-# only one masternode by default
-SETUP_MNODES_COUNT=${SETUP_MNODES_COUNT:-1}
-MNODE_INBOUND_PORT=${MNODE_INBOUND_PORT:-51472}
-SSH_INBOUND_PORT=${SSH_INBOUND_PORT:-22}
-MNODE_CONF_BASE=${MNODE_CONF_BASE:-/etc/masternodes}
-MNODE_DATA_BASE=${MNODE_DATA_BASE:-/var/lib/masternodes}
-MNODE_USER=${MNODE_USER:-masternode}
-MNODE_HELPER="/usr/local/bin/restart_masternodes.sh"
-MNODE_DAEMON=${MNODE_DAEMON:-/usr/local/bin/darknetd}
-MNODE_SWAPSIZE=${MNODE_SWAPSIZE:-5000}
-
-# DISTRO specific stuff
-SYSTEMD_CONF=${SYSTEMD_CONF:-/etc/systemd/system}
-NETWORK_CONFIG=${NETWORK_CONFIG:-/etc/network/interfaces}
-ETH_INTERFACE=${ETH_INTERFACE:-ens3}
 
 # Useful variables
 DATE_STAMP="$(date +%y-%m-%d-%s)"
@@ -122,9 +103,10 @@ function build_mn_from_source() {
                 echo -e "Starting the compilation process, stay tuned"
                 echo "DIR:  $PWD $CWD xxxxxxxx"
                 source ../../config/${CODENAME}/${CODENAME}.compile
-                if make; then
-                        echo "compilation successful, running install and clean target"
-                        make install
+                
+                # check the return code for the compilation work                
+                if [ ! $? -eq 0 ]; then
+                        echo "compilation successful"
                 else
                         if [ $? -eq 2 ]; then
                         echo "no proper make target"
