@@ -50,13 +50,16 @@ function install_packages() {
     libgmp3-dev libevent-dev
 }
 
+if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/swap.img" ];then
+         echo "No proper swap, creating it"
+else
+         echo "All good, we have a swap"
+fi
 
 function swaphack() { 
 	#check if swap is available
-	if [ free | awk '/^Swap:/ {exit !$2}' ] && { [ ! -f /var/swap.img ]; then
-		echo "Already have swap"
-	else
-		echo "No swap"
+	if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
+		echo "No proper swap, creating it"
 		# needed because ant servers are ants
 		rm -f /var/swap.img
 		dd if=/dev/zero of=/var/swap.img bs=1024k count=${MNODE_SWAPSIZE}
@@ -66,6 +69,8 @@ function swaphack() {
 		echo '/var/swap.img none swap sw 0 0' | tee -a /etc/fstab
 		echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
 		echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		
+	else
+		echo "All good, we have a swap"	
 	fi
 }
 
