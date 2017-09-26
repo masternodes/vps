@@ -117,14 +117,11 @@ function build_mn_from_source() {
                         git clone ${GIT_URL} ${GIT_PROJECT}
                         cd ${GIT_PROJECT}
                 fi
-                # always make sure we are in the source root dir
-                echo "teh dir: $CWD $PWD"
-                cd ${CODE_DIR}/${GIT_PROJECT}
                 echo "teh dir: $CWD $PWD"
                 # compilation starts here, parameters later
                 echo -e "Starting the compilation process, stay tuned"
                 echo "DIR:  $PWD $CWD xxxxxxxx"
-                source ../../.config/${CODENAME}/${CODENAME}.compile
+                source ../../config/${CODENAME}/${CODENAME}.compile
                 if make; then
                         echo "compilation successful, running install and clean target"
                         make install
