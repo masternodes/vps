@@ -50,9 +50,10 @@ function install_packages() {
     libgmp3-dev libevent-dev
 }
 
+
 function swaphack() { 
 	#check if swap is available
-	if free | awk '/^Swap:/ {exit !$2}'; then
+	if [ free | awk '/^Swap:/ {exit !$2}' ] && { [ ! -f /var/swap.img ]; then
 		echo "Already have swap"
 	else
 		echo "No swap"
