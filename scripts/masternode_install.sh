@@ -94,6 +94,9 @@ function build_mn_from_source() {
         else
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
+        
+        # always delete the sources to be extra sure
+        rm -rf ${CODE_DIR}
 }
 
 function prepare_mn_interfaces() {

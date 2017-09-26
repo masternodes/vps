@@ -2,6 +2,15 @@
 
 Here it is: dont be rude please, i write this mostly during my lunch break today to safe some time during the next couple of setups.
 
+| CRYPTO  | Logo | Url |   |   |
+|--------|--------------|-----|---|---|
+| PIVX |  <img src="https://github.com/favicon.ico" width="48">  |  https://pivx.org/ |   |   |
+| DASH |  x  | https://www.dash.org/ |   |   |
+| DESIRE |  x  | https://github.com/lazyboozer/Desire  |   |  |
+| PURE |  x  | https://github.com/puredev321/pure    |   |   |
+| ENT  |  x  | http://ent.eternity-group.org/    |   |   |
+| SYNX |  x  | http://syndicatelabs.io/  |   |   |
+
 # Notes and features
 * It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
 * Developed with recent Ubuntu versions in mind, including 14.04/15.10/16.04/16.10
