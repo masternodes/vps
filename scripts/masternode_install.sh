@@ -92,18 +92,6 @@ function build_mn_from_source() {
                 echo -e "Starting the compilation process, stay tuned"
                 echo "TEST $PWD $CWD"
                 source ../../config/${CODENAME}/${CODENAME}.compile
-                
-                # check the return code for the compilation work                
-                if [ ! $? -eq 0 ]; then
-                        echo "compilation successful"
-                else
-                        if [ $? -eq 2 ]; then
-                        echo "no proper make target"
-                else
-                        echo "Damn, compilation failed. Exit!"
-                                exit 1
-                        fi
-                fi
         else
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi

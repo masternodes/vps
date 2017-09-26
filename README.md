@@ -3,9 +3,9 @@
 Here it is: dont be rude please, i write this mostly during my lunch break today to safe some time during the next couple of setups.
 
 # Notes and features
-* It is currently only tested on a vultr VPS but should work almost anywhere
+* It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
 * Developed with recent Ubuntu versions in mind, including 14.04/15.10/16.04/16.10
-* This script doesnt care about the controller wallet side of things
+* This script doesn't care about the controller wallet side of things
 * Installs 1-100 (or more!) masternodes in parallel on one machine, with individual config and data
 * Compilation is currently from source for the desired git repo tag (currently 2.1.6-stable)
 * Some security hardening is done, including firewalling and a separate user
@@ -14,25 +14,34 @@ Here it is: dont be rude please, i write this mostly during my lunch break today
 * This script needs to run as root, the masternodes will and should not!
 
 # What do i need to do after running this script?
-**0)** Download and tun this script on your VPS instance or an Ubuntu VM
-
-**1)** change the amount of masternodes you want to install/configure at the top of the script ("eg SETUP_NODES_COUNT=3")
-
-**2)** ADD your masternode private key to the configuration file(s) located at ```/etc/pivx_n$NUM.conf```. Optionally, adapt the IP configuration for multi-node-on-one-system setups.
-For example, when installing three DNET masternodes:
+**0)** Clone this repository
 ```
-* writing config file /etc/pivx_n1.conf
-* writing config file /etc/pivx_n2.conf
-* writing config file /etc/pivx_n3.conf
+git clone https://github.com/marsmensch/masternode-vps-setup.git
+```
+
+**1)** run the **runme.sh** script with the desired crypto and masternode count as parameters, e.g. to install 3 PURE masternodes:
+
+```
+./runme.sh pure 3
+```
+
+
+**2)** ADD your masternode private key to the configuration file(s) located at ```/etc/masternodes/$CRYPTO_n$NUM.conf```. 
+
+For example, when installing three PURE masternodes are desired, the following configuration files are generated:
+```
+* writing config file /etc/masternodes/pure_n1.conf
+* writing config file /etc/masternodes/pure_n2.conf
+* writing config file /etc/masternodes/pure_n3.conf
 ```
 
 **3)** Still AS ROOT run ```/usr/local/bin/restart_masternodes.sh``` to activate the services permanently.
-   Individual masternode data directories are located in ```/var/lib/pivx${NUMBER_OF_NODE}```
+   Individual masternode data directories are located in ```/var/lib/masternodes/${CRYPTO}${NUMBER_OF_NODE}```
 
-**4)** subsequently, you should only work as masternode user and not ```root```. The default user account created is ```pivxd```.
+**4)** subsequently, you should only work as masternode user and not ```root```. The default user account created is ```masternode```.
    You can change to this user with the following command
 ```
-vps:~ su - pivxd
+vps:~ su - masternode
 ```   
 
 # Todo
@@ -58,9 +67,5 @@ Ping me at contact@marsmenschen.com for questions and send some crypto my way if
 
 **Have fun, this is crypto after all!**
 ```
-BTC  1PboFDkBsW2i968UnehWwcSrM9Djq5LcLB
-PIVX DQS4rk57bteJ42FSNSPpwqHUoNhx4ywfQc
-SYNX SSKYwMhQQt9DcWozt7zA1tR3DmRuw1gT6b
-DASH Xt1W8cVPxnx9xVmfe1yYM9e5DKumPQHaV5
-MUE  7KV3NUX4g7rgEDHVfBttRWcxk3hrqGR4pH
+BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
