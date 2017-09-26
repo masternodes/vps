@@ -2,14 +2,14 @@
 
 Here it is: dont be rude please, i write this mostly during my lunch break today to safe some time during the next couple of setups.
 
-| CRYPTO  | Logo | Url |   |   |
-|--------|--------------|-----|---|---|
-| PIVX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pivx.png" width="64">  |  https://pivx.org/ |   |   |
-| DASH |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dash.png" width="64">  | https://www.dash.org/ |   |   |
-| DESIRE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/desire.png" width="64">  | https://github.com/lazyboozer/Desire  |   |  |
-| PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.png" width="64">  | https://github.com/puredev321/pure    |   |   |
-| ENT  |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/ent.png" width="64">  | http://ent.eternity-group.org/    |   |   |
-| SYNX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/synx.png" width="64">  | http://syndicatelabs.io/  |   |   |
+| CRYPTO  | Logo | Url |
+|--------|--------------|-----|
+| PIVX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pivx.png" width="64">  |  https://pivx.org/ |
+| DASH |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dash.png" width="64">  | https://www.dash.org/ |
+| DESIRE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/desire.png" width="64">  | https://github.com/lazyboozer/Desire  |
+| PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.png" width="64">  | https://github.com/puredev321/pure    |
+| ENT  |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/ent.png" width="64">  | http://ent.eternity-group.org/    |
+| SYNX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/synx.png" width="64">  | http://syndicatelabs.io/  |
 
 # Notes and features
 * It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
