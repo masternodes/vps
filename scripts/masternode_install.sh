@@ -20,19 +20,7 @@
 # Useful variables
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 # im an not very proud of this
-IPV6_INT_BASE="$(ip -6 addr show dev ens3 | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
-
-echo "DEBUG"
-echo "xxxxxxxxxxxxxxxxxxx"
-echo "CODENAME" $CODENAME
-echo "MNODE_DAEMON" $MNODE_DAEMON
-echo "SETUP_MNODES_COUNT" $SETUP_MNODES_COUNT
-echo "GIT_URL" $GIT_URL
-echo "GIT_PROJECT" $GIT_PROJECT
-echo "SCVERSION" $SCVERSION
-echo "NETWORK_BASE_TAG" $NETWORK_BASE_TAG
-echo "CODE_DIR" $CODE_DIR
-echo "xxxxxxxxxxxxxxxxxxx"
+IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 
 function check_distro() {
 	# currently only for Ubuntu 16.04
@@ -101,9 +89,9 @@ function build_mn_from_source() {
 
 function prepare_mn_interfaces() {
 	# vultr specific, needed to work
-	sed -ie '/iface eth0 inet6 auto/s/^/#/' ${NETWORK_CONFIG}
+	sed -ie '/iface ${ETH_INTERFACE} inet6 auto/s/^/#/' ${NETWORK_CONFIG}
     # move current config out of the way first
-    cp ${NETWORK_CONFIG} ${NETWORK_CONFIG}.${DATE_STAMP}.bkp
+    mv ${NETWORK_CONFIG} ${NETWORK_CONFIG}.${DATE_STAMP}.bkp
     
 	# create the additional ipv6 interfaces 
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
@@ -159,7 +147,7 @@ function create_mn_configuration() {
 			server=1
 			listen=1
 			daemon=1
-			bind=[${IPV6_INT_BASE}::${NUM}]:${MNODE_INBOUND_PORT}
+			bind=[${IPV6_INT_BASE}::${NUM}]:${MNODE_INBOUND_PORT}bind=[${IPV6_INT_BASE}::${NUM}]:${MNODE_INBOUND_PORT}
 			logtimestamps=1
 			mnconflock=0
 			maxconnections=256
