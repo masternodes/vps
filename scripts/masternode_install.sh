@@ -20,9 +20,7 @@
 # Useful variables
 DATE_STAMP="$(date +%y-%m-%d-%s)"
 # im an not very proud of this
-IPV6_INT_BASE="$(ip -6 addr | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^::1 | grep -v ^fe80 | cut -f1-4 -d':')"
-# a way to override
-#IPV6_INT_BASE="2001:19f0:6c01:5e::"
+IPV6_INT_BASE="$(ip -6 addr show dev ens3 | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 
 echo "DEBUG"
 echo "xxxxxxxxxxxxxxxxxxx"
@@ -35,13 +33,6 @@ echo "SCVERSION" $SCVERSION
 echo "NETWORK_BASE_TAG" $NETWORK_BASE_TAG
 echo "CODE_DIR" $CODE_DIR
 echo "xxxxxxxxxxxxxxxxxxx"
-
-#SETUP_MNODES_COUNT=${SETUP_MNODES_COUNT:-1}
-#MNODE_DAEMON=${MNODE_DAEMON:-/usr/local/bin/pivxd}
-#GIT_PROJECT=pivx
-#GIT_URL=https://github.com/PIVX-Project/PIVX.git
-#SCVERSION="v2.1.6"
-#NETWORK_BASE_TAG="2003"
 
 function check_distro() {
 	# currently only for Ubuntu 16.04
