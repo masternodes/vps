@@ -1,15 +1,14 @@
 #!/bin/bash
-#
 #  ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
 #  ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
 #  ██╔██╗ ██║██║   ██║██║  ██║█████╗  ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
 #  ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
 #  ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-#                                                                   ╚╗ @marsmensch 2016 ╔╝                      
+#                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				           
 #
 # version: 	0.3-alpha
-# date:    	2016-08-20
+# date:    	2017-07-25
 # function:	part of the masternode scripts, source the proper config file
 #
 # Twitter: 	@marsmensch
@@ -26,18 +25,11 @@
 #               - A vultr micro instance works for up to 5 masternodes 
 #				- Activate the free IPv6 option
 #
-# tips
-# BTC  1PboFDkBsW2i968UnehWwcSrM9Djq5LcLB
-# DNET DBGBYLz484dWBb5wtk5gFVdJ8rGFfcob7R
-# SYNX SSKYwMhQQt9DcWozt7zA1tR3DmRuw1gT6b
-# DASH Xt1W8cVPxnx9xVmfe1yYM9e5DKumPQHaV5
-# MUE  7KV3NUX4g7rgEDHVfBttRWcxk3hrqGR4pH
-# MOJO MTfuWof2NMDPh57U18yniVzpaS2cq4nFFt
 
 usage() {
     echo `basename $0`: ERROR: $* 1>&2
-    echo usage: `basename $0` '[dnet] OR [mojo] OR [mue] OR [synx] OR [dash] OR [bitsend]  + HOWMANY' 1>&2
-    echo '=> for 5 dnet masternodes run:' `basename $0` 'dnet 5' 1>&2
+    echo usage: `basename $0` '[pivx] OR [mojo] OR [mue] OR [synx] OR [dash] OR [bitsend]  + HOWMANY' 1>&2
+    echo '=> for 5 pivx masternodes run:' `basename $0` 'pivx 5' 1>&2
     echo 'Report bugs to: @marsmensch'
     exit 1
 }
@@ -60,13 +52,13 @@ SETUP_CONF_FILE=".config/${1}/${1}.env"
 SETUP_MNODES_COUNT=${2}
 
 case "${1}" in
-	dnet)
-		echo you picked DNET
-		source_config dnet
+	pivx)
+		echo you picked PIVX
+		source_config pivx
 		;;
-	mojo)
-		echo you picked MOJO
-		source_config mojo
+	sib)
+		echo you picked SIB
+		source_config sib
 		;;
 	mue)
 		echo you picked MUE

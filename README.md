@@ -36,21 +36,21 @@ vps:~ su - pivxd
 ```   
 
 # Todo
-<<<<<<< HEAD
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
-=======
->>>>>>> 71c62b0bdc2ba8772d19c73a3941e06f6f087c7f
 * document the vultr signup and setup procedure
 * provide a delete / uninstall flag
 * create a logfile
 * instert coin images into readme
 * insert vultr signup reflink
+* make scripts idempotent 
+* write test cases
+* implement a binary option (?) 
 * outsource common variables in commin source file
 * check if masternode user already exists before creation
 * add all flags everywhere ./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
 
 # Errors
-* currently not fully idempotent (cfengine?)
+* currently not fully idempotent
 * check if relevant interface already exists (sed) before writing to interfaces file
 
 
@@ -59,13 +59,8 @@ Ping me at contact@marsmenschen.com for questions and send some crypto my way if
 **Have fun, this is crypto after all!**
 ```
 BTC  1PboFDkBsW2i968UnehWwcSrM9Djq5LcLB
-<<<<<<< HEAD
 PIVX DQS4rk57bteJ42FSNSPpwqHUoNhx4ywfQc
-=======
-DNET DBGBYLz484dWBb5wtk5gFVdJ8rGFfcob7R
 SYNX SSKYwMhQQt9DcWozt7zA1tR3DmRuw1gT6b
 DASH Xt1W8cVPxnx9xVmfe1yYM9e5DKumPQHaV5
 MUE  7KV3NUX4g7rgEDHVfBttRWcxk3hrqGR4pH
-MOJO MTfuWof2NMDPh57U18yniVzpaS2cq4nFFt
->>>>>>> 71c62b0bdc2ba8772d19c73a3941e06f6f087c7f
 ```

@@ -1,42 +1,21 @@
 #!/bin/bash
-<<<<<<< HEAD:dnet_vps.sh
-# ▓█████▄  ▄▄▄       ██▀███   ██ ▄█▀ ███▄    █ ▓█████▄▄▄█████▓
-# ▒██▀ ██▌▒████▄    ▓██ ▒ ██▒ ██▄█▒  ██ ▀█   █ ▓█   ▀▓  ██▒ ▓▒
-# ░██   █▌▒██  ▀█▄  ▓██ ░▄█ ▒▓███▄░ ▓██  ▀█ ██▒▒███  ▒ ▓██░ ▒░
-# ░▓█▄   ▌░██▄▄▄▄██ ▒██▀▀█▄  ▓██ █▄ ▓██▒  ▐▌██▒▒▓█  ▄░ ▓██▓ ░ 
-# ░▒████▓  ▓█   ▓██▒░██▓ ▒██▒▒██▒ █▄▒██░   ▓██░░▒████▒ ▒██▒ ░ 
-#  ▒▒▓  ▒  ▒▒   ▓▒█░░ ▒▓ ░▒▓░▒ ▒▒ ▓▒░ ▒░   ▒ ▒ ░░ ▒░ ░ ▒ ░░   
-#  ░ ▒  ▒   ▒   ▒▒ ░  ░▒ ░ ▒░░ ░▒ ▒░░ ░░   ░ ▒░ ░ ░  ░   ░    
-#  ░ ░  ░   ░   ▒     ░░   ░ ░ ░░ ░    ░   ░ ░    ░    ░      
-#    ░          ░  ░   ░     ░  ░            ░    ░  ░        
-#  ░                        
-#
-# version 	0.2-alpha
-# date    	2016-11-22
-=======
 #  ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
 #  ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
 #  ██╔██╗ ██║██║   ██║██║  ██║█████╗  ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
 #  ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
 #  ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-#                                                                   ╚╗ @marsmensch 2016 ╔╝                    
+#                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
+#                   
 # version 	0.3-alpha
-# date    	2016-08-20
->>>>>>> 71c62b0bdc2ba8772d19c73a3941e06f6f087c7f:.scripts/masternode_install.sh
+# date    	2017-07-25
+#
 # function	masternode setup script
 #			This scripts needs to be run as root
 # 			to make services start persistent
 #
 # Twitter 	@marsmensch
 #
-# tips
-# BTC  1PboFDkBsW2i968UnehWwcSrM9Djq5LcLB
-# DNET DBGBYLz484dWBb5wtk5gFVdJ8rGFfcob7R
-# SYNX SSKYwMhQQt9DcWozt7zA1tR3DmRuw1gT6b
-# DASH Xt1W8cVPxnx9xVmfe1yYM9e5DKumPQHaV5
-# MUE  7KV3NUX4g7rgEDHVfBttRWcxk3hrqGR4pH
-# MOJO MTfuWof2NMDPh57U18yniVzpaS2cq4nFFt
 
 ########################################
 # Dont change anything here if unsure!
@@ -88,40 +67,6 @@ function install_packages() {
 	protobuf-compiler libboost-all-dev autotools-dev \
     automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
     make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
-<<<<<<< HEAD:dnet_vps.sh
-    libcurl3-dev libudev-dev qtbase5-dev libqt5gui5 libqt5core5a libqt5dbus5 \
-    qttools5-dev qttools5-dev-tools libprotobuf-dev libqrencode-dev bsdmainutils
-}
-
-function swaphack() { 
-	# needed because ant servers are ants
-	rm -f /var/swap.img
-	dd if=/dev/zero of=/var/swap.img bs=1024k count=3000
-	chmod 0600 /var/swap.img
-	mkswap /var/swap.img
-	swapon /var/swap.img	
-}
-
-function build_mn_from_source() {
-	# daemon not found compile it
-	if [ ! -f ${MNODE_DAEMON} ]; then
-		# if code directory does not exists, we create it clone the src
-		if [ ! -d /opt/code/${GIT_PROJECT} ]; then
-			mkdir -p /opt/code && cd /opt/code
-			git clone ${GIT_URL} ${GIT_PROJECT}
-		fi	
-		# compilation starts here, parameters later	
-		echo -e "Starting the compilation process, stay tuned"
-		cd /opt/code/${GIT_PROJECT} && ./autogen.sh
-		./configure --enable-tests=no --with-incompatible-bdb --with-gui=qt5 CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
-		if make; then
-			echo "compilation successful, running install and clean target"
-			make install
-		else
-			echo "Damn, compilation failed. Exit!"	
-			exit 1
-		fi
-=======
     libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
     libgmp3-dev libevent-dev
 }
@@ -130,7 +75,6 @@ function swaphack() {
 	#check if swap is available
 	if free | awk '/^Swap:/ {exit !$2}'; then
 		echo "Already have swap"
->>>>>>> 71c62b0bdc2ba8772d19c73a3941e06f6f087c7f:.scripts/masternode_install.sh
 	else
 		echo "No swap"
 		# needed because ant servers are ants
@@ -174,15 +118,6 @@ function build_mn_from_source() {
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
 }
-
-#function install_mn_packages() {
-#	# not yet included, testing
-#	# packages install to /usr/bin, src to /usr/local/bin
-#	apt-add-repository ppa:shaun-mcbride/darknet
-#	apt-get update
-#	apt-get install darknetd
-#	apt-get install darknet-cli
-#}
 
 function prepare_mn_interfaces() {
 	# vultr specific, needed to work
@@ -322,7 +257,7 @@ cat << "EOF"
  ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
  ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-                                                                  ╚╗ @marsmensch 2016 ╔╝                   				
+                                                             ╚╗ @marsmensch 2016-2017 ╔╝                   				
 EOF
 }
 

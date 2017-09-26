@@ -1,0 +1,106 @@
+# ######################
+# Dockerfile for the building of the actual daemons for a masternode
+# This builder setup is meant to be pretty generic, multi-step.
+# 
+# usage: docker build -t "marsmensch/masternode-builder:latest" -f Builderfile .
+#
+# 
+#
+
+FROM alpine:edge as builder
+
+MAINTAINER 			 Florian Maier <contact@marsmenschen.com>
+
+ENV CONTAINER_USER masternode
+ENV PROJECT        pivx
+ENV PIVX_VERSION   2.3.0
+ENV DWL_URL        https://github.com/PIVX-Project/PIVX/archive/v${PIVX_VERSION}.tar.gz
+ENV HOME_DIR       /usr/local/bin
+ENV REFRESHED_AT   2017-08-09
+
+ENV BERKELEYDB_VERSION=db-4.8.30.NC
+ENV BERKELEYDB_PREFIX=/opt/${BERKELEYDB_VERSION}
+
+ENV PIVX_PREFIX     /opt/pivx-${PIVX_VERSION}
+ENV PIVX_DATA       /home/${CONTAINER_USER}/.pivx
+ENV PATH            ${PIVX_PREFIX}/bin:$PATH
+
+RUN apk --no-cache --virtual build-dependendencies add autoconf \
+    automake \
+    boost-dev \
+    build-base \
+    chrpath \
+    file \
+    gnupg \
+    libevent-dev \
+    libtool \
+    linux-headers \
+    openssl \
+    openssl-dev \
+    protobuf-dev \
+    zeromq-dev \
+  && mkdir -p /tmp/build \
+  && wget -O /tmp/build/${BERKELEYDB_VERSION}.tar.gz http://download.oracle.com/berkeley-db/${BERKELEYDB_VERSION}.tar.gz \
+  && tar -xzf /tmp/build/${BERKELEYDB_VERSION}.tar.gz -C /tmp/build/ \
+  && sed s/__atomic_compare_exchange/__atomic_compare_exchange_db/g -i /tmp/build/${BERKELEYDB_VERSION}/dbinc/atomic.h \
+  && mkdir -p ${BERKELEYDB_PREFIX} \
+  && cd /tmp/build/${BERKELEYDB_VERSION}/build_unix \
+  && ../dist/configure --enable-cxx --disable-shared --with-pic --prefix=${BERKELEYDB_PREFIX} \
+  && make install \
+  && cd /tmp/build \
+  && wget -P /tmp/build/ ${DWL_URL} \
+  && tar -xzf v${PIVX_VERSION}.tar.gz \
+  && cd /tmp/build/PIVX-${PIVX_VERSION} \
+  && ./autogen.sh \
+  && ./configure LDFLAGS=-L${BERKELEYDB_PREFIX}/lib/ CPPFLAGS=-I${BERKELEYDB_PREFIX}/include/ \
+    --prefix=${PIVX_PREFIX} \
+    --mandir=/usr/share/man \
+    --disable-tests \
+    --disable-bench \
+    --disable-ccache \
+    --with-gui=no \
+    --with-utils \
+    --with-libs \
+    --with-daemon \
+  && make install \
+  && cd / \
+  && strip ${PIVX_PREFIX}/bin/pivx-cli ${PIVX_PREFIX}/bin/pivxd ${PIVX_PREFIX}/bin/pivx-tx ${PIVX_PREFIX}/lib/libbitcoinconsensus.a ${PIVX_PREFIX}/lib/libbitcoinconsensus.so.0.0.0 \
+  && rm -rf /tmp/build ${BERKELEYDB_PREFIX}/docs \
+  && apk --no-cache --purge del build-dependendencies \
+  && apk --no-cache add boost \
+    boost-program_options \
+    libevent \
+    libzmq \
+    openssl \
+    su-exec
+
+VOLUME ["/home/masternode/.pivx"]
+
+########################
+
+FROM alpine:edge  
+
+ENV CONTAINER_USER  masternode
+ENV PIVX_DATA       /home/${CONTAINER_USER}/.pivx
+ENV NODE_PORT        51472
+ENV PIVX_PREFIX     /opt/pivx-${PIVX_VERSION}
+ENV PIVX_DATA       /home/${CONTAINER_USER}/.pivx
+ENV PATH            ${PIVX_PREFIX}/bin:$PATH
+
+RUN apk --no-cache add ca-certificates su-exec libzmq libcrypto1.0 boost-dev libssl1.0
+
+RUN adduser -S ${CONTAINER_USER}
+
+COPY --from=builder /opt/pivx-2.3.0/bin/pivxd .
+
+COPY docker-entrypoint.sh /entrypoint.sh
+
+RUN chmod 755 /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+# EXPOSE the masternode port
+EXPOSE ${NODE_PORT} 
+
+# start command
+CMD ["/pivxd"]
