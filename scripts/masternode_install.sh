@@ -145,7 +145,7 @@ function create_mn_configuration() {
 			server=1
 			listen=1
 			daemon=1
-			bind=[${IPV6_INT_BASE}::${NUM}]:${MNODE_INBOUND_PORT}
+			bind=[${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT}
 			logtimestamps=1
 			mnconflock=0
 			maxconnections=256
