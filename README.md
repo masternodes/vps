@@ -22,6 +22,8 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 | ZEN |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zen.png" width="64">  | https://zensystem.io/  |
 | DP |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dprice.png" width="64">  | http://digitalprice.org/  |
 | VIVO |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/vivo.png" width="64">  | https://www.vivocrypto.com/  |
+| VIVO |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/itz.jpg" width="64">  | https://interzone.space/  |
+
 
 # Notes and features
 * It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
