@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "▒███████▒▓█████  ███▄    █ "
+echo "▒ ▒ ▒ ▄▀░▓█   ▀  ██ ▀█   █ "
+echo "░ ▒ ▄▀▒░ ▒███   ▓██  ▀█ ██▒"
+echo "  ▄▀▒   ░▒▓█  ▄ ▓██▒  ▐▌██▒"
+echo "▒███████▒░▒████▒▒██░   ▓██░"
+echo "░▒▒ ▓░▒░▒░░ ▒░ ░░ ▒░   ▒ ▒ "
+echo "░░▒ ▒ ░ ▒ ░ ░  ░░ ░░   ░ ▒░"      
+
+./zcutil/fetch-params.sh && ./zcutil/build.sh -j$(nproc) && cd src
+/usr/bin/install -c zcashd zcash-cli zcash-gtest -t /usr/local/bin/
