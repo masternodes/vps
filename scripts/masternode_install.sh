@@ -93,17 +93,14 @@ function prepare_mn_interfaces() {
     # move current config out of the way first
     cp ${NETWORK_CONFIG} ${NETWORK_CONFIG}.${DATE_STAMP}.bkp
     
-	# create the additional ipv6 interfaces 
+	# create the additional ipv6 interfaces, rc.local because it's more generic 
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-		echo "post-up ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
+		echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
 		sleep 2
 		# also run it directly to avoid a reboot now
 		#ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
+		ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
 	done
-	
-	# restarting network services to enable the new interfaces
-	# a short sleep seems to be required to pickup the new interfaces
-	service networking restart
 }
 
 function create_mn_user() {
