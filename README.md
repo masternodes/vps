@@ -18,7 +18,9 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 | PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.png" width="64">  | https://github.com/puredev321/pure    |
 | ENT  |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/ent.png" width="64">  | http://ent.eternity-group.org/    |
 | SYNX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/synx.png" width="64">  | http://syndicatelabs.io/  |
-| CHC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/chain.png" width="64">  | http://syndicatelabs.io/  |
+| CHC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/chain.png" width="64">  | https://www.chaincoin.org/  |
+| ZEN |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zen.png" width="64">  | https://zensystem.io/  |
+| DP |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dprice.png" width="64">  | http://digitalprice.org/  |
 
 # Notes and features
 * It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
