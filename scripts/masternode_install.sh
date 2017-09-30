@@ -78,7 +78,6 @@ function build_mn_from_source() {
                         cd ${GIT_PROJECT}
                 fi
                 echo -e "Starting the compilation process, stay tuned"
-                echo "TEST: $PWD $CWD"
                 source ../../config/${CODENAME}/${CODENAME}.compile
         else
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
@@ -97,10 +96,9 @@ function prepare_mn_interfaces() {
 	# create the additional ipv6 interfaces 
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 		echo "post-up ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
-		# also run it directly to avoid a reboot now
-		ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
+		sleep 2
 	done
-	
+
 	# restarting network services to enable the new interfaces
 	# a short sleep seems to be required to pickup the new interfaces
 	service networking restart
