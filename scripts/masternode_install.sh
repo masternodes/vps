@@ -74,6 +74,7 @@ function build_mn_from_source() {
                 # if code directory does not exists, we create it clone the src
                 if [ ! -d ${CODE_DIR}/${GIT_PROJECT} ]; then
                         mkdir -p ${CODE_DIR} && cd ${CODE_DIR}
+                        echo "GIT: git clone ${GIT_URL} ${GIT_PROJECT}"
                         git clone ${GIT_URL} ${GIT_PROJECT}
                         cd ${GIT_PROJECT}
                 fi
