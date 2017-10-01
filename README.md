@@ -23,6 +23,7 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 | DP |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dprice.png" width="64">  | http://digitalprice.org/  |
 | VIVO |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/vivo.png" width="64">  | https://www.vivocrypto.com/  |
 | ITZ |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/itz.jpg" width="64">  | https://interzone.space/  |
+| MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/meme.jpg" width="64">  | http://www.memetic.ai/  |
 
 
 # Notes and features
