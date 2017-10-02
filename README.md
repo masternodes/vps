@@ -24,6 +24,7 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 | VIVO |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/vivo.png" width="64">  | https://www.vivocrypto.com/  |
 | ITZ |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/itz.jpg" width="64">  | https://interzone.space/  |
 | MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/meme.png" width="64">  | http://www.memetic.ai/  |
+| MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/arc.png" width="64">  | https://arcticcoin.org/  |
 
 
 # Notes and features
