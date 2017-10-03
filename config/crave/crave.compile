@@ -17,4 +17,4 @@ echo "	      | | | | | | |       "
 
 cd src
 make -f makefile.unix USE_UPNP=-
-make install
+cp craved ${MNODE_DAEMON}
