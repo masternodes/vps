@@ -92,7 +92,7 @@ Follow the instructions at [https://github.com/marsmensch/masternode-vps-setup.]
 
 Clone the git repository first:
 
-     git clone [https://github.com/marsmensch/masternode-vps-setup.git](https://github.com/marsmensch/masternode-vps-setup.git)
+     git clone https://github.com/marsmensch/masternode-vps-setup.git
 
 
 
