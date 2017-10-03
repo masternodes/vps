@@ -1,7 +1,7 @@
 # Intro
 A not-so-sucking way to install a lot of different masternodes. 
 
-<img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/collage.png" width="90%">
+<img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/collage.png" width="1024">
 
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
