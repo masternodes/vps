@@ -1,9 +1,13 @@
 # Intro
 A not-so-sucking way to install a lot of different masternodes. 
 
+I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part. Vultr is highly recommended for this kind of setup.
+
+Feel free to use my reflink http://www.vultr.com/?ref=6929414-3B.
+
 <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/collage.png" width="1024">
 
-Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
+Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy. 
 
 **Have fun, this is crypto after all!**
 ```
