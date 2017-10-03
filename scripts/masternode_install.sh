@@ -77,7 +77,7 @@ function build_mn_from_source() {
                         echo "GIT: git clone ${GIT_URL} ${GIT_PROJECT}"
                         git clone ${GIT_URL} ${GIT_PROJECT}
                 fi
-                cd ${GIT_PROJECT}
+                cd code/${GIT_PROJECT}
                 
                 echo -e "Starting the compilation process, stay tuned"
                 source ../../config/${CODENAME}/${CODENAME}.compile
