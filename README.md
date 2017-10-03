@@ -77,17 +77,13 @@ vps:~ su - masternode
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
-* document the vultr signup and setup procedure
 * provide a delete / uninstall flag
 * create a logfile
-* instert coin images into readme
-* insert vultr signup reflink
 * make scripts idempotent 
 * write test cases
 * implement a binary option (?) 
-* outsource common variables in commin source file
 * check if masternode user already exists before creation
-* add all flags everywhere ./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+* output masternode.conf template for controller wallet at the end of setup
 
 # Errors
 * currently not fully idempotent
