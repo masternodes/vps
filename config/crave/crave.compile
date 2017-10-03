@@ -15,7 +15,6 @@ echo "	 ### #           **# ###  "
 echo "	     # - - - - - - #      "          
 echo "	      | | | | | | |       "
 
-./autogen.sh
-./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
-make
+cd src
+make -f makefile.unix USE_UPNP=-
 make install

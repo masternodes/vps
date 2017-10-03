@@ -76,16 +76,14 @@ function build_mn_from_source() {
                         mkdir -p ${CODE_DIR} && cd ${CODE_DIR}
                         echo "GIT: git clone ${GIT_URL} ${GIT_PROJECT}"
                         git clone ${GIT_URL} ${GIT_PROJECT}
-                        cd ${GIT_PROJECT}
                 fi
+                cd ${GIT_PROJECT}
+                
                 echo -e "Starting the compilation process, stay tuned"
                 source ../../config/${CODENAME}/${CODENAME}.compile
         else
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
-        
-        # always delete the sources to be extra sure
-        rm -rf ${CODE_DIR}
 }
 
 function prepare_mn_interfaces() {
