@@ -10,32 +10,12 @@ Ping me at contact@marsmenschen.com for questions and send some crypto my way if
 BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
 
-**Supported cryptos:**
-
-| CRYPTO  | Logo | Url |
-|--------|--------------|-----|
-| PIVX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pivx.png" width="64">  |  https://pivx.org/ |
-| DASH |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dash.png" width="64">  | https://www.dash.org/ |
-| DESIRE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/desire.png" width="64">  | https://github.com/lazyboozer/Desire  |
-| PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.png" width="64">  | https://github.com/puredev321/pure    |
-| ENT  |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/ent.png" width="64">  | http://ent.eternity-group.org/    |
-| SYNX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/synx.png" width="64">  | http://syndicatelabs.io/  |
-| CHC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/chain.png" width="64">  | https://www.chaincoin.org/  |
-| ZEN |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zen.png" width="64">  | https://zensystem.io/  |
-| DP |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dprice.png" width="64">  | http://digitalprice.org/  |
-| VIVO |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/vivo.png" width="64">  | https://www.vivocrypto.com/  |
-| ITZ |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/itz.jpg" width="64">  | https://interzone.space/  |
-| MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/meme.png" width="64">  | http://www.memetic.ai/  |
-| ARC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/arc.png" width="64">  | https://arcticcoin.org/  |
-| CRAVE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/crave.png" width="64">  | https://www.craveproject.com/  |
-
-
 # Notes and features
 * It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
 * Developed with recent Ubuntu versions in mind, including 14.04/15.10/16.04/16.10
 * This script doesn't care about the controller wallet side of things
 * Installs 1-100 (or more!) masternodes in parallel on one machine, with individual config and data
-* Compilation is currently from source for the desired git repo tag (currently 2.1.6-stable)
+* Compilation is currently from source for the desired git repo tag (configurable via config files)
 * Some security hardening is done, including firewalling and a separate user
 * Automatic startup for all masternode daemons
 * It's ipv6 enabled, tor/onion will follow
@@ -72,6 +52,25 @@ For example, when installing three PURE masternodes are desired, the following c
 vps:~ su - masternode
 ```   
 
+**Supported cryptos:**
+
+| CRYPTO  | Logo | Url |
+|--------|--------------|-----|
+| PIVX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pivx.png" width="64">  |  https://pivx.org/ |
+| DASH |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dash.png" width="64">  | https://www.dash.org/ |
+| DESIRE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/desire.png" width="64">  | https://github.com/lazyboozer/Desire  |
+| PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.png" width="64">  | https://github.com/puredev321/pure    |
+| ENT  |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/ent.png" width="64">  | http://ent.eternity-group.org/    |
+| SYNX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/synx.png" width="64">  | http://syndicatelabs.io/  |
+| CHC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/chain.png" width="64">  | https://www.chaincoin.org/  |
+| ZEN |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zen.png" width="64">  | https://zensystem.io/  |
+| DP |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dprice.png" width="64">  | http://digitalprice.org/  |
+| VIVO |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/vivo.png" width="64">  | https://www.vivocrypto.com/  |
+| ITZ |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/itz.jpg" width="64">  | https://interzone.space/  |
+| MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/meme.png" width="64">  | http://www.memetic.ai/  |
+| ARC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/arc.png" width="64">  | https://arcticcoin.org/  |
+| CRAVE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/crave.png" width="64">  | https://www.craveproject.com/  |
+
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
 * document the vultr signup and setup procedure
@@ -89,7 +88,6 @@ vps:~ su - masternode
 # Errors
 * currently not fully idempotent
 * check if relevant interface already exists (sed) before writing to interfaces file
-
 
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
