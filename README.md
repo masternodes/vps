@@ -9,22 +9,13 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
 
 **Supported cryptos:**
-
-| CRYPTO  | Logo | Url |
+  
 |--------|--------------|-----|
-| PIVX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pivx.png" width="64">  |  https://pivx.org/ |
-| DASH |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dash.png" width="64">  | https://www.dash.org/ |
-| DESIRE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/desire.png" width="64">  | https://github.com/lazyboozer/Desire  |
-| PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.png" width="64">  | https://github.com/puredev321/pure    |
-| ENT  |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/ent.png" width="64">  | http://ent.eternity-group.org/    |
-| SYNX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/synx.png" width="64">  | http://syndicatelabs.io/  |
-| CHC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/chain.png" width="64">  | https://www.chaincoin.org/  |
-| ZEN |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zen.png" width="64">  | https://zensystem.io/  |
-| DP |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dprice.png" width="64">  | http://digitalprice.org/  |
-| VIVO |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/vivo.png" width="64">  | https://www.vivocrypto.com/  |
-| ITZ |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/itz.jpg" width="64">  | https://interzone.space/  |
-| MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/meme.png" width="64">  | http://www.memetic.ai/  |
-| MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/arc.png" width="64">  | https://arcticcoin.org/  |
+| PIVX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pivx.png" width="64">  |  https://pivx.org/ | | DASH |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dash.png" width="64">  | https://www.dash.org/ | | DESIRE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/desire.png" width="64">  | https://github.com/lazyboozer/Desire  |
+| PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.png" width="64">  | https://github.com/puredev321/pure    | | ENT  |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/ent.png" width="64">  | http://ent.eternity-group.org/    | | SYNX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/synx.png" width="64">  | http://syndicatelabs.io/  |
+| CHC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/chain.png" width="64">  | https://www.chaincoin.org/  | | ZEN |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zen.png" width="64">  | https://zensystem.io/  | | DP |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dprice.png" width="64">  | http://digitalprice.org/  |
+| VIVO |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/vivo.png" width="64">  | https://www.vivocrypto.com/  | | ITZ |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/itz.jpg" width="64">  | https://interzone.space/  | | MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/meme.png" width="64">  | http://www.memetic.ai/  |
+| ARC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/arc.png" width="64">  | https://arcticcoin.org/  |
 
 
 # Notes and features
