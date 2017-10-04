@@ -112,9 +112,15 @@ function prepare_mn_interfaces() {
 }
 
 function create_mn_user() {
-    # our new mnode unpriv user acc
-    echo "Adding new system user"
-    adduser --disabled-password --gecos "" ${MNODE_USER}
+
+    # our new mnode unpriv user acc is added 
+    if id "${MNODE_USER}" >/dev/null 2>&1; then
+        echo "user exists already, do nothing"
+    else
+        echo "Adding new system user ${MNODE_USER}"
+        adduser --disabled-password --gecos "" ${MNODE_USER}
+    fi
+    
 }
 
 function create_mn_dirs() {
