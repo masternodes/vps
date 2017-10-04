@@ -71,14 +71,24 @@ fi
 function build_mn_from_source() {
         # daemon not found compile it
         if [ ! -f ${MNODE_DAEMON} ]; then
+                echo "daemon not found, compilation step"
+                mkdir -p ${CODE_DIR}
                 # if code directory does not exists, we create it clone the src
                 if [ ! -d ${CODE_DIR}/${GIT_PROJECT} ]; then
+                        echo "Code directory does not exist, creating it and cloning the sources now"
                         mkdir -p ${CODE_DIR} && cd ${CODE_DIR}
-                        echo "GIT: git clone ${GIT_URL} ${GIT_PROJECT}"
                         git clone ${GIT_URL} ${GIT_PROJECT}
-                fi
-                cd ${CODE_DIR}/${GIT_PROJECT}
+                        echo "Checkout desired tag: ${SCVERSION}"
+                        git checkout ${SCVERSION}
+				else
+					echo "code and project dirs exist, update the git repo and checkout again"
+					cd ${CODE_DIR}/${GIT_PROJECT}
+					git pull 
+					git checkout ${SCVERSION}	
+				fi
                 
+                # compilation starts here
+                cd ${CODE_DIR}/${GIT_PROJECT}
                 echo -e "Starting the compilation process, stay tuned"
                 source ../../config/${CODENAME}/${CODENAME}.compile
         else

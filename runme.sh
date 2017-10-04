@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				           
 #
-# version: 	0.3-alpha
-# date:    	2017-07-25
+# version: 	0.4-beta
+# date:    	2017-10-04
 # function:	part of the masternode scripts, source the proper config file
 #
 # Twitter: 	@marsmensch
@@ -26,19 +26,11 @@
 #				- Activate the free IPv6 option
 #
 
-usage() {
-    echo `basename $0`: ERROR: $* 1>&2
-    echo usage: `basename $0` '[pivx] OR [mojo] OR [mue] OR [synx] OR [dash] OR [bitsend]  + HOWMANY' 1>&2
-    echo "currently supported masternode coins: << nice ascii wordlist here >>"
-    echo '=> for 5 pivx masternodes run:' `basename $0` 'pivx 5' 1>&2
-    echo 'Report bugs to: @marsmensch'
-    exit 1
-}
-
 source_config() {
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		echo "read default config"	
 		source config/default.env
+		echo "Script version ${SCRIPT_VERSION}, you picked: ${1}"
 		echo "apply config file for ${1}"		
 		source "${SETUP_CONF_FILE}"
 
@@ -54,6 +46,5 @@ SETUP_CONF_FILE="config/${1}/${1}.env"
 SETUP_MNODES_COUNT=${2}
 
 # put in main at a later point in time
-echo "You picked: ${1}"
-source_config ${1}
 
+source_config ${1}
