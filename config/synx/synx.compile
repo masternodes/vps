@@ -1,3 +1,10 @@
 #!/bin/bash
+
+echo "***********"
+echo "   SYNX    "
+echo "***********"
+
 ./autogen.sh
 ./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+make 
+make install
