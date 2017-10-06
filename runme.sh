@@ -40,7 +40,7 @@ function repo_init() {
         fi
 }
 
-source_config() {
+function source_config() {
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		echo "read default config"	
 		source config/default.env
