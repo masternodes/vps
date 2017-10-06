@@ -4,6 +4,7 @@ echo " ******************* "
 echo "         X C X T     "
 echo " ******************* "
          
-cd src && chmod u+x ./autogen.sh
+cd src
+chmod u+x leveldb/build_detect_platform 
 make -f makefile.unix USE_UPNP=-
 cp CoinonatXd ${MNODE_DAEMON}
