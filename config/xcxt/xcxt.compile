@@ -4,6 +4,6 @@ echo " ******************* "
 echo "         X C X T     "
 echo " ******************* "
          
-cd src
+cd src && chmod u+x ./autogen.sh
 make -f makefile.unix USE_UPNP=-
 cp CoinonatXd ${MNODE_DAEMON}
