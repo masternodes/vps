@@ -1,0 +1,21 @@
+#!/bin/bash
+
+echo "            .:+oso+/.  \`.::::.          "
+echo "         \`odhso+++oshdhdysssshms\`       "
+echo "        /my+++++++++++/++++++++hm.      "
+echo "       om++++++++++++//:/++++///yhdy-   "
+echo "    .sdh++++++++///////////////////omy\` "
+echo "   :Ns+/++++////+os+/-:oddoyhh/:.-sdym+ "
+echo "  :No+++++++++++ydd\`.\`/\`ooyhdo\`.-:-yhm- "
+echo " \`No+++++++++++++++++////++/++++/shm+\`  "
+echo " :N/++++++++++++++++++++++++//+++oms    "
+echo " +m++++++++++++++++++++++++++++++++No   "
+echo " :N/++++++++//+++//////////////////sM\`  "
+echo " .M+++++++++//////////+++++++++++/hm-   "
+echo "  smyo+++++++++++++++++///////ohhhy.    "
+echo "   \`:oyhhhyysssooo+++++oosyhdho-        "
+echo "         \`.-::/++ooooooo+/:.   "
+         
+cd src
+make -f makefile.unix USE_UPNP=-
+cp xcxtd ${MNODE_DAEMON}

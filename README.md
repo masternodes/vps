@@ -29,6 +29,7 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 **0)** Clone this repository
 ```
 git clone https://github.com/marsmensch/masternode-vps-setup.git
+cd masternode-vps-setup
 ```
 
 **1)** run the **runme.sh** script with the desired crypto and masternode count as parameters, e.g. to install 3 PURE masternodes:
@@ -74,6 +75,8 @@ vps:~ su - masternode
 | MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/meme.png" width="64">  | http://www.memetic.ai/  |
 | ARC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/arc.png" width="64">  | https://arcticcoin.org/  |
 | CRAVE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/crave.png" width="64">  | https://www.craveproject.com/  |
+| PIE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pie.png" width="64">  | https://github.com/flintsoft/PIE  |
+| XCXT |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/xcxt.png" width="64">  | http://coinonatx.com/  |
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
