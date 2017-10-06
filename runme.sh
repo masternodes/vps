@@ -61,5 +61,5 @@ SETUP_MNODES_COUNT=${2}
 
 # put in main at a later point in time
 
-repo_init()
+repo_init
 source_config ${1}
