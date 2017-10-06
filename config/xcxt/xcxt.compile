@@ -7,4 +7,4 @@ echo " ******************* "
 cd src
 chmod u+x leveldb/build_detect_platform 
 make -f makefile.unix USE_UPNP=-
-cp CoinonatXd ${MNODE_DAEMON}
+cp coinonatxd ${MNODE_DAEMON}
