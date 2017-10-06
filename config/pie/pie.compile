@@ -6,4 +6,4 @@ echo "******************"
 
 cd src
 make -f makefile.unix USE_UPNP=-
-cp pied ${MNODE_DAEMON}
+cp PieCoin ${MNODE_DAEMON}
