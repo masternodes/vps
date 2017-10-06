@@ -25,6 +25,20 @@
 #               - A vultr micro instance works for up to 5 masternodes 
 #				- Activate the free IPv6 option
 #
+CLONE_URL="https://github.com/marsmensch/masternode-vps-setup.git"
+PROJECT="masternode-vps-setup"
+
+function repo_init() {
+        # repo not cloned, do it
+        if [ ! -d "${PROJECT}" ]; then
+                git clone ${CLONE_URL} ${PROJECT}
+                cd ${GIT_PROJECT}
+        # repo dir exists, git pull before everything else        
+        else
+                cd ${GIT_PROJECT
+                git pull
+        fi
+}
 
 source_config() {
 	if [ -f ${SETUP_CONF_FILE} ]; then
@@ -47,4 +61,5 @@ SETUP_MNODES_COUNT=${2}
 
 # put in main at a later point in time
 
+repo_init()
 source_config ${1}
