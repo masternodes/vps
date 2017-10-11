@@ -86,15 +86,13 @@ function build_mn_from_source() {
                         git checkout ${SCVERSION}
                 fi
 
-                # compilation starts here
-                echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
-                source ../../config/${CODENAME}/${CODENAME}.compile
                 # print ascii banner if a logo exists
-                ls -lah ../../images/$CODENAME.jpg
+                echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
                 if [ -f "../../images/$CODENAME.jpg" ]; then
-                        echo "found banner image!"
                         jp2a --width=64 ../../images/${CODENAME}.jpg     
                 fi  
+                # compilation starts here
+                source ../../config/${CODENAME}/${CODENAME}.compile
         else
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
