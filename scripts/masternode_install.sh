@@ -90,10 +90,11 @@ function build_mn_from_source() {
                 echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
                 source ../../config/${CODENAME}/${CODENAME}.compile
                 # print ascii banner if a logo exists
+                ls -lah ../../images/$CODENAME.jpg
                 if [ -f "../../images/$CODENAME.jpg" ]; then
+                        echo "found banner image!"
                         jp2a --width=64 ../../images/${CODENAME}.jpg     
-                fi
-                
+                fi  
         else
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
