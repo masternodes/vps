@@ -47,7 +47,7 @@ function install_packages() {
     automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
     make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
     libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
-    libgmp3-dev libevent-dev
+    libgmp3-dev libevent-dev jp2a
 }
 
 function swaphack() { 
@@ -87,9 +87,13 @@ function build_mn_from_source() {
                 fi
 
                 # compilation starts here
-                echo "we are at: $PWD $CWD"
-                echo -e "Starting the compilation process, stay tuned"
+                echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
                 source ../../config/${CODENAME}/${CODENAME}.compile
+                # print ascii banner if a logo exists
+                if [ -f "../../images/$CODENAME.jpg" ]; then
+                        jp2a --width=64 ../../images/${CODENAME}.jpg     
+                fi
+                
         else
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi

@@ -1,8 +1,4 @@
 #!/bin/bash
-
-echo " ******************* "
-echo "         X C X T     "
-echo " ******************* "
          
 cd src
 chmod u+x leveldb/build_detect_platform 

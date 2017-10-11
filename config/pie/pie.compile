@@ -1,9 +1,5 @@
 #!/bin/bash
 
-echo "******************"
-echo "        PIE       "       
-echo "******************"
-
 cd src
 make -f makefile.unix USE_UPNP=-
 cp PieCoind ${MNODE_DAEMON}

@@ -1,20 +1,5 @@
 #!/bin/bash
 
-echo "	      #############       "         
-echo "	    ##            *##     "               
-echo "	   #               **#    "             
-echo "	  #       %% %%    ***#   "              
-echo "	 #       %%%%%%%   ****#  "           
-echo "	#         %%%%%    *****# "       
-echo "	#   ###     %     ###***# "     
-echo "	#  # ####       #### #**# "       
-echo "	#  #     #     #     #**# "          
-echo "	#   #####  # #  #####***# "  
-echo "	#         #   #  *******# "        
-echo "	 ### #           **# ###  "         
-echo "	     # - - - - - - #      "          
-echo "	      | | | | | | |       "
-
 cd src
 make -f makefile.unix USE_UPNP=-
 cp craved ${MNODE_DAEMON}

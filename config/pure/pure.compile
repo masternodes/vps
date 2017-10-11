@@ -1,11 +1,4 @@
 #!/bin/bash
-
-echo "______ _   _______ _____ "
-echo "| ___ \ | | | ___ \  ___|"
-echo "| |_/ / | | | |_/ / |__  "
-echo "|  __/| | | |    /|  __| "
-echo "| |   | |_| | |\ \| |___ "
-echo "\_|    \___/\_| \_\____/ "
                          
 cd src && mkdir -p obj/support obj/x11 obj/crypto
 cd secp256k1 && chmod u+x ./autogen.sh && ./autogen.sh && ./configure --enable-module-recovery && make && cd ..

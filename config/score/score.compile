@@ -1,8 +1,4 @@
 #!/bin/bash
-
-echo " ******************* "
-echo "       S C O R E     "
-echo " ******************* "
          
 cd src && mkdir -p obj/support obj/x11 obj/crypto
 chmod u+x leveldb/build_detect_platform 

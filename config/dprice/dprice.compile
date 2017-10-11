@@ -1,11 +1,4 @@
 #!/bin/bash
-
-echo "██████╗ ██████╗ ██████╗ ██╗ ██████╗███████╗"
-echo "██╔══██╗██╔══██╗██╔══██╗██║██╔════╝██╔════╝"
-echo "██║  ██║██████╔╝██████╔╝██║██║     █████╗  "
-echo "██║  ██║██╔═══╝ ██╔══██╗██║██║     ██╔══╝  "
-echo "██████╔╝██║     ██║  ██║██║╚██████╗███████╗"
-echo "╚═════╝ ╚═╝     ╚═╝  ╚═╝╚═╝ ╚═════╝╚══════╝"
                                                                     
 cd src && mkdir -p obj/support obj/x11 obj/crypto
 cd secp256k1 && chmod u+x ./autogen.sh && ./autogen.sh && ./configure --enable-module-recovery && make && cd ..
