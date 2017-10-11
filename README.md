@@ -78,6 +78,7 @@ vps:~ su - masternode
 | PIE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pie.jpg" width="64">  | https://github.com/flintsoft/PIE  |
 | XCXT |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/xcxt.jpg" width="64">  | http://coinonatx.com/  |
 | SCORE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/score.jpg" width="64">  | http://scorecoin.site/ |
+| BITSEND |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/bitsend.jpg" width="64">  | https://bitsend.info/ |
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
