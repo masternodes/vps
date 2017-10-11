@@ -77,6 +77,7 @@ vps:~ su - masternode
 | CRAVE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/crave.png" width="64">  | https://www.craveproject.com/  |
 | PIE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pie.png" width="64">  | https://github.com/flintsoft/PIE  |
 | XCXT |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/xcxt.png" width="64">  | http://coinonatx.com/  |
+| SCORE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/score.jpg" width="64">  | http://scorecoin.site/ |
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
