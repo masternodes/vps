@@ -89,6 +89,7 @@ vps:~ su - masternode
 * implement a binary option (?) 
 * check if masternode user already exists before creation
 * output masternode.conf template for controller wallet at the end of setup
+* output all supported cryptos as list within help
 
 # Errors
 * currently not fully idempotent
