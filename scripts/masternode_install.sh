@@ -88,7 +88,7 @@ function build_mn_from_source() {
 
                 # print ascii banner if a logo exists
                 echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
-                if [ -f "../../images/$CODENAME.jpg" ]; then
+                if [ -f "../../assets/$CODENAME.jpg" ]; then
                         jp2a -b --colors --width=64 ../../images/${CODENAME}.jpg     
                 fi  
                 # compilation starts here
