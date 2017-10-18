@@ -63,7 +63,7 @@ vps:~ su - masternode
 
 | CRYPTO  | Logo | Url |
 |--------|--------------|-----|
-| PIVX |  ![PIVX](/assets/pivx.jpg){:class="img-responsive"}  |  https://pivx.org/ |
+| PIVX |  ![PIVX](/assets/pivx.jpg){:class="img-responsive" width="128px"}  |  https://pivx.org/ |
 | DASH |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dash.jpg" width="64">  | https://www.dash.org/ |
 | DESIRE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/desire.jpg" width="64">  | https://github.com/lazyboozer/Desire  |
 | PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.jpg" width="64">  | https://github.com/puredev321/pure    |
