@@ -7,7 +7,7 @@ Feel free to use my reflink to signup and receive a bonus w/ vultr: <a href="htt
 
 Thank you!
 
-<img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/collage.jpg" width="1024">
+![supported projects](/assets/collage.jpg){:class="img-responsive" width="1024px"}
 
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy. 
 
