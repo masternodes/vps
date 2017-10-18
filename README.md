@@ -81,6 +81,8 @@ vps:~ su - masternode
 | XCXT |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/xcxt.jpg" width="64">  | http://coinonatx.com/  |
 | SCORE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/score.jpg" width="64">  | http://scorecoin.site/ |
 | BITSEND |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/bitsend.jpg" width="64">  | https://bitsend.info/ |
+| XZC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zcoin.jpg" width="64">  | https://zcoin.io/ |
+| INSANE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/insane.jpg" width="64">  | https://insanecoin.com/ |
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile

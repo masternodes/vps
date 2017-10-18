@@ -1,0 +1,5 @@
+#!/bin/bash    
+
+cd src 
+make -f makefile.unix USE_UPNP=-
+cp INSaNed ${MNODE_DAEMON}
