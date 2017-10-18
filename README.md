@@ -63,9 +63,9 @@ vps:~ su - masternode
 
 | CRYPTO  | Logo | Url |
 |--------|--------------|-----|
-| PIVX |  ![PIVX](/assets/pivx.jpg){:class="img-responsive" width="128px"}  |  https://pivx.org/ |
-| DASH |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dash.jpg" width="64">  | https://www.dash.org/ |
-| DESIRE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/desire.jpg" width="64">  | https://github.com/lazyboozer/Desire  |
+| PIVX |  ![PIVX](/assets/pivx.jpg){:class="img-responsive" width="64px"}  |  https://pivx.org/ |
+| DASH |  ![DASH](/assets/dash.jpg){:class="img-responsive" width="64px"}  | https://www.dash.org/ |
+| DESIRE |  ![DESIRE](/assets/desire.jpg){:class="img-responsive" width="64px"}  | https://github.com/lazyboozer/Desire  |
 | PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.jpg" width="64">  | https://github.com/puredev321/pure    |
 | ENT  |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/ent.jpg" width="64">  | http://ent.eternity-group.org/    |
 | SYNX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/synx.jpg" width="64">  | http://syndicatelabs.io/  |
