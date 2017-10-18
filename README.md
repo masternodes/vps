@@ -83,6 +83,7 @@ vps:~ su - masternode
 | BITSEND |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/bitsend.jpg" width="64">  | https://bitsend.info/ |
 | XZC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zcoin.jpg" width="64">  | https://zcoin.io/ |
 | INSANE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/insane.jpg" width="64">  | https://insanecoin.com/ |
+| XIOS |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/xios.jpg" width="64">  | https://bitcointalk.org/index.php?topic=2251159.0/ |
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
