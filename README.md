@@ -66,18 +66,18 @@ vps:~ su - masternode
 | PIVX |  ![PIVX](/assets/pivx.jpg){:class="img-responsive" width="64px"}  |  https://pivx.org/ |
 | DASH |  ![DASH](/assets/dash.jpg){:class="img-responsive" width="64px"}  | https://www.dash.org/ |
 | DESIRE |  ![DESIRE](/assets/desire.jpg){:class="img-responsive" width="64px"}  | https://github.com/lazyboozer/Desire  |
-| PURE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pure.jpg" width="64">  | https://github.com/puredev321/pure    |
-| ENT  |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/ent.jpg" width="64">  | http://ent.eternity-group.org/    |
-| SYNX |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/synx.jpg" width="64">  | http://syndicatelabs.io/  |
-| CHC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/chain.jpg" width="64">  | https://www.chaincoin.org/  |
-| ZEN |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zen.jpg" width="64">  | https://zensystem.io/  |
-| DP |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/dprice.jpg" width="64">  | http://digitalprice.org/  |
-| VIVO |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/vivo.jpg" width="64">  | https://www.vivocrypto.com/  |
-| ITZ |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/itz.jpg" width="64">  | https://interzone.space/  |
-| MEME |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/meme.jpg" width="64">  | http://www.memetic.ai/  |
-| ARC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/arc.jpg" width="64">  | https://arcticcoin.org/  |
-| CRAVE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/crave.jpg" width="64">  | https://www.craveproject.com/  |
-| PIE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/pie.jpg" width="64">  | https://github.com/flintsoft/PIE  |
+| PURE |  ![PURE](/assets/pure.jpg){:class="img-responsive" width="64px"}  | https://github.com/puredev321/pure    |
+| ENT  |  ![ENT](/assets/ent.jpg){:class="img-responsive" width="64px"}  | http://ent.eternity-group.org/    |
+| SYNX |  ![SYNX](/assets/synx.jpg){:class="img-responsive" width="64px"}  | http://syndicatelabs.io/  |
+| CHC |  ![CHAIN](/assets/chain.jpg){:class="img-responsive" width="64px"}  | https://www.chaincoin.org/  |
+| ZEN |  ![ZEN](/assets/zen.jpg){:class="img-responsive" width="64px"}  | https://zensystem.io/  |
+| DP |  ![DPRICE](/assets/dprice.jpg){:class="img-responsive" width="64px"}  | http://digitalprice.org/  |
+| VIVO |  ![VIVO](/assets/vivo.jpg){:class="img-responsive" width="64px"}  | https://www.vivocrypto.com/  |
+| ITZ |  ![ITZ](/assets/itz.jpg){:class="img-responsive" width="64px"}  | https://interzone.space/  |
+| MEME |  ![MEME](/assets/meme.jpg){:class="img-responsive" width="64px"}  | http://www.memetic.ai/  |
+| ARC |  ![ARC](/assets/arc.jpg){:class="img-responsive" width="64px"}  | https://arcticcoin.org/  |
+| CRAVE |  ![CRAVE](/assets/crave.jpg){:class="img-responsive" width="64px"}  | https://www.craveproject.com/  |
+| PIE |  ![PIE](/assets/pie.jpg){:class="img-responsive" width="64px"}  | https://github.com/flintsoft/PIE  |
 | XCXT |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/xcxt.jpg" width="64">  | http://coinonatx.com/  |
 | SCORE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/score.jpg" width="64">  | http://scorecoin.site/ |
 | BITSEND |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/bitsend.jpg" width="64">  | https://bitsend.info/ |
