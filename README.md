@@ -78,12 +78,12 @@ vps:~ su - masternode
 | ARC |  ![ARC](/assets/arc.jpg){:class="img-responsive" width="64px"}  | https://arcticcoin.org/  |
 | CRAVE |  ![CRAVE](/assets/crave.jpg){:class="img-responsive" width="64px"}  | https://www.craveproject.com/  |
 | PIE |  ![PIE](/assets/pie.jpg){:class="img-responsive" width="64px"}  | https://github.com/flintsoft/PIE  |
-| XCXT |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/xcxt.jpg" width="64">  | http://coinonatx.com/  |
-| SCORE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/score.jpg" width="64">  | http://scorecoin.site/ |
-| BITSEND |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/bitsend.jpg" width="64">  | https://bitsend.info/ |
-| XZC |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/zcoin.jpg" width="64">  | https://zcoin.io/ |
-| INSANE |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/insane.jpg" width="64">  | https://insanecoin.com/ |
-| XIOS |  <img src="https://github.com/marsmensch/masternode-vps-setup/blob/templates/images/xios.jpg" width="64">  | https://bitcointalk.org/index.php?topic=2251159.0/ |
+| XCXT |  ![XCXT](/assets/xcxt.jpg){:class="img-responsive" width="64px"}  | http://coinonatx.com/  |
+| SCORE |  ![SCORE](/assets/score.jpg){:class="img-responsive" width="64px"}  | http://scorecoin.site/ |
+| BITSEND |  ![BITSEND](/assets/bitsend.jpg){:class="img-responsive" width="64px"}  | https://bitsend.info/ |
+| XZC |  ![ZCOIN](/assets/zcoin.jpg){:class="img-responsive" width="64px"}  | https://zcoin.io/ |
+| INSANE |  ![INSN](/assets/insane.jpg){:class="img-responsive" width="64px"}  | https://insanecoin.com/ |
+| XIOS | ![XIOS](/assets/xios.jpg){:class="img-responsive" width="64px"}  | https://bitcointalk.org/index.php?topic=2251159.0/ |
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
