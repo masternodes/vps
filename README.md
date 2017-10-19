@@ -5,7 +5,7 @@ I am quite confident this is the single best and almost effortless way to setup 
 
 If you are like me and more visually inclined, here is a demo showing the script in action. After the installation, you have 2 instances of a $XIOS masternode.
 
- 
+ XXXXXXXXXX
 
 Feel free to use my reflink to signup and receive a bonus w/ vultr: <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
@@ -31,7 +31,7 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 * It's ipv6 enabled, tor/onion will follow
 * This script needs to run as root, the masternodes will and should not!
 
-# What do i need to do after running this script?
+# How do i install a XXX masternodes with this script?
 **0)** Clone this repository
 ```
 git clone https://github.com/masternodes/vps.git && cd vps
