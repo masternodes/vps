@@ -3,6 +3,10 @@ A not-so-sucking way to install a lot of different masternodes.
 
 I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part. Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider](https://github.com/marsmensch/masternode-vps-setup/blob/templates/docs/masternode_vps.md).
 
+If you are like me and more visually inclined, here is a demo showing the script in action. After the installation, you have 2 instances of a $XIOS masternode.
+
+ 
+
 Feel free to use my reflink to signup and receive a bonus w/ vultr: <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
 Thank you!
@@ -30,8 +34,7 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 # What do i need to do after running this script?
 **0)** Clone this repository
 ```
-git clone https://github.com/marsmensch/masternode-vps-setup.git
-cd masternode-vps-setup
+git clone https://github.com/masternodes/vps.git && cd vps
 ```
 
 **1)** run the **runme.sh** script with the desired crypto and masternode count as parameters, e.g. to install 3 PURE masternodes:
