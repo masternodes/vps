@@ -1,17 +1,38 @@
-# Intro
+# Masternode nodemaster script introduction
+
+I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part.
+
+Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md). 
+
+Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
+
+**Have fun, this is crypto after all!**
+```
+BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
+```
+
+## Wait! What is this?
+
 A not-so-sucking way to install a lot of different masternodes. 
 
-I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part. Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider](https://github.com/masternodes/vps/blob/master/docs/masternode_vps.md). See this link [vultr](/docs/masternode_vps.md) page for details. 
+## Which crypto projects are currently supported?
 
-If you are like me and more visually inclined, here is a demo showing the script in action. After the installation, you have 2 instances of a $XIOS masternode.
+PIVX DASH DESIRE PURE ENT SYNX CHC ZEN DPRICE VIVO ITZ MEME ARC CRAVE PIE XCXT SCORE BITSEND XZC INSANE XIOS master nodes. More added as soon as i find the time.
 
- XXXXXXXXXX
+## Can i see a demo?
+
+Sure > INSERT DEMO VIDEO HERE <,here is a demo showing the script in action. After the installation, you have 2 instances of a $XIOS masternode.
+A not-so-sucking way to install a lot of different masternodes. 
+
+## Which VPS providers are currently supported?
+
+Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md).  
 
 Feel free to use my reflink to signup and receive a bonus w/ vultr: <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
-Thank you!
+Generally, you can use any provider. Vultr is the only provider i am testing for and you should know what you are doing when you use another provider.
 
-![supported projects](/assets/collage.jpg){:class="img-responsive" width="1024px"}
+![supported projects](/assets/collage.jpg)
 
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy. 
 
@@ -31,62 +52,76 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 * It's ipv6 enabled, tor/onion will follow
 * This script needs to run as root, the masternodes will and should not!
 
-# How do i install a XXX masternodes with this script?
-**0)** Clone this repository
+## How do i install a XXX masternodes with this script?
+
+### 1) SSH to your Linux VPS and clone this repository
+You should be able to do that ;-) Install git if not already present.
+
 ```
 git clone https://github.com/masternodes/vps.git && cd vps
 ```
 
-**1)** run the **runme.sh** script with the desired crypto and masternode count as parameters, e.g. to install 3 PURE masternodes:
+### 2) execute the **runme.sh** script
+
+the **runme.sh** script takes the desired crypto and masternode count (optional) as parameters, e.g. to install 3 PURE masternodes:
 
 ```
 ./runme.sh pure 3
 ```
 
+### 3) adapt the master node configuration files
 
-**2)** ADD your masternode private key to the configuration file(s) located at ```/etc/masternodes/$CRYPTO_n$NUM.conf```. 
+ADD your masternode private key to the configuration file(s) located at ```/etc/masternodes/$CRYPTO_n$NUM.conf```. 
 
 For example, when installing three PURE masternodes are desired, the following configuration files are generated:
+
 ```
 * writing config file /etc/masternodes/pure_n1.conf
 * writing config file /etc/masternodes/pure_n2.conf
 * writing config file /etc/masternodes/pure_n3.conf
 ```
 
-**3)** Still AS ROOT run ```/usr/local/bin/restart_masternodes.sh``` to activate the services permanently.
-   Individual masternode data directories are located in ```/var/lib/masternodes/${CRYPTO}${NUMBER_OF_NODE}```
+### 4) activate the master node system services
 
-**4)** subsequently, you should only work as masternode user and not ```root```. The default user account created is ```masternode```.
-   You can change to this user with the following command
+Still AS ROOT run ```/usr/local/bin/restart_masternodes.sh``` to activate the services permanently.
+
+Individual masternode data directories are located in ```/var/lib/masternodes/${CRYPTO}${NUMBER_OF_NODE}```
+
+### 5) always work as unprivileged user
+
+subsequently, you should only work as masternode user and not ```root```. The default user account created is ```masternode```.
+
+You can change to this user with the following command
+
 ```
 vps:~ su - masternode
 ```   
 
-**Supported cryptos:**
+# Supported cryptos
 
 | CRYPTO  | Logo | Url |
 |--------|--------------|-----|
-| PIVX |  ![PIVX](/assets/pivx.jpg){:class="img-responsive" width="64px"}  |  https://pivx.org/ |
-| DASH |  ![DASH](/assets/dash.jpg){:class="img-responsive" width="64px"}  | https://www.dash.org/ |
-| DESIRE |  ![DESIRE](/assets/desire.jpg){:class="img-responsive" width="64px"}  | https://github.com/lazyboozer/Desire  |
-| PURE |  ![PURE](/assets/pure.jpg){:class="img-responsive" width="64px"}  | https://github.com/puredev321/pure    |
-| ENT  |  ![ENT](/assets/ent.jpg){:class="img-responsive" width="64px"}  | http://ent.eternity-group.org/    |
-| SYNX |  ![SYNX](/assets/synx.jpg){:class="img-responsive" width="64px"}  | http://syndicatelabs.io/  |
-| CHC |  ![CHAIN](/assets/chain.jpg){:class="img-responsive" width="64px"}  | https://www.chaincoin.org/  |
-| ZEN |  ![ZEN](/assets/zen.jpg){:class="img-responsive" width="64px"}  | https://zensystem.io/  |
-| DP |  ![DPRICE](/assets/dprice.jpg){:class="img-responsive" width="64px"}  | http://digitalprice.org/  |
-| VIVO |  ![VIVO](/assets/vivo.jpg){:class="img-responsive" width="64px"}  | https://www.vivocrypto.com/  |
-| ITZ |  ![ITZ](/assets/itz.jpg){:class="img-responsive" width="64px"}  | https://interzone.space/  |
-| MEME |  ![MEME](/assets/meme.jpg){:class="img-responsive" width="64px"}  | http://www.memetic.ai/  |
-| ARC |  ![ARC](/assets/arc.jpg){:class="img-responsive" width="64px"}  | https://arcticcoin.org/  |
-| CRAVE |  ![CRAVE](/assets/crave.jpg){:class="img-responsive" width="64px"}  | https://www.craveproject.com/  |
-| PIE |  ![PIE](/assets/pie.jpg){:class="img-responsive" width="64px"}  | https://github.com/flintsoft/PIE  |
-| XCXT |  ![XCXT](/assets/xcxt.jpg){:class="img-responsive" width="64px"}  | http://coinonatx.com/  |
-| SCORE |  ![SCORE](/assets/score.jpg){:class="img-responsive" width="64px"}  | http://scorecoin.site/ |
-| BITSEND |  ![BITSEND](/assets/bitsend.jpg){:class="img-responsive" width="64px"}  | https://bitsend.info/ |
-| XZC |  ![ZCOIN](/assets/zcoin.jpg){:class="img-responsive" width="64px"}  | https://zcoin.io/ |
-| INSANE |  ![INSN](/assets/insane.jpg){:class="img-responsive" width="64px"}  | https://insanecoin.com/ |
-| XIOS | ![XIOS](/assets/xios.jpg){:class="img-responsive" width="64px"}  | https://bitcointalk.org/index.php?topic=2251159.0/ |
+| PIVX |  ![PIVX](/assets/pivx.jpg)  |  https://pivx.org/ |
+| DASH |  ![DASH](/assets/dash.jpg)  | https://www.dash.org/ |
+| DESIRE |  ![DESIRE](/assets/desire.jpg)  | https://github.com/lazyboozer/Desire  |
+| PURE |  ![PURE](/assets/pure.jpg)  | https://github.com/puredev321/pure    |
+| ENT  |  ![ENT](/assets/ent.jpg)  | http://ent.eternity-group.org/    |
+| SYNX |  ![SYNX](/assets/synx.jpg)  | http://syndicatelabs.io/  |
+| CHC |  ![CHAIN](/assets/chain.jpg)  | https://www.chaincoin.org/  |
+| ZEN |  ![ZEN](/assets/zen.jpg)  | https://zensystem.io/  |
+| DP |  ![DPRICE](/assets/dprice.jpg)  | http://digitalprice.org/  |
+| VIVO |  ![VIVO](/assets/vivo.jpg)  | https://www.vivocrypto.com/  |
+| ITZ |  ![ITZ](/assets/itz.jpg)  | https://interzone.space/  |
+| MEME |  ![MEME](/assets/meme.jpg)  | http://www.memetic.ai/  |
+| ARC |  ![ARC](/assets/arc.jpg)  | https://arcticcoin.org/  |
+| CRAVE |  ![CRAVE](/assets/crave.jpg)  | https://www.craveproject.com/  |
+| PIE |  ![PIE](/assets/pie.jpg)  | https://github.com/flintsoft/PIE  |
+| XCXT |  ![XCXT](/assets/xcxt.jpg)  | http://coinonatx.com/  |
+| SCORE |  ![SCORE](/assets/score.jpg)  | http://scorecoin.site/ |
+| BITSEND |  ![BITSEND](/assets/bitsend.jpg)  | https://bitsend.info/ |
+| XZC |  ![ZCOIN](/assets/zcoin.jpg)  | https://zcoin.io/ |
+| INSANE |  ![INSN](/assets/insane.jpg)  | https://insanecoin.com/ |
+| XIOS | ![XIOS](/assets/xios.jpg)  | https://bitcointalk.org/index.php?topic=2251159.0/ |
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
