@@ -128,7 +128,7 @@ To activate the new nodes in your _local_ (not the VPS) controller wallet, add t
      MN2 [2003:470:1111:1a4:52]:51472 KEY TX OUTPUT
      MN3 [2003:470:1111:1a4:53]:51472 KEY TX OUTPUT
 
-Ping me at[contact@marsmenschen.com](mailto:contact@marsmenschen.com) for questions and send some crypto my way if you are happy.
+Ping me at[contact@marsmenschen.com] (mailto:contact@marsmenschen.com) for questions and send some crypto my way if you are happy.
 
 **Have fun, this is crypto after all!**
 
