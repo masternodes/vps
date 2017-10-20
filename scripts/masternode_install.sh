@@ -174,9 +174,10 @@ function create_mn_configuration() {
 }
 
 function create_control_configuration() {
+    rm /tmp/${GIT_PROJECT}_masternode.conf
 	# create one line per masternode with the data we have
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-		cat > /tmp/${GIT_PROJECT}_masternode.conf <<-EOF
+		cat >> /tmp/${GIT_PROJECT}_masternode.conf <<-EOF
 			${GIT_PROJECT}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${GIT_PROJECT}MN${NUM} COLLATERAL_TX_FOR_${GIT_PROJECT}MN${NUM} OUTPUT_NO_FOR_${GIT_PROJECT}MN${NUM}	
 		EOF
 	done
