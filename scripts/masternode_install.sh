@@ -173,6 +173,15 @@ function create_mn_configuration() {
 	done
 }
 
+function create_control_configuration() {
+	# create one line per masternode with the data we have
+	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+		cat > /tmp/${GIT_PROJECT}_masternode.conf <<-EOF
+			${GIT_PROJECT}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${GIT_PROJECT}MN${NUM} COLLATERAL_TX_FOR_${GIT_PROJECT}MN${NUM} OUTPUT_NO_FOR_${GIT_PROJECT}MN${NUM}	
+		EOF
+	done
+}
+
 function create_systemd_configuration() {
 	# create one config file per masternode
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
@@ -272,6 +281,7 @@ main() {
     create_mn_dirs
     configure_firewall      
     create_mn_configuration
+    create_control_configuration
     create_systemd_configuration 
     set_permissions
     cleanup_after
