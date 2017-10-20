@@ -130,7 +130,8 @@ The generated configuration files are located at /etc/masternodes/. One file per
 
 In 99% you can use the generated settings as is. The only value you MUST change is the masternode private key, generated in your controller wallet.
 
-![the master node private key](/vps/docs/images/masternode_vps/insert-your-masternode-private-key.png)
+<img src="images/masternode_vps/insert-your-masternode-private-key.png" alt="the master node private key" class="inline"/>
+
 
 ## Start your new masternodes
 
