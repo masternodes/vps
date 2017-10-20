@@ -2,9 +2,9 @@
 
 I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part. Vultr is highly recommended for this kind of setup.
 
-Feel free to use my reflink to signup and receive a bonus w/ vultr: <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
+Feel free to use my reflink to signup and receive a bonus w/ vultr:
+<a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
-Thank you!
 
 ## Intro
 
@@ -12,81 +12,64 @@ This project started as handy bash script to setup my $PIVX masternodes in 2016 
 
 If you are not already aware, visit the project site and join the slack. The website at [https://pivx.org/](https://pivx.org/) is also well worth a visit. 
 
-![][1]
-
-[1]: assets/masternode_vps/intro.png
+<img src="images/masternode_vps/intro.png" alt="introduction" class="inline"/>
 
 ## Get a VPS system for your masternode(s)
 
-I will use vultr for my instructions, but in practice and with a bit of tuning any hoster that gives you multiple free IPv6 addresses. Register / login with vultr. Feel free to use my reflink [http://www.vultr.com/?ref=6929414-3B.](http://www.vultr.com/?ref=6929414-3B.) It's also great that you can use Bitcoin to pay!
+I will use vultr for my instructions, but in practice and with a bit of tuning any hoster that gives you multiple free IPv6 addresses. Register / login with vultr.
 
-![][2]
+Feel free to use my reflink [http://www.vultr.com/?ref=6929414-3B.](http://www.vultr.com/?ref=6929414-3B.) It's also great that you can use Bitcoin to pay!
 
-[2]: assets/masternode_vps/get-a-vps-system-for-your-masternode-s-.png
+<img src="images/masternode_vps/get-a-vps-system-for-your-masternode-s-.png" alt="VPS signup" class="inline"/>
 
 ## Deploy a new system
 
 First, create a new VPS by clicking that small "+" button.
 
-![][3]
-
-[3]: assets/masternode_vps/deploy-a-new-system.png
+<img src="images/masternode_vps/deploy-a-new-system.png" alt="VPS creation" class="inline"/>
 
 ## Location choice
 
 The location doesn't matter too much. If in doubt, choose a location next to you.
 
-![][4]
-
-[4]: assets/masternode_vps/location-choice.png
+<img src="images/masternode_vps/location-choice.png" alt="VPS location choice" class="inline"/>
 
 ## Linux distribution (Ubuntu 16.04 LTS)
 
 Select Ubuntu 16.04, i am mostly testing for that version.
 
-![][5]
-
-[5]: assets/masternode_vps/linux-distribution--ubuntu-1604-lts-.png
+<img src="images/masternode_vps/linux-distribution--ubuntu-1604-lts-.png" alt="VPS location choice" class="inline"/>
 
 ## VPS size
 
 A decent masternode needs a bit of RAM and some storage space. The $5 instance is good enough for up to 5 masternodes. I recommend not running more than 3 production masternodes in parallel, since block rewards suffer from instability (eg when your nodes go down every couple of hours).
 
-![][6]
-
-[6]: assets/masternode_vps/vps-size.png
+<img src="images/masternode_vps/vps-size.png" alt="VPS sizing" class="inline"/>
 
 ## Activating additional features (IPv6)
 
 Multiple masternodes on one VPS require multiple IPv6 addresses. Toggle "Enable IPv6" to activate that feature for free (Vultr).
 
-![][7]
+<img src="images/masternode_vps/activating-additional-features--ipv6-.png" alt="VPS sizing" class="inline"/>
 
-[7]: assets/masternode_vps/activating-additional-features--ipv6-.png
 
 ## Hostnames & number of VPS
 
 Choose how many instances you want and click "Deploy Now".
 
-![][8]
-
-[8]: assets/masternode_vps/hostnames--amp--number-of-vps.png
+<img src="images/masternode_vps/hostnames--amp--number-of-vps.png" alt="VPS sizing" class="inline"/>
 
 ## Accessing your VPS via SSH
 
 Copy access credentials for SSH access by opening the server details.
 
-![][9]
-
-[9]: assets/masternode_vps/accessing-your-vps-via-ssh.png
+<img src="images/masternode_vps/accessing-your-vps-via-ssh.png" alt="VPS sizing" class="inline"/>
 
 ## First SSH session
 
 Login to your newly installed node as "root".
 
-![][10]
-
-[10]: assets/masternode_vps/first-ssh-session.png
+<img src="images/masternode_vps/first-ssh-session.png" alt="VPS sizing" class="inline"/>
 
 ## Masternode script installation
 
@@ -97,7 +80,6 @@ Clone the git repository first:
      git clone https://github.com/marsmensch/masternode-vps-setup.git
 
 
-
 ## Install the desired masternode and amount
 
 Use the *runme.sh* script with the desired crypto and masternode count as parameters, e.g. to install 3 PURE masternodes:
@@ -106,25 +88,22 @@ Use the *runme.sh* script with the desired crypto and masternode count as parame
 
 The script downloads, compiles and configures the system now. This will usually take between 5-15 minutes.
 
-![][11]
+<img src="images/masternode_vps/install-the-desired-masternode-and-amount.png" alt="VPS sizing" class="inline"/>
 
-[11]: assets/masternode_vps/install-the-desired-masternode-and-amount.png
 
 ## End of installation
 
 The script will output lots of boring stuff and it's ascii banner when done. Your only real work begins now.
 
-![][12]
+<img src="images/masternode_vps/end-of-installation.png" alt="VPS sizing" class="inline"/>
 
-[12]: assets/masternode_vps/end-of-installation.png
 
 ## Masternode configuration files
 
 The generated configuration files are located at /etc/masternodes/. One file per masternode and crypto.
 
-![][13]
+<img src="images/masternode_vps/masternode-configuration-files.png" alt="VPS sizing" class="inline"/>
 
-[13]: assets/masternode_vps/masternode-configuration-files.png
 
 ## Insert your masternode private key
 
@@ -135,7 +114,9 @@ In 99% you can use the generated settings as is. The only value you MUST change 
 
 ## Start your new masternodes
 
-A script to enable masternode start at boot and local process monitoring has been created at */usr/local/bin/restart_maternodes.sh* for your convenience. Run it after you finished configuration.
+A script to enable masternode start at boot and local process monitoring has been created at */usr/local/bin/restart_maternodes.sh* for your convenience.
+
+Run it after you finished configuration.
 
      /usr/local/bin/restart_masternodes.sh
 
@@ -147,7 +128,7 @@ To activate the new nodes in your _local_ (not the VPS) controller wallet, add t
      MN2 [2003:470:1111:1a4:52]:51472 KEY TX OUTPUT
      MN3 [2003:470:1111:1a4:53]:51472 KEY TX OUTPUT
 
-Ping me at[contact@marsmenschen.com](mailto:contact@marsmenschen.com)for questions and send some crypto my way if you are happy.
+Ping me at[contact@marsmenschen.com](mailto:contact@marsmenschen.com) for questions and send some crypto my way if you are happy.
 
 **Have fun, this is crypto after all!**
 
