@@ -14,7 +14,7 @@ If you are not already aware, visit the project site and join the slack. The web
 
 ![][1]
 
-[1]: images/masternode_vps/intro.png
+[1]: assets/masternode_vps/intro.png
 
 ## Get a VPS system for your masternode(s)
 
@@ -22,7 +22,7 @@ I will use vultr for my instructions, but in practice and with a bit of tuning a
 
 ![][2]
 
-[2]: images/masternode_vps/get-a-vps-system-for-your-masternode-s-.png
+[2]: assets/masternode_vps/get-a-vps-system-for-your-masternode-s-.png
 
 ## Deploy a new system
 
@@ -30,7 +30,7 @@ First, create a new VPS by clicking that small "+" button.
 
 ![][3]
 
-[3]: images/masternode_vps/deploy-a-new-system.png
+[3]: assets/masternode_vps/deploy-a-new-system.png
 
 ## Location choice
 
@@ -38,7 +38,7 @@ The location doesn't matter too much. If in doubt, choose a location next to you
 
 ![][4]
 
-[4]: images/masternode_vps/location-choice.png
+[4]: assets/masternode_vps/location-choice.png
 
 ## Linux distribution (Ubuntu 16.04 LTS)
 
@@ -46,7 +46,7 @@ Select Ubuntu 16.04, i am mostly testing for that version.
 
 ![][5]
 
-[5]: images/masternode_vps/linux-distribution--ubuntu-1604-lts-.png
+[5]: assets/masternode_vps/linux-distribution--ubuntu-1604-lts-.png
 
 ## VPS size
 
@@ -54,7 +54,7 @@ A decent masternode needs a bit of RAM and some storage space. The $5 instance i
 
 ![][6]
 
-[6]: images/masternode_vps/vps-size.png
+[6]: assets/masternode_vps/vps-size.png
 
 ## Activating additional features (IPv6)
 
@@ -62,7 +62,7 @@ Multiple masternodes on one VPS require multiple IPv6 addresses. Toggle "Enable 
 
 ![][7]
 
-[7]: images/masternode_vps/activating-additional-features--ipv6-.png
+[7]: assets/masternode_vps/activating-additional-features--ipv6-.png
 
 ## Hostnames & number of VPS
 
@@ -70,7 +70,7 @@ Choose how many instances you want and click "Deploy Now".
 
 ![][8]
 
-[8]: images/masternode_vps/hostnames--amp--number-of-vps.png
+[8]: assets/masternode_vps/hostnames--amp--number-of-vps.png
 
 ## Accessing your VPS via SSH
 
@@ -78,7 +78,7 @@ Copy access credentials for SSH access by opening the server details.
 
 ![][9]
 
-[9]: images/masternode_vps/accessing-your-vps-via-ssh.png
+[9]: assets/masternode_vps/accessing-your-vps-via-ssh.png
 
 ## First SSH session
 
@@ -86,7 +86,7 @@ Login to your newly installed node as "root".
 
 ![][10]
 
-[10]: images/masternode_vps/first-ssh-session.png
+[10]: assets/masternode_vps/first-ssh-session.png
 
 ## Masternode script installation
 
@@ -108,7 +108,7 @@ The script downloads, compiles and configures the system now. This will usually 
 
 ![][11]
 
-[11]: images/masternode_vps/install-the-desired-masternode-and-amount.png
+[11]: assets/masternode_vps/install-the-desired-masternode-and-amount.png
 
 ## End of installation
 
@@ -116,7 +116,7 @@ The script will output lots of boring stuff and it's ascii banner when done. You
 
 ![][12]
 
-[12]: images/masternode_vps/end-of-installation.png
+[12]: assets/masternode_vps/end-of-installation.png
 
 ## Masternode configuration files
 
@@ -124,7 +124,7 @@ The generated configuration files are located at /etc/masternodes/. One file per
 
 ![][13]
 
-[13]: images/masternode_vps/masternode-configuration-files.png
+[13]: assets/masternode_vps/masternode-configuration-files.png
 
 ## Insert your masternode private key
 
@@ -132,7 +132,7 @@ In 99% you can use the generated settings as is. The only value you MUST change 
 
 ![][14]
 
-[14]: images/masternode_vps/insert-your-masternode-private-key.png
+[14]: assets/masternode_vps/insert-your-masternode-private-key.png
 
 ## Start your new masternodes
 
