@@ -77,14 +77,18 @@ Follow the instructions at [https://github.com/marsmensch/masternode-vps-setup.]
 
 Clone the git repository first:
 
-     git clone https://github.com/masternodes/vps.git && cd vps
+```
+vps:~ git clone https://github.com/masternodes/vps.git && cd vps
+```
 
 
 ## Install the desired masternode and amount
 
 Use the *runme.sh* script with the desired crypto and masternode count as parameters, e.g. to install 3 PURE masternodes:
 
-     ./runme.sh pure 3
+```
+vps:~ ./runme.sh pure 3
+```
 
 The script downloads, compiles and configures the system now. This will usually take between 5-15 minutes.
 
@@ -118,7 +122,9 @@ A script to enable masternode start at boot and local process monitoring has bee
 
 Run it after you finished configuration.
 
-     /usr/local/bin/restart_masternodes.sh
+```
+vps:~ /usr/local/bin/restart_masternodes.sh
+```     
 
 ## Last step, the controller
 
