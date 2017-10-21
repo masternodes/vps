@@ -152,6 +152,7 @@ vps:~ passwd masternode
 | XZC |  ![ZCOIN](/assets/zcoin.jpg)  | https://zcoin.io/ |
 | INSANE |  ![INSN](/assets/insane.jpg)  | https://insanecoin.com/ |
 | XIOS | ![XIOS](/assets/xios.jpg)  | https://bitcointalk.org/index.php?topic=2251159.0/ |
+| HAV | ![HAV](/assets/harvest.jpg)  | https://bitcointalk.org/index.php?topic=2295418.0/ |
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
