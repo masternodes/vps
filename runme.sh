@@ -50,7 +50,8 @@ CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}'`
 if [ "$#" -ne 1 ]
 then
   echo "Please provide a shortname to install a masternode: ..."
-  echo "Supported crypto projects: ${CRYPTOS}"  
+  echo "Supported crypto projects:" 
+  echo "${CRYPTOS}" 
   exit 1
 fi
 
