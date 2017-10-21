@@ -47,11 +47,13 @@ SETUP_MNODES_COUNT=${2}
 CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}'`
 
 # put in main at a later point in time
-if [ "$#" -ne 1 ]
+if (( $# < 1 ));
 then
   echo "Please provide a shortname to install a masternode: ..."
-  echo "Supported crypto projects:" 
-  echo "${CRYPTOS}" 
+  echo "************************************"
+  echo "Supported crypto projects:"
+  echo "${CRYPTOS}"
+  echo "************************************"
   exit 1
 fi
 
