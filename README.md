@@ -58,7 +58,7 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 You should be able to do that ;-) Install git if not already present.
 
 ```
-git clone https://github.com/masternodes/vps.git && cd vps
+vps:~ git clone https://github.com/masternodes/vps.git && cd vps
 ```
 
 ### 2) execute the **runme.sh** script
@@ -66,7 +66,7 @@ git clone https://github.com/masternodes/vps.git && cd vps
 the **runme.sh** script takes the desired crypto and masternode count (optional) as parameters, e.g. to install 3 PURE masternodes:
 
 ```
-./runme.sh pure 3
+vps:~ ./runme.sh pure 3
 ```
 
 ### 3) adapt the master node configuration files
@@ -87,15 +87,39 @@ Still AS ROOT run ```/usr/local/bin/restart_masternodes.sh``` to activate the se
 
 Individual masternode data directories are located in ```/var/lib/masternodes/${CRYPTO}${NUMBER_OF_NODE}```
 
-### 5) always work as unprivileged user
+## Last step, the controller
 
-subsequently, you should only work as masternode user and not ```root```. The default user account created is ```masternode```.
+To activate the new nodes in your _local_ (not the VPS) controller wallet, add the bind address entries with port to a file called "masternode.conf" as usual.
 
-You can change to this user with the following command
+     MN1 [2002:470:1111:1a4:51]:51472 KEY TX OUTPUT
+     MN2 [2003:470:1111:1a4:52]:51472 KEY TX OUTPUT
+     MN3 [2003:470:1111:1a4:53]:51472 KEY TX OUTPUT
+
+To make this a bit easier for large installations, i implemented a small gimmick in the newest version. Now after the script has run, a partial of the "masternode.conf" file is generated and placed on the VPS eg for XIOS at "/tmp/xios_masternode.conf"
+
+So you can take the contents from there and paste it into your local controller-wallets masternode.conf all that you need to add is the relevant pieces from "masternode outputs"
+
+<img src="docs/images/masternode_vps/controller_conf_partial.png" alt="controller conference generated partial" class="inline"/>
+
+You get the idea, another step to a fully automated setup... ;-)
+
+
+# A dedicated unprivileged user for the masternodes
+
+Subsequently, you should only work as masternode user and not ```root```. The default user account created is ```masternode```.
+
+You can change to this user (as root since "root" can become any account) with the following command:
 
 ```
 vps:~ su - masternode
 ```   
+
+If you prefer, you can also set a password for that user with the following command:
+
+```
+vps:~ passwd masternode
+```
+
 
 # Supported cryptos
 

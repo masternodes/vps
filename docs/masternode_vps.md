@@ -77,7 +77,7 @@ Follow the instructions at [https://github.com/marsmensch/masternode-vps-setup.]
 
 Clone the git repository first:
 
-     git clone https://github.com/marsmensch/masternode-vps-setup.git
+     git clone https://github.com/masternodes/vps.git && cd vps
 
 
 ## Install the desired masternode and amount
@@ -127,6 +127,14 @@ To activate the new nodes in your _local_ (not the VPS) controller wallet, add t
      MN1 [2002:470:1111:1a4:51]:51472 KEY TX OUTPUT
      MN2 [2003:470:1111:1a4:52]:51472 KEY TX OUTPUT
      MN3 [2003:470:1111:1a4:53]:51472 KEY TX OUTPUT
+
+To make this a bit easier for large installations, i implemented a small gimmick in the newest version. Now after the script has run, a partial of the "masternode.conf" file is generated and placed on the VPS eg for XIOS at "/tmp/xios_masternode.conf"
+
+So you can take the contents from there and paste it into your local controller-wallets masternode.conf all that you need to add is the relevant pieces from "masternode outputs"
+
+<img src="images/masternode_vps/controller_conf_partial.png" alt="controller conference generated partial" class="inline"/>
+
+You get the idea, another step to a fully automated setup... ;-)
 
 Ping me at[contact@marsmenschen.com] (mailto:contact@marsmenschen.com) for questions and send some crypto my way if you are happy.
 
