@@ -69,6 +69,12 @@ the **runme.sh** script takes the desired crypto and masternode count (optional)
 vps:~ ./runme.sh pure 3
 ```
 
+The script downloads, compiles and configures the system now. This will usually take between 5-15 minutes.
+
+<img src="docs/images/masternode_vps/install-the-desired-masternode-and-amount.png" alt="crypto choice" class="inline"/>
+
+The *runme.sh* script outputs an alphabetic list of supported crypto projects when executed without a parameter.
+
 ### 3) adapt the master node configuration files
 
 ADD your masternode private key to the configuration file(s) located at ```/etc/masternodes/$CRYPTO_n$NUM.conf```. 

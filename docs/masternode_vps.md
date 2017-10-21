@@ -94,6 +94,7 @@ The script downloads, compiles and configures the system now. This will usually 
 
 <img src="images/masternode_vps/install-the-desired-masternode-and-amount.png" alt="VPS sizing" class="inline"/>
 
+The *runme.sh* script outputs an alphabetic list of supported crypto projects when executed without a parameter.
 
 ## End of installation
 
