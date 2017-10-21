@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				           
 #
-# version: 	0.4-beta
-# date:    	2017-10-04
+# version: 	0.5-beta
+# date:    	2017-10-21
 # function:	part of the masternode scripts, source the proper config file
 #
 # Twitter: 	@marsmensch
@@ -44,7 +44,14 @@ function source_config() {
 
 SETUP_CONF_FILE="config/${1}/${1}.env"
 SETUP_MNODES_COUNT=${2}
+CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}'`
 
 # put in main at a later point in time
+if [ "$#" -ne 1 ]
+then
+  echo "Please provide a shortname to install a masternode: ..."
+  echo "Supported crypto projects: ${CRYPTOS}"  
+  exit 1
+fi
 
 source_config ${1}
