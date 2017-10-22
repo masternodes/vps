@@ -158,6 +158,9 @@ vps:~ passwd masternode
 | HAV | ![HAV](/assets/harvest.jpg)  | https://bitcointalk.org/index.php?topic=2295418.0/ |
 | NTRN | ![NTRN](/assets/ntrn.jpg)  | https://www.neutroncoin.com/ |
 | RNS | ![RNS](/assets/rns.jpg)  | https://bitcointalk.org/index.php?topic=1809933.msg18029683#msg18029683/ |
+| SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | https://bitcointalk.org/index.php?topic=1809933.msg18029683#msg18029683/ |
+
+http://www.solariscoin.com/
 
 
 # Todo
