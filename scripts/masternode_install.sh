@@ -113,7 +113,7 @@ function prepare_mn_interfaces() {
 		then
 		  echo "IP already exists"
 		else
-		  echo "Creating new IP address for ${GIT_PROJECT} ${NUM}"
+		  echo "Creating new IP address for ${GIT_PROJECT} masternode nr ${NUM}"
 		  echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
 		  sleep 2
 		  ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
@@ -172,7 +172,13 @@ function create_mn_configuration() {
 				cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 			fi
 			# replace placeholders
-			sed -i -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+			sed -i -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" \
+			       -e "s/XXX_NUM_XXX/${NUM}/" \
+			       -e "s/XXX_PASS_XXX/${PASS}/" \
+			       -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" \
+			       -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" \		
+			       -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" \			       
+			       ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
         done
 }
 
