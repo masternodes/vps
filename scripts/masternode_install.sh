@@ -175,14 +175,11 @@ function create_mn_configuration() {
 				else
 					echo "using the default configuration template"
 					cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
-				fi
-				# replace placeholders
-				ls -lah ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
-				sed -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" \
-					-e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" \		
-					-e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
-			else
-				echo "huhu!"		   
+				    # replace placeholders
+				    sed -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" \
+					    -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" \		
+					    -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+	   
 			fi        
 			
         done
