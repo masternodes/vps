@@ -157,7 +157,7 @@ function create_mn_configuration() {
         PASS=$(date | md5sum | cut -c1-24)
 			# if a template exists, use this instead of the default
 			if [ -e config/${GIT_PROJECT}/${GIT_PROJECT}.conf ]; then
-				echo "template exists, use this instead"
+				echo "configuration template for ${GIT_PROJECT} found, use this instead"
 				cp config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 			else
 				echo "using the default configuration template"
