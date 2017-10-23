@@ -108,7 +108,7 @@ function prepare_mn_interfaces() {
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 	
 	    # check if the interfaces exist
-	    [ $(ip -6 addr =~ "${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}" ] || echo "NOT OK"
+	    [[ $(ip -6 addr =~ "${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}" ]] || echo "NOT OK"
 
         # echo "didn't find interface!"
         # echo "ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}'"
