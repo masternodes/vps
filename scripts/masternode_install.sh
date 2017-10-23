@@ -110,7 +110,7 @@ function prepare_mn_interfaces() {
 	     ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}'
 	     echo "the fucking return code is $?"
 	     if [ $? == 1 ]; then
-	         echo "IP already configured, skipping ..."
+	         echo "the new fucking return code is $?"
 	     else
 	         echo "didn't find interface!"
 	         echo "ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}'"
