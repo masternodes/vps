@@ -113,7 +113,7 @@ function prepare_mn_interfaces() {
 		then
 		  echo "IP already exists"
 		else
-		  echo "Creating new IP address"
+		  echo "Creating new IP address for ${GIT_PROJECT} ${NUM}"
 		  echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
 		  sleep 2
 		  ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
