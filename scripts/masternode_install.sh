@@ -162,7 +162,7 @@ function create_mn_configuration() {
 				cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 			fi
 			# replace placeholders
-			sed -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+			sed -i -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
         done
 }
 
