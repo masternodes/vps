@@ -131,8 +131,10 @@ function create_mn_dirs() {
     echo "Creating masternode directories"
     mkdir -p ${MNODE_CONF_BASE}
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-		echo "creating data directory ${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}"
-		mkdir -p ${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}
+	    if [ ! -d "${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}" ]; then
+	         echo "creating data directory ${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}"
+             mkdir -p ${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}
+        fi
 	done    
 }
 
