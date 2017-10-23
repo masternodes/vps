@@ -163,22 +163,28 @@ function create_mn_configuration() {
         # create one config file per masternode
         for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
         PASS=$(date | md5sum | cut -c1-24)
-			# if a template exists, use this instead of the default
-			if [ -e config/${GIT_PROJECT}/${GIT_PROJECT}.conf ]; then
-				echo "configuration template for ${GIT_PROJECT} found, use this instead"
-				cp config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
-			else
-				echo "using the default configuration template"
-				cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
-			fi
-			# replace placeholders
-			sed -i -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" \
-			       -e "s/XXX_NUM_XXX/${NUM}/" \
-			       -e "s/XXX_PASS_XXX/${PASS}/" \
-			       -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" \
-			       -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" \		
-			       -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" \			       
-			       ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+
+			# we dont want to overwrite an existing config file
+			if [ ! -f ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf ]; then
+
+				# if a template exists, use this instead of the default
+				if [ -e config/${GIT_PROJECT}/${GIT_PROJECT}.conf ]; then
+					echo "configuration template for ${GIT_PROJECT} found, use this instead"
+					cp config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+				else
+					echo "using the default configuration template"
+					cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+				fi
+				# replace placeholders
+				sed -i -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" \
+					   -e "s/XXX_NUM_XXX/${NUM}/" \
+					   -e "s/XXX_PASS_XXX/${PASS}/" \
+					   -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" \
+					   -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" \		
+					   -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" \			       
+					   ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+			fi        
+			
         done
 }
 
