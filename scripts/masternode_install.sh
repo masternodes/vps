@@ -106,18 +106,18 @@ function prepare_mn_interfaces() {
     
 	# create the additional ipv6 interfaces, rc.local because it's more generic 
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-	     # check if the interfaces exist
-	     ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}'
-	     echo "the fucking return code is $?"
-	     if [ $? == 1 ]; then
-	         echo "the new fucking return code is $?"
-	     else
+	
+	    # check if the interfaces exist
+		if grep -lq '^${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}' ; then 
+		     echo "found it" 
+		else 
 	         echo "didn't find interface!"
 	         echo "ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}'"
 	         echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
 	         sleep 2
 	         ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
-	     fi		
+		fi 	
+
 	done
 }
 
