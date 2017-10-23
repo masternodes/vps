@@ -104,17 +104,20 @@ function prepare_mn_interfaces() {
     # move current config out of the way first
     cp ${NETWORK_CONFIG} ${NETWORK_CONFIG}.${DATE_STAMP}.bkp
 
-
-	# create the additional ipv6 interfaces, rc.local because it's more generic 
-	
-	# check if the interfaces exist	    
-	ip -6 addr | grep -qi "${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}" && echo "in or out?"
-	echo "return code is: $?"
-	    
+	# create the additional ipv6 interfaces, rc.local because it's more generic 	    
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-	echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
-		sleep 2
-		ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
+
+	    # check if the interfaces exist	    
+	    ip -6 addr | grep -qi "${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}" && echo "in or out?"
+		if [ $? -eq 0 ]
+		then
+		  echo "IP already exists"
+		else
+		  echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
+		  sleep 2
+		  ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
+		fi
+		
 	done
 }
 
