@@ -108,15 +108,13 @@ function prepare_mn_interfaces() {
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 	
 	    # check if the interfaces exist
-		if grep -lq '^${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}' ; then 
-		     echo "found it" 
-		else 
-	         echo "didn't find interface!"
-	         echo "ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}'"
-	         echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
-	         sleep 2
-	         ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
-		fi 	
+	    [ $(ip -6 addr =~ "${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}" ] || echo "NOT OK"
+
+        # echo "didn't find interface!"
+        # echo "ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}'"
+	    # echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
+	    # sleep 2
+	    # ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE} 	
 
 	done
 }
