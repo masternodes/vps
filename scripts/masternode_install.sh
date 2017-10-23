@@ -150,27 +150,20 @@ function configure_firewall() {
 }
 
 function create_mn_configuration() {
-	# create one config file per masternode
-	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-	PASS=$(date | md5sum | cut -c1-24)
-		echo "writing config file ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"
-		cat > ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf <<-EOF
-			rpcuser=${GIT_PROJECT}rpc
-			rpcpassword=${PASS}
-			rpcallowip=127.0.0.1
-			rpcport=555${NUM}
-			server=1
-			listen=1
-			daemon=1
-			bind=[${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT}
-			logtimestamps=1
-			mnconflock=0
-			maxconnections=256
-			gen=0
-			masternode=1
-			masternodeprivkey=HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_${GIT_PROJECT}_${NUM}	
-		EOF
-	done
+        # create one config file per masternode
+        for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+        PASS=$(date | md5sum | cut -c1-24)
+			# if a template exists, use this instead of the default
+			if [ -e config/${GIT_PROJECT}/${GIT_PROJECT}.conf ]; then
+				echo "template exists, use this instead"
+				cp config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+			else
+				echo "using the default configuration template"
+				cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+			fi
+			# replace placeholders
+			sed -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+        done
 }
 
 function create_control_configuration() {
