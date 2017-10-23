@@ -166,7 +166,8 @@ function create_mn_configuration() {
 
 			# we dont want to overwrite an existing config file
 			if [ ! -f ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf ]; then
-
+                echo "config doesn't exist, generate it!"
+                
 				# if a template exists, use this instead of the default
 				if [ -e config/${GIT_PROJECT}/${GIT_PROJECT}.conf ]; then
 					echo "configuration template for ${GIT_PROJECT} found, use this instead"
@@ -183,6 +184,8 @@ function create_mn_configuration() {
 					   -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" \		
 					   -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" \			       
 					   ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+			else
+				echo "huhu!"		   
 			fi        
 			
         done
