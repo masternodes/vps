@@ -107,10 +107,12 @@ function prepare_mn_interfaces() {
 	# create the additional ipv6 interfaces, rc.local because it's more generic 
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 	     # check if the interfaces exist
-	     ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64' &> /dev/null
+	     ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}' &> /dev/null
 	     if [ $? == 0 ]; then
 	         echo "IP already configured, skipping ..."
 	     else
+	         echo "didn't find interface!"
+	         echo "ip -6 addr | grep '${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}'"
 	         echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
 	         sleep 2
 	         ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
