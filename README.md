@@ -159,7 +159,7 @@ vps:~ passwd masternode
 | NTRN | ![NTRN](/assets/ntrn.jpg)  | https://www.neutroncoin.com/ |
 | RNS | ![RNS](/assets/rns.jpg)  | https://bitcointalk.org/index.php?topic=1809933.msg18029683#msg18029683/ |
 | SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
-| BTDS | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
+| BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
 
 
 # Todo
