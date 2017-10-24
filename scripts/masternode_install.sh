@@ -173,12 +173,8 @@ function create_mn_configuration() {
 					echo "configuration template for ${GIT_PROJECT} found, use this instead"
 					cp config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				else
-					echo "using the default configuration template"
-					echo "PWD: $PWD"
-					echo "LS: "
-					ls -lah
-					
-					cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+					echo "No ${GIT_PROJECT} template found, using the default configuration template"					
+					cp ../../config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				fi
 				# replace placeholders
 				echo "running sed on file ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"
