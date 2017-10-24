@@ -178,9 +178,9 @@ function create_mn_configuration() {
 				fi
 				# replace placeholders
 				echo "running sed on file ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"
-				sed -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" \
-				    -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" \		
-				    -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i "${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"		    
+				sed -e 's/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/' -e 's/XXX_NUM_XXX/${NUM}/' -e 's/XXX_PASS_XXX/${PASS}/' -i ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+				    #-e 's/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/' -e 's/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/' \		
+				    #-e 's/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/' -i ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf		    
 						   
 			fi        
 			
@@ -201,7 +201,7 @@ function create_systemd_configuration() {
 	# create one config file per masternode
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 	PASS=$(date | md5sum | cut -c1-24)
-		echo "writing config file ${SYSTEMD_CONF}/${GIT_PROJECT}_n${NUM}.service"
+		echo "(over)writing systemd config file ${SYSTEMD_CONF}/${GIT_PROJECT}_n${NUM}.service"
 		cat > ${SYSTEMD_CONF}/${GIT_PROJECT}_n${NUM}.service <<-EOF
 			[Unit]
 			Description=${GIT_PROJECT} distributed currency daemon
