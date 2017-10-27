@@ -2,9 +2,19 @@
 
 I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part.
 
-Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md). 
+---
+**NOTE on the VPS choice for starters**
 
-Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
+Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
+
+---
+
+I activated the "issues" option on github to give you a way to document defects and feature wishes. Feel free top open issues for problems / features you are missing here:
+https://github.com/masternodes/vps/issues
+
+I will also happily take any pull requests that make masternode installations easier for everyone ;-)
+
+If unsure, ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
 **Have fun, this is crypto after all!**
 ```
