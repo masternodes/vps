@@ -31,9 +31,10 @@ PIVX DASH DESIRE PURE ENT SYNX CHC ZEN DPRICE VIVO ITZ MEME ARC CRAVE PIE XCXT S
 
 ## Can i see a demo?
 
-Sure! Here is a demo showing the script in action for the first couple of seconds (compilation takes a while:
+Sure! Here is a demo showing the script in action for the first couple of seconds (compilation takes a while):
 
-<img src="assets/nodemaster.gif" alt="example run" class="inline"/>
+**NOT THERE YET, WORKING on THE RECORDING**
+<img src="assets/nodemaster.gif" alt="example run" class="inline"/
 
 After this run, you have 2 instances of a $INSN masternode, ready for configuration. A not-so-sucking way to install a lot of different masternodes. 
 
