@@ -72,7 +72,7 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 You should be able to do that ;-) Install git if not already present.
 
 ```
-vps:~ git clone https://github.com/masternodes/vps.git && cd vps
+git clone https://github.com/masternodes/vps.git && cd vps
 ```
 
 ### 2) execute the **runme.sh** script
@@ -80,7 +80,7 @@ vps:~ git clone https://github.com/masternodes/vps.git && cd vps
 the **runme.sh** script takes the desired crypto and masternode count (optional) as parameters, e.g. to install 3 PURE masternodes:
 
 ```
-vps:~ ./runme.sh pure 3
+./runme.sh pure 3
 ```
 
 The script downloads, compiles and configures the system now. This will usually take between 5-15 minutes.
@@ -131,13 +131,13 @@ Subsequently, you should only work as masternode user and not ```root```. The de
 You can change to this user (as root since "root" can become any account) with the following command:
 
 ```
-vps:~ su - masternode
+su - masternode
 ```   
 
 If you prefer, you can also set a password for that user with the following command:
 
 ```
-vps:~ passwd masternode
+passwd masternode
 ```
 
 
@@ -171,22 +171,19 @@ vps:~ passwd masternode
 | RNS | ![RNS](/assets/rns.jpg)  | https://bitcointalk.org/index.php?topic=1809933.msg18029683#msg18029683/ |
 | SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
 | BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
+| INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
 
 
 # Todo
 * rewrite for config templates and provide my Dockerfile & Vagrantfile
 * provide a delete / uninstall flag
 * create a logfile
-* make scripts idempotent 
-* write test cases
+* write more test cases
 * implement a binary option (?) 
-* check if masternode user already exists before creation
-* output masternode.conf template for controller wallet at the end of setup
 * output all supported cryptos as list within help
 
 # Errors
 * currently not fully idempotent
-* check if relevant interface already exists (sed) before writing to interfaces file
 
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
