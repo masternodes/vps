@@ -172,6 +172,7 @@ passwd masternode
 | SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
 | BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
 | INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
+| PHORE | ![PHORE](/assets/phore.jpg)  | https://phore.io/ |
 
 
 # Todo
