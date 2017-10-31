@@ -3,5 +3,6 @@
 chmod u+x ./autogen.sh share/genbuild.sh
 ./autogen.sh
 ./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+chmod u+x leveldb/build_detect_platform
 make
 make install
