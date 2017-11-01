@@ -22,6 +22,10 @@ DATE_STAMP="$(date +%y-%m-%d-%s)"
 # im an not very proud of this
 IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 
+declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
+
+echo "xxx SCRIPTPATH: ${SCRIPTPATH} xxx"
+
 function check_distro() {
 	# currently only for Ubuntu 16.04
 	if [[ -r /etc/os-release ]]; then
@@ -174,8 +178,8 @@ function create_mn_configuration() {
 					cp config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				else
 					echo "No ${GIT_PROJECT} template found, using the default configuration template"	
-					cp ../../../config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf	2>/dev/null		
-					cp ../../config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf  2>/dev/null
+					ls -lah				
+					cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				fi
 				# replace placeholders
 				echo "running sed on file ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"
@@ -274,12 +278,12 @@ function final_call() {
 	echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
 	echo "Add your masternode private keys now."
 	echo "eg in /etc/masternodes/${GIT_PROJECT}_n1.conf"	
-	# systemctl command to work with mnodes here 
-	echo "#!/bin/bash" > ${MNODE_HELPER}
+    
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
 		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
 	done
+
 	chmod u+x ${MNODE_HELPER}
 	tput sgr0
 }
