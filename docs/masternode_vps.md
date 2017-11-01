@@ -1,6 +1,13 @@
 # Slick masternode VPS setup for all your beloved crypto masternodes
 
-I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part. Vultr is highly recommended for this kind of setup.
+I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part. 
+
+---
+**NOTE on the VPS choice for starters**
+
+Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
+
+---
 
 Feel free to use my reflink to signup and receive a bonus w/ vultr:
 <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
