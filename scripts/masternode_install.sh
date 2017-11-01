@@ -25,10 +25,7 @@ IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
 
-echo "xxx SCRIPTPATH: ${SCRIPTPATH} xxx"
-echo "xxx MASTERPATH: ${MASTERPATH} xxx"
-
-
+# distro check
 function check_distro() {
 	# currently only for Ubuntu 16.04
 	if [[ -r /etc/os-release ]]; then
@@ -96,10 +93,10 @@ function build_mn_from_source() {
                 # print ascii banner if a logo exists
                 echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
                 if [ -f "../../assets/$CODENAME.jpg" ]; then
-                        jp2a -b --colors --width=64 ../../assets/${CODENAME}.jpg     
+                        jp2a -b --colors --width=64 ${MASTERPATH}/assets/${CODENAME}.jpg     
                 fi  
                 # compilation starts here
-                source ../../config/${CODENAME}/${CODENAME}.compile
+                source ${MASTERPATH}/config/${CODENAME}/${CODENAME}.compile
         else
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
@@ -178,10 +175,10 @@ function create_mn_configuration() {
 				# if a template exists, use this instead of the default
 				if [ -e config/${GIT_PROJECT}/${GIT_PROJECT}.conf ]; then
 					echo "configuration template for ${GIT_PROJECT} found, use this instead"
-					cp config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+					cp ${MASTERPATH}/config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				else
 					echo "No ${GIT_PROJECT} template found, using the default configuration template"			
-					cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+					cp ${MASTERPATH}/config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				fi
 				# replace placeholders
 				echo "running sed on file ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"
