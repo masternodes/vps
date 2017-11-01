@@ -278,6 +278,7 @@ function final_call() {
 	echo "Add your masternode private keys now."
 	echo "eg in /etc/masternodes/${GIT_PROJECT}_n1.conf"	
     
+    cp ${MASTERPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
 		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
