@@ -25,7 +25,7 @@ IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
 
-# distro check
+
 function check_distro() {
 	# currently only for Ubuntu 16.04
 	if [[ -r /etc/os-release ]]; then
@@ -277,13 +277,16 @@ function final_call() {
 	echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
 	echo "Add your masternode private keys now."
 	echo "eg in /etc/masternodes/${GIT_PROJECT}_n1.conf"	
-    
+
+    # place future helper script accordingly
     cp ${MASTERPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}
+	echo "">> ${MNODE_HELPER}
+	
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
 		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
 	done
-
+    
 	chmod u+x ${MNODE_HELPER}
 	tput sgr0
 }

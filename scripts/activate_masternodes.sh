@@ -31,8 +31,7 @@ function checkup() {
 
 function cleanup() {
     rm -f ${TMP_FILE_PREFIX}.*
-    
-    echo "always implement this" && exit 100   
+    exit 100   
 }
 
 
