@@ -82,5 +82,4 @@ function main() {
 
 trap "cleanup; exit 1" 1 2 3 13 15
 
-# this is the main executable function at end of script
-main "$@"	
+	
