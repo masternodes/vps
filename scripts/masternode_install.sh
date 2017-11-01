@@ -286,7 +286,7 @@ function final_call() {
 		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
 		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
 	done
-    echo "main \""$@\""" >> ${MNODE_HELPER}
+    echo 'main \"$@\"' >> ${MNODE_HELPER}
      
 	chmod u+x ${MNODE_HELPER}
 	tput sgr0
