@@ -23,8 +23,11 @@ DATE_STAMP="$(date +%y-%m-%d-%s)"
 IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
+declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
 
 echo "xxx SCRIPTPATH: ${SCRIPTPATH} xxx"
+echo "xxx MASTERPATH: ${MASTERPATH} xxx"
+
 
 function check_distro() {
 	# currently only for Ubuntu 16.04
@@ -177,8 +180,7 @@ function create_mn_configuration() {
 					echo "configuration template for ${GIT_PROJECT} found, use this instead"
 					cp config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				else
-					echo "No ${GIT_PROJECT} template found, using the default configuration template"	
-					ls -lah				
+					echo "No ${GIT_PROJECT} template found, using the default configuration template"			
 					cp config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				fi
 				# replace placeholders
