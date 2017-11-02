@@ -22,6 +22,10 @@ DATE_STAMP="$(date +%y-%m-%d-%s)"
 # im an not very proud of this
 IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 
+declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
+declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
+
+
 function check_distro() {
 	# currently only for Ubuntu 16.04
 	if [[ -r /etc/os-release ]]; then
@@ -89,10 +93,10 @@ function build_mn_from_source() {
                 # print ascii banner if a logo exists
                 echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
                 if [ -f "../../assets/$CODENAME.jpg" ]; then
-                        jp2a -b --colors --width=64 ../../assets/${CODENAME}.jpg     
+                        jp2a -b --colors --width=64 ${MASTERPATH}/assets/${CODENAME}.jpg     
                 fi  
                 # compilation starts here
-                source ../../config/${CODENAME}/${CODENAME}.compile
+                source ${MASTERPATH}/config/${CODENAME}/${CODENAME}.compile
         else
                 echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
@@ -171,11 +175,10 @@ function create_mn_configuration() {
 				# if a template exists, use this instead of the default
 				if [ -e config/${GIT_PROJECT}/${GIT_PROJECT}.conf ]; then
 					echo "configuration template for ${GIT_PROJECT} found, use this instead"
-					cp config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+					cp ${MASTERPATH}/config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				else
-					echo "No ${GIT_PROJECT} template found, using the default configuration template"	
-					cp ../../../config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf	2>/dev/null		
-					cp ../../config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf  2>/dev/null
+					echo "No ${GIT_PROJECT} template found, using the default configuration template"			
+					cp ${MASTERPATH}/config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
 				fi
 				# replace placeholders
 				echo "running sed on file ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"
@@ -187,7 +190,7 @@ function create_mn_configuration() {
 }
 
 function create_control_configuration() {
-    rm /tmp/${GIT_PROJECT}_masternode.conf
+    rm -f /tmp/${GIT_PROJECT}_masternode.conf
 	# create one line per masternode with the data we have
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 		cat >> /tmp/${GIT_PROJECT}_masternode.conf <<-EOF
@@ -274,13 +277,18 @@ function final_call() {
 	echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
 	echo "Add your masternode private keys now."
 	echo "eg in /etc/masternodes/${GIT_PROJECT}_n1.conf"	
-	# systemctl command to work with mnodes here 
-	echo "#!/bin/bash" > ${MNODE_HELPER}
+
+    # place future helper script accordingly
+    cp ${MASTERPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${GIT_PROJECT}
+	echo "">> ${MNODE_HELPER}_${GIT_PROJECT}
+	
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
-		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
+		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}_${GIT_PROJECT}
+		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}_${GIT_PROJECT}
 	done
-	chmod u+x ${MNODE_HELPER}
+    echo 'main "$@"' >> ${MNODE_HELPER}_${GIT_PROJECT}
+     
+	chmod u+x ${MNODE_HELPER}_${GIT_PROJECT}
 	tput sgr0
 }
 
