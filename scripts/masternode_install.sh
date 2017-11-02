@@ -41,6 +41,29 @@ function check_distro() {
 	fi
 }
 
+function check_ipv6() {
+	# check for vultr ipv6 box active
+	if [ -z "${IPV6_INT_BASE}" ]; then
+		echo "we don't have ipv6 range support on this VPS"
+		echo "OUTPUT DOCS LINK HERE!"
+	fi	
+}
+
+function check_vultr() {
+	# currently only for Ubuntu 16.04
+	if [[ -r /etc/os-release ]]; then
+		. /etc/os-release
+		if [[ "${VERSION_ID}" != "16.04" ]]; then
+			echo "This script only supports ubuntu 16.04 LTS, exiting."
+			exit 1
+		fi
+	else
+		# no, thats not ok!
+		echo "This script only supports ubuntu 16.04 LTS, exiting."	
+		exit 1
+	fi
+}
+
 function install_packages() {
 	# development and build packages
 	# these are common on all cryptos
@@ -295,6 +318,8 @@ function final_call() {
 main() {
     showbanner
     check_distro
+    check_ipv6
+    check_vultr
     swaphack
     install_packages
     build_mn_from_source 
