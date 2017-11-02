@@ -190,7 +190,7 @@ function create_mn_configuration() {
 }
 
 function create_control_configuration() {
-    rm /tmp/${GIT_PROJECT}_masternode.conf
+    rm -f /tmp/${GIT_PROJECT}_masternode.conf
 	# create one line per masternode with the data we have
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 		cat >> /tmp/${GIT_PROJECT}_masternode.conf <<-EOF
@@ -279,16 +279,16 @@ function final_call() {
 	echo "eg in /etc/masternodes/${GIT_PROJECT}_n1.conf"	
 
     # place future helper script accordingly
-    cp ${MASTERPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}
-	echo "">> ${MNODE_HELPER}
+    cp ${MASTERPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${GIT_PROJECT}
+	echo "">> ${MNODE_HELPER}_${GIT_PROJECT}
 	
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
-		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}
+		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}_${GIT_PROJECT}
+		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}_${GIT_PROJECT}
 	done
-    echo 'main "$@"' >> ${MNODE_HELPER}
+    echo 'main "$@"' >> ${MNODE_HELPER}_${GIT_PROJECT}
      
-	chmod u+x ${MNODE_HELPER}
+	chmod u+x ${MNODE_HELPER}_${GIT_PROJECT}
 	tput sgr0
 }
 
