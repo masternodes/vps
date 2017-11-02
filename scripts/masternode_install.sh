@@ -46,6 +46,7 @@ function check_ipv6() {
 	if [ -z "${IPV6_INT_BASE}" ]; then
 		echo "we don't have ipv6 range support on this VPS"
 		echo "OUTPUT DOCS LINK HERE!"
+		exit 1
 	fi	
 }
 
