@@ -46,7 +46,7 @@ EOF
 
 # display the help message
 function show_help(){
-    #clear
+    clear
     showbanner
     echo "install.sh, version $SCRIPT_VERSION";
     echo "Usage example:";
@@ -392,7 +392,7 @@ function prepare_mn_interfaces() {
 wipe=0;
 
 # Execute getopt
-ARGS=$(getopt -Qq -o "hp:n:c:r:wu:" -l "help,project:,net:,count:,release:,wipe,update:" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wu:" -l "help,project:,net:,count:,release:,wipe,update:" -n "install.sh" -- "$@");
  
 #Bad arguments
 if [ $? -ne 0 ];
