@@ -70,13 +70,13 @@ function show_help() {
 	clear
 	showbanner
 	options=(
-			  "--project | -p project shortname" \
-			  "--net     | -n ip address format ipv4|ipv6" \
-			  "--count   | -c amount of nodes to be installed" \
-			  "--release | -r release to install" \
-			  "--update  | -u update toversion" \
-			  "--wipe    | -w wipe all data (!!!)" \
-			  "--help,-h@print help info" )
+			  "--project project shortname" \
+			  "--net ip address format ipv4|ipv6" \
+			  "--count amount of nodes to be installed" \
+			  "--release release to install" \
+			  "--update,-u@ update toversion" \
+			  "--wipe,-w@ wipe all data (!!!)" \
+			  "--help,-h@ | print help info" )
 	printf "Usage: %s CRYPTO [OPTIONS]\n\nOptions:\n\n" $0
 
 	for option in "${options[@]}";do
