@@ -25,15 +25,12 @@
 #
 # Twitter 	@marsmensch
 
-
-CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}'`
-
-################# DELETE #
-DEFAULT_IPADDR=$(ip addr | grep 'inet ' | grep -Ev 'inet 127|inet 192\.168|inet 10\.' | \
-            sed "s/[[:space:]]*inet \([0-9.]*\)\/.*/\1/")
-RUN_PATH=$(cd `dirname $0`;pwd )
-RUN_OPTS=$*
-################# DELETE #
+# Useful variables
+declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -n; echo`
+declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
+declare -r IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
+declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
+declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
 
 function showbanner() {
 cat << "EOF"
