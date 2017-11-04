@@ -346,13 +346,13 @@ function build_mn_from_source() {
                         mkdir -p ${CODE_DIR} && cd ${SCRIPTPATH}/${CODE_DIR}
                         git clone ${GIT_URL} ${GIT_PROJECT}
                         cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
-                        echo "Checkout desired tag: ${SCVERSION}"
-                        git checkout ${SCVERSION}
+                        echo "Checkout desired tag: ${release}"
+                        git checkout ${release}
                 else
                         echo "code and project dirs exist, update the git repo and checkout again"
                         cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
                         git pull
-                        git checkout ${SCVERSION}
+                        git checkout ${release}
                 fi
 
                 # print ascii banner if a logo exists
