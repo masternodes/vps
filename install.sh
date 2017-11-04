@@ -120,6 +120,138 @@ else
 fi
 }
 
+function create_mn_user() {
+
+    # our new mnode unpriv user acc is added 
+    if id "${MNODE_USER}" >/dev/null 2>&1; then
+        echo "user exists already, do nothing"
+    else
+        echo "Adding new system user ${MNODE_USER}"
+        adduser --disabled-password --gecos "" ${MNODE_USER}
+    fi
+    
+}
+
+function create_mn_dirs() {
+    # individual data dirs for now to avoid problems
+    echo "Creating masternode directories"
+    mkdir -p ${MNODE_CONF_BASE}
+	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+	    if [ ! -d "${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}" ]; then
+	         echo "creating data directory ${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}"
+             mkdir -p ${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}
+        fi
+	done    
+}
+
+function configure_firewall() {
+    echo "Configuring firewall rules"
+	# disallow everything except ssh and masternode inbound ports
+	ufw default deny
+	ufw logging on
+	ufw allow ${SSH_INBOUND_PORT}/tcp
+	# KISS, its always the same port for all interfaces
+	ufw allow ${MNODE_INBOUND_PORT}/tcp
+	# This will only allow 6 connections every 30 seconds from the same IP address.
+	ufw limit OpenSSH	
+	ufw --force enable 
+}
+
+function create_mn_configuration() {
+        # create one config file per masternode
+        for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+        PASS=$(date | md5sum | cut -c1-24)
+
+			# we dont want to overwrite an existing config file
+			if [ ! -f ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf ]; then
+                echo "config doesn't exist, generate it!"
+                
+				# if a template exists, use this instead of the default
+				if [ -e config/${GIT_PROJECT}/${GIT_PROJECT}.conf ]; then
+					echo "configuration template for ${GIT_PROJECT} found, use this instead"
+					cp ${MASTERPATH}/config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+				else
+					echo "No ${GIT_PROJECT} template found, using the default configuration template"			
+					cp ${MASTERPATH}/config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+				fi
+				# replace placeholders
+				echo "running sed on file ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"
+				sed -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+										   
+			fi        
+			
+        done
+}
+
+function create_control_configuration() {
+    rm -f /tmp/${GIT_PROJECT}_masternode.conf
+	# create one line per masternode with the data we have
+	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+		cat >> /tmp/${GIT_PROJECT}_masternode.conf <<-EOF
+			${GIT_PROJECT}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${GIT_PROJECT}MN${NUM} COLLATERAL_TX_FOR_${GIT_PROJECT}MN${NUM} OUTPUT_NO_FOR_${GIT_PROJECT}MN${NUM}	
+		EOF
+	done
+}
+
+function create_systemd_configuration() {
+	# create one config file per masternode
+	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+	PASS=$(date | md5sum | cut -c1-24)
+		echo "(over)writing systemd config file ${SYSTEMD_CONF}/${GIT_PROJECT}_n${NUM}.service"
+		cat > ${SYSTEMD_CONF}/${GIT_PROJECT}_n${NUM}.service <<-EOF
+			[Unit]
+			Description=${GIT_PROJECT} distributed currency daemon
+			After=network.target
+                 
+			[Service]
+			User=${MNODE_USER}
+			Group=${MNODE_USER}
+         	
+			Type=forking
+			PIDFile=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}/${GIT_PROJECT}.pid
+			ExecStart=${MNODE_DAEMON} -daemon -pid=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}/${GIT_PROJECT}.pid \
+			-conf=${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf -datadir=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}
+       		 
+			Restart=always
+			RestartSec=5
+			PrivateTmp=true
+			TimeoutStopSec=60s
+			TimeoutStartSec=5s
+			StartLimitInterval=120s
+			StartLimitBurst=15
+         	
+			[Install]
+			WantedBy=multi-user.target			
+		EOF
+	done
+}
+
+function set_permissions() {
+	# maybe add a sudoers entry later
+	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE}
+}
+
+function cleanup_after() {
+	apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoremove
+	apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoclean
+
+	echo "kernel.randomize_va_space=1" > /etc/sysctl.conf
+	echo "net.ipv4.conf.all.rp_filter=1" >> /etc/sysctl.conf
+	echo "net.ipv4.conf.all.accept_source_route=0" >> /etc/sysctl.conf
+	echo "net.ipv4.icmp_echo_ignore_broadcasts=1" >> /etc/sysctl.conf
+	echo "net.ipv4.conf.all.log_martians=1" >> /etc/sysctl.conf
+	echo "net.ipv4.conf.default.log_martians=1" >> /etc/sysctl.conf
+	echo "net.ipv4.conf.all.accept_redirects=0" >> /etc/sysctl.conf
+	echo "net.ipv6.conf.all.accept_redirects=0" >> /etc/sysctl.conf
+	echo "net.ipv4.conf.all.send_redirects=0" >> /etc/sysctl.conf
+	echo "kernel.sysrq=0" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_timestamps=0" >> /etc/sysctl.conf
+	echo "net.ipv4.tcp_syncookies=1" >> /etc/sysctl.conf
+	echo "net.ipv4.icmp_ignore_bogus_error_responses=1" >> /etc/sysctl.conf
+	sysctl -p
+	
+}
+
 # source the default and desired crypto configuration files
 function source_config() {
     SETUP_CONF_FILE="${SCRIPTPATH}/config/${project}/${project}.env" 
@@ -134,8 +266,18 @@ function source_config() {
 		echo "running installer script, NOT YET"		
 		#source scripts/masternode_install.sh ${1}
 		
+		# main block of function logic starts here
 		build_mn_from_source
 		prepare_mn_interfaces
+		prepare_mn_interfaces
+		create_mn_user
+		create_mn_dirs
+		configure_firewall      
+		create_mn_configuration
+		create_control_configuration
+		create_systemd_configuration 
+		set_permissions
+		cleanup_after 		
 	else
 		echo "required file ${SETUP_CONF_FILE} does not exist, abort!"
 		exit 1   
