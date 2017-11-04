@@ -28,7 +28,6 @@
 # Useful variables
 declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -n; echo`
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
-declare -r IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
 
@@ -61,6 +60,8 @@ function check_distro() {
 }
 
 function check_ipv6() {
+    
+    declare -r IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 	# check for vultr ipv6 box active
 	if [ -z "${IPV6_INT_BASE}" ]; then
 		echo "we don't have ipv6 range support on this VPS, please switch to ipv4 with option -n 4"
