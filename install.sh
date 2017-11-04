@@ -32,6 +32,19 @@ declare -r IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | 
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
 
+
+function showbanner() {
+cat << "EOF"
+ ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
+ ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
+ ██╔██╗ ██║██║   ██║██║  ██║█████╗  ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
+ ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
+ ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
+ ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+                                                             ╚╗ @marsmensch 2016-2017 ╔╝                   				
+EOF
+}
+
 function check_distro() {
 	# currently only for Ubuntu 16.04
 	if [[ -r /etc/os-release ]]; then
@@ -47,16 +60,44 @@ function check_distro() {
 	fi
 }
 
-function showbanner() {
-cat << "EOF"
- ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
- ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
- ██╔██╗ ██║██║   ██║██║  ██║█████╗  ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
- ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
- ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
- ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-                                                             ╚╗ @marsmensch 2016-2017 ╔╝                   				
-EOF
+function check_ipv6() {
+	# check for vultr ipv6 box active
+	if [ -z "${IPV6_INT_BASE}" ]; then
+		echo "we don't have ipv6 range support on this VPS, please switch to ipv4 with option -n 4"
+		echo "OUTPUT DOCS LINK HERE!"
+		exit 1
+	fi	
+}
+
+function install_packages() {
+	# development and build packages
+	# these are common on all cryptos
+	echo "Package installation!"
+	apt-get -qq update
+	apt-get -qqy -o=Dpkg::Use-Pty=0 install build-essential g++ \
+	protobuf-compiler libboost-all-dev autotools-dev \
+    automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
+    make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
+    libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
+    libgmp3-dev libevent-dev jp2a
+}
+
+function swaphack() { 
+#check if swap is available
+if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
+	echo "No proper swap, creating it"
+	# needed because ant servers are ants
+	rm -f /var/mnode_swap.img
+	dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${MNODE_SWAPSIZE}
+	chmod 0600 /var/mnode_swap.img
+	mkswap /var/mnode_swap.img
+	swapon /var/mnode_swap.img
+	echo '/var/mnode_swap.img none swap sw 0 0' | tee -a /etc/fstab
+	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
+	echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		
+else
+	echo "All good, we have a swap"	
+fi
 }
 
 # source the default and desired crypto configuration files
@@ -107,6 +148,11 @@ function source_config() {
         echo "YOU will have some mamual work to do, see xxxx for some"
         echo "details how to add multiple ipv4 addresses on vultr"
     fi		
+
+	# user opted for ipv6 (default), so we have to check for ipv6 support
+	if [ "$net" = "6"]; then
+         check_ipv6
+	fi
 	
 }
 
@@ -236,7 +282,9 @@ source ${SCRIPTPATH}/config/default.env
 main() {
     #showbanner
     check_distro
-
+    check_vultr
+    swaphack
+    install_packages
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
     echo "START DEFAULTS => "
 	echo "SCRIPT_VERSION:       $SCRIPT_VERSION"
