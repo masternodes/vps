@@ -46,7 +46,7 @@ EOF
 
 # display the help message
 function show_help(){
-    clear
+    #clear
     showbanner
     echo "install.sh, version $SCRIPT_VERSION";
     echo "Usage example:";
