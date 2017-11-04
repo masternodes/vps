@@ -195,7 +195,8 @@ fi
 #
 # source default config before everything else
 ls -lah 
-source ${MASTERPATH}/config/default.env
+ls -lah ${SCRIPTPATH}/config/default.env
+source ${SCRIPTPATH}/config/default.env
 #
 #################################################
 
