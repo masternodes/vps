@@ -122,7 +122,9 @@ fi
 
 # source the default and desired crypto configuration files
 function source_config() {
-    SETUP_CONF_FILE="${SCRIPTPATH}/config/${project}/${project}.env"    
+    SETUP_CONF_FILE="${SCRIPTPATH}/config/${project}/${project}.env" 
+    
+    ls -lah ${SETUP_CONF_FILE}   
     
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		#echo "read default config"	
