@@ -204,7 +204,19 @@ source ${SCRIPTPATH}/config/default.env
 if [ -z "$count" ]
 then
     count=${SETUP_MNODES_COUNT}
-    echo "COUNT EMPTY, setting to default"
+    echo "COUNT EMPTY, setting to default: ${SETUP_MNODES_COUNT}"
+fi
+
+if [ -z "$release" ]
+then
+    release=${SCVERSION}
+    echo "release EMPTY, setting to proj default: ${SCVERSION}"
+fi
+
+if [ -z "$net" ]
+then
+    net=${NETWORK_TYPE}
+    echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
 fi
 
 main() {
