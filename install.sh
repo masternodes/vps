@@ -62,6 +62,26 @@ EOF
 # source the default and desired crypto configuration files
 function source_config() {
     SETUP_CONF_FILE="config/${1}/${1}.env"
+    
+	# Check required arguments
+	if [ -z "$count" ]
+	then
+		count=${SETUP_MNODES_COUNT}
+		echo "COUNT EMPTY, setting to default: ${SETUP_MNODES_COUNT}"
+	fi
+
+	if [ -z "$release" ]
+	then
+		release=${SCVERSION}
+		echo "release EMPTY, setting to proj default: ${SCVERSION}"
+	fi
+
+	if [ -z "$net" ]
+	then
+		net=${NETWORK_TYPE}
+		echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
+	fi    
+    
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		#echo "read default config"	
 		#source config/default.env
@@ -199,25 +219,6 @@ source ${SCRIPTPATH}/config/default.env
 # 
 # [ -u "$update_only" ]  && echo "===========>> update_only, replace daemon!" && cat ${CONFIG_PATH} && exit 0
 
-
-# Check required arguments
-if [ -z "$count" ]
-then
-    count=${SETUP_MNODES_COUNT}
-    echo "COUNT EMPTY, setting to default: ${SETUP_MNODES_COUNT}"
-fi
-
-if [ -z "$release" ]
-then
-    release=${SCVERSION}
-    echo "release EMPTY, setting to proj default: ${SCVERSION}"
-fi
-
-if [ -z "$net" ]
-then
-    net=${NETWORK_TYPE}
-    echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
-fi
 
 main() {
     showbanner
