@@ -262,9 +262,9 @@ function set_permissions() {
 }
 
 function wipe_all() {
-
+    
+    echo "PROJECT TO DELETE IS: ${project} xxxx"
 	rm -f /etc/masternodes/${project}_n*.conf
-	rm -rf /var/lib/masternodes/${project}*/*
 	rmdir --ignore-fail-on-non-empty -p /var/lib/masternodes/${project}*
 	rm -f /etc/systemd/system/${project}_n*.service
 	rm -f ${MNODE_DAEMON}
