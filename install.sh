@@ -215,16 +215,16 @@ do
 done
 
 
-[ -n "${count}" ] && echo "COUNT: ${count}" && count="${SETUP_MNODES_COUNT}"
-[ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
-[ -n "${user}" ] && DEFAULT_USER="${user}"
-[ -n "${passwd}" ] && DEFAULT_PAWD="${passwd}"
-[ -n "${whitelist_ipaddrs}" ] && WHITE_LIST_NET="${whitelist_ipaddrs}"
-[ -n "${whitelist}" ] && WHITE_LIST="${whitelist}"
-
-generate_config "${DEFAULT_IPADDR}" "${WHITE_LIST}" "${WHITE_LIST_NET}"
-
-[ -u "$update_only" ]  && echo "===========>> update_only, replace daemon!" && cat ${CONFIG_PATH} && exit 0
+# [ -n "${count}" ] && echo "COUNT: ${count}" && count="${SETUP_MNODES_COUNT}"
+# [ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
+# [ -n "${user}" ] && DEFAULT_USER="${user}"
+# [ -n "${passwd}" ] && DEFAULT_PAWD="${passwd}"
+# [ -n "${whitelist_ipaddrs}" ] && WHITE_LIST_NET="${whitelist_ipaddrs}"
+# [ -n "${whitelist}" ] && WHITE_LIST="${whitelist}"
+# 
+# generate_config "${DEFAULT_IPADDR}" "${WHITE_LIST}" "${WHITE_LIST_NET}"
+# 
+# [ -u "$update_only" ]  && echo "===========>> update_only, replace daemon!" && cat ${CONFIG_PATH} && exit 0
 
 
 main() {
