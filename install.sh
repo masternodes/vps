@@ -25,7 +25,7 @@
 #
 # Twitter 	@marsmensch
 
-SETUP_CONF_FILE="config/${1}/${1}.env"
+SETUP_CONF_FILE="config/${CODENAME}/${CODENAME}.env"
 SETUP_MNODES_COUNT=${2}
 CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}'`
 
