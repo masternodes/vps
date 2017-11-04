@@ -70,9 +70,10 @@ function source_config() {
 function show_help(){
 	clear
 	showbanner
-    echo "test - test";
+	echo "project is a required parameter !";
+    echo "";
     echo "Usage example:";
-    echo "test (-p|--project) string [(-h|--help)] [(-n|--net) value] [(-c|--count) value] [(-r|--release) value] [(-w|--wipe)] [(-u|--update) value]";
+    echo "install.sh (-p|--project) string [(-h|--help)] [(-n|--net) value] [(-c|--count) value] [(-r|--release) value] [(-w|--wipe)] [(-u|--update) value]";
     echo "Options:";
     echo "-h or --help: Displays this information.";
     echo "-p or --project string: Project to be installed. Required.";
@@ -212,7 +213,6 @@ done
 # Check required arguments
 if [ -z "$project" ]
 then
-    echo "project is required";
     show_help;
 fi
  
