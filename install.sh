@@ -185,13 +185,6 @@ do
  
 done
 
-# Check required arguments
-if [ -z "$count" ]
-then
-    count=${SETUP_MNODES_COUNT}
-    echo "COUNT EMPTY, setting to default"
-fi
-
 #################################################
 #
 # source default config before everything else
@@ -211,6 +204,13 @@ source ${SCRIPTPATH}/config/default.env
 # 
 # [ -u "$update_only" ]  && echo "===========>> update_only, replace daemon!" && cat ${CONFIG_PATH} && exit 0
 
+
+# Check required arguments
+if [ -z "$count" ]
+then
+    count=${SETUP_MNODES_COUNT}
+    echo "COUNT EMPTY, setting to default"
+fi
 
 main() {
     showbanner
