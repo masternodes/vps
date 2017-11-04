@@ -1,0 +1,254 @@
+#!/bin/bash
+#  ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
+#  ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
+#  ██╔██╗ ██║██║   ██║██║  ██║█████╗  ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
+#  ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
+#  ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
+#  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+#                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
+#                   
+# version 	0.7-alpha
+# date    	2017-11-03
+#
+# function	masternode setup script
+#			This scripts needs to be run as root
+# 			to make services start persistent
+#
+# Twitter 	@marsmensch
+#
+
+VERSION="1.3.2"
+INSTALL_FROM="compile"
+DEFAULT_PORT="2016"
+DEFAULT_USER=""
+DEFAULT_PAWD=""
+WHITE_LIST_NET=""
+WHITE_LIST=""
+SCRIPT_HOST="https://public.sockd.info"
+PACKAGE_NAME="dante_1.3.2-1_$(uname -m).deb"
+COLOR_PATH="/etc/default/color"
+
+# TODO: REPLACE ALL OF THIS WITH THE DEFAULT ENV STUFF IN RUNME.SH
+
+BIN_DIR="/etc/danted"
+BIN_PATH="/etc/danted/sbin/sockd"
+CONFIG_PATH="/etc/danted/sockd.conf"
+BIN_SCRIPT="/etc/init.d/sockd"
+
+DEFAULT_IPADDR=$(ip addr | grep 'inet ' | grep -Ev 'inet 127|inet 192\.168|inet 10\.' | \
+            sed "s/[[:space:]]*inet \([0-9.]*\)\/.*/\1/")
+RUN_PATH=$(cd `dirname $0`;pwd )
+RUN_OPTS=$*
+
+##################------------Func()---------#####################################
+remove_install(){
+    [ -s "${BIN_SCRIPT}" ] && ${BIN_SCRIPT} stop > /dev/null 2>&1
+    [ -f "${BIN_SCRIPT}" ] && rm "${BIN_SCRIPT}"
+    [ -n "$BIN_DIR" ] && rm -r "$BIN_DIR"
+}
+
+detect_install(){
+    if [ -s "${BIN_PATH}" ];then
+        echo "dante socks5 already install"
+        ${BIN_PATH} -v
+    fi
+}
+
+generate_config_ip(){
+    local ipaddr="$1"
+    local port="$2"
+
+    cat <<EOF
+# Generate interface ${ipaddr}
+internal: ${ipaddr}  port = ${port}
+external: ${ipaddr}
+
+EOF
+}
+
+generate_config_iplist(){
+    local ipaddr_list="$1"
+    local port="$2"
+
+    [ -z "${ipaddr_list}" ] && return 1
+    [ -z "${port}" ] && return 2
+
+    for ipaddr in ${ipaddr_list};do
+        generate_config_ip ${ipaddr} ${port} >> ${CONFIG_PATH}
+    done
+
+    ipaddr_array=($ipaddr_list)
+
+    if [ ${#ipaddr_array[@]} -gt 1 ];then
+        echo "external.rotation: same-same" >> ${CONFIG_PATH}
+    fi
+}
+
+generate_config_static(){
+    cat <<EOF
+method: pam none
+clientmethod: none
+user.privileged: root
+user.notprivileged: sockd
+logoutput: /var/log/sockd.log
+
+client pass {
+        from: 0.0.0.0/0  to: 0.0.0.0/0
+}
+client block {
+        from: 0.0.0.0/0 to: 0.0.0.0/0
+}
+EOF
+}
+generate_config_white(){
+    local white_ipaddr="$1"
+
+    [ -z "${white_ipaddr}" ] && return 1
+
+    # x.x.x.x/32
+    for ipaddr_range in ${white_ipaddr};do
+        cat <<EOF
+#------------ Network Trust: ${ipaddr_range} ---------------
+pass {
+        from: ${ipaddr_range} to: 0.0.0.0/0
+        method: none
+}
+
+EOF
+    done
+}
+
+generate_config_whitelist(){
+    local whitelist_url="$1"
+
+    if [ -n "${whitelist_url}" ];then
+        ipaddr_list=$(curl -s --insecure -A "Mozilla Server Init" ${whitelist_url})
+        generate_config_white "${ipaddr_list}"
+    fi
+}
+
+generate_config_bottom(){
+    cat <<EOF
+pass {
+        from: 0.0.0.0/0 to: 0.0.0.0/0
+        protocol: tcp udp
+        method: pam
+        log: connect disconnect
+}
+block {
+        from: 0.0.0.0/0 to: 0.0.0.0/0
+        log: connect error
+}
+
+EOF
+}
+
+generate_config(){
+    local ipaddr_list="$1"
+    local whitelist_url="$2"
+    local whitelist_ip="$3"
+
+    mkdir -p ${BIN_DIR}
+
+    echo "# Generate by sockd.info" > ${CONFIG_PATH}
+
+    generate_config_iplist "${ipaddr_list}" ${DEFAULT_PORT} >> ${CONFIG_PATH}
+
+    generate_config_static >> ${CONFIG_PATH}
+    generate_config_white ${whitelist_ip} >> ${CONFIG_PATH}
+    generate_config_whitelist "${whitelist_url}" >> ${CONFIG_PATH}
+    generate_config_bottom  >> ${CONFIG_PATH}
+}
+
+download_file(){
+    local path="$1"
+    local filename="$2"
+    local execute="$3"
+
+    [ -z "${filename}" ] && filename="$path"
+
+    [ -n "$path" ] && \
+        wget -q --no-check-certificate ${SCRIPT_HOST}/${path} -O ${filename}
+
+    [ -f "${filename}" ] && [ -n "${execute}" ] && chmod +x ${filename}
+}
+
+function showbanner() {
+cat << "EOF"
+ ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
+ ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
+ ██╔██╗ ██║██║   ██║██║  ██║█████╗  ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
+ ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
+ ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
+ ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+                                                             ╚╗ @marsmensch 2016-2017 ╔╝                   				
+EOF
+}
+
+##################------------Menu()---------#####################################
+echo "Current Options: $RUN_OPTS"
+for _PARAMETER in $RUN_OPTS
+do
+    case "${_PARAMETER}" in
+      --project=*)
+        project="${_PARAMETER#--crypto=}"
+      ;;    
+      --net=*)  
+        ipaddr_list=$(echo "${_PARAMETER#--net=}" | sed 's/:/\n/g' | sed '/^$/d')
+      ;;
+      --count=*)
+        count="${_PARAMETER#--count=}"
+      ;;
+      --release=*)
+        release="${_PARAMETER#--relese=}"
+      ;;
+      --update|-u)
+        gen_config_only="True" # set some var here
+      ;;
+      --wipe|-w)
+        remove_install # run uninstall function here
+        exit 0
+      ;;      
+      --help|-h)
+        clear
+        showbanner
+        options=(
+                  "--project | -p project shortname" \
+                  "--net     | -n ip address format ipv4|ipv6" \
+                  "--count   | -c amount of nodes to be installed" \
+                  "--release | -r release to install" \
+                  "--update  | -u update toversion" \
+                  "--wipe    | -w wipe all data (!!!)" \            
+                  "--help,-h@print help info" )
+        printf "Usage: %s [OPTIONS]\n\nOptions:\n\n" $0
+
+        for option in "${options[@]}";do
+          printf "  %-20s%s\n" "$( echo ${option} | sed 's/@.*//g')"  "$( echo ${option} | sed 's/.*@//g')"
+        done
+        echo -e "\n"
+        exit 1
+      ;;
+      *)
+         echo "option ${_PARAMETER} is not support"
+         exit 1
+      ;;
+
+    esac
+done
+
+[ -n "${port}" ] && DEFAULT_PORT="${port}"
+[ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
+[ -n "${user}" ] && DEFAULT_USER="${user}"
+[ -n "${passwd}" ] && DEFAULT_PAWD="${passwd}"
+[ -n "${whitelist_ipaddrs}" ] && WHITE_LIST_NET="${whitelist_ipaddrs}"
+[ -n "${whitelist}" ] && WHITE_LIST="${whitelist}"
+
+generate_config "${DEFAULT_IPADDR}" "${WHITE_LIST}" "${WHITE_LIST_NET}"
+
+[ -n "$gen_config_only" ]  && echo "===========>> update config" && cat ${CONFIG_PATH} && exit 0
+
+download_file "script/sockd" "${BIN_SCRIPT}" "execute"
+
+[ -n "$(detect_install)" ] && echo -e "\n[Warning] dante sockd already install." && exit 1
+
+[ -n "$COLOR_PATH" ] && [ ! -s "$COLOR_PATH" ] && download_file "script/color" $COLOR_PATH && . $COLOR_PATH

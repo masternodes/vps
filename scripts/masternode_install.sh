@@ -96,6 +96,37 @@ else
 fi
 }
 
+##################################################
+# to be used later to override parameters with
+# specific keywords eg. like "latest" for 
+# a git release tag with "master" as fallback
+#
+# gets tag from current branch
+# git describe --abbrev=0 --tags 
+#
+# gets tags across all branches, not just the current branch
+# git describe --tags `git rev-list --tags --max-count=1` 
+#
+##################################################
+
+function check_parameters() { 
+#check if swap is available
+if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
+	echo "No proper swap, creating it"
+	# needed because ant servers are ants
+	rm -f /var/mnode_swap.img
+	dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${MNODE_SWAPSIZE}
+	chmod 0600 /var/mnode_swap.img
+	mkswap /var/mnode_swap.img
+	swapon /var/mnode_swap.img
+	echo '/var/mnode_swap.img none swap sw 0 0' | tee -a /etc/fstab
+	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
+	echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		
+else
+	echo "All good, we have a swap"	
+fi
+}
+
 function build_mn_from_source() {
         # daemon not found compile it
         if [ ! -f ${MNODE_DAEMON} ]; then
