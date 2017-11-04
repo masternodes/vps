@@ -50,7 +50,7 @@ function show_help(){
     showbanner
     echo "install.sh, version $SCRIPT_VERSION";
     echo "Usage example:";
-    echo "installsh (-p|--project) string [(-h|--help)] [(-n|--net) int] [(-c|--count) int] [(-r|--release) string] [(-w|--wipe)] [(-u|--update) string]";
+    echo "install.sh (-p|--project) string [(-h|--help)] [(-n|--net) int] [(-c|--count) int] [(-r|--release) string] [(-w|--wipe)] [(-u|--update)]";
     echo "Options:";
     echo "-h or --help: Displays this information.";
     echo "-p or --project string: Project to be installed. REQUIRED.";
@@ -58,7 +58,7 @@ function show_help(){
     echo "-c or --count: Number of masternodes to be installed.";
     echo "-r or --release: Release version to be installed.";
     echo "-w or --wipe: Wipe ALL local data.";
-    echo "-u or --update: Update a specific masternode daemon.";
+    echo "-u or --update: Update a specific masternode daemon. Combine with the -p option";
     exit 1;
 }
 
@@ -132,6 +132,7 @@ function create_mn_user() {
 }
 
 function create_mn_dirs() {
+
     # individual data dirs for now to avoid problems
     echo "Creating masternode directories"
     mkdir -p ${MNODE_CONF_BASE}
@@ -141,9 +142,11 @@ function create_mn_dirs() {
              mkdir -p ${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}
         fi
 	done    
+	
 }
 
 function configure_firewall() {
+
     echo "Configuring firewall rules"
 	# disallow everything except ssh and masternode inbound ports
 	ufw default deny
@@ -154,9 +157,11 @@ function configure_firewall() {
 	# This will only allow 6 connections every 30 seconds from the same IP address.
 	ufw limit OpenSSH	
 	ufw --force enable 
+
 }
 
 function create_mn_configuration() {
+
         # create one config file per masternode
         for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
         PASS=$(date | md5sum | cut -c1-24)
@@ -175,14 +180,14 @@ function create_mn_configuration() {
 				fi
 				# replace placeholders
 				echo "running sed on file ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"
-				sed -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
-										   
-			fi        
-			
+				sed -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf				   
+			fi        			
         done
+        
 }
 
 function create_control_configuration() {
+
     rm -f /tmp/${GIT_PROJECT}_masternode.conf
 	# create one line per masternode with the data we have
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
@@ -190,9 +195,11 @@ function create_control_configuration() {
 			${GIT_PROJECT}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${GIT_PROJECT}MN${NUM} COLLATERAL_TX_FOR_${GIT_PROJECT}MN${NUM} OUTPUT_NO_FOR_${GIT_PROJECT}MN${NUM}	
 		EOF
 	done
+
 }
 
 function create_systemd_configuration() {
+
 	# create one config file per masternode
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 	PASS=$(date | md5sum | cut -c1-24)
@@ -223,14 +230,18 @@ function create_systemd_configuration() {
 			WantedBy=multi-user.target			
 		EOF
 	done
+
 }
 
 function set_permissions() {
+
 	# maybe add a sudoers entry later
 	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE}
+
 }
 
 function cleanup_after() {
+
 	apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoremove
 	apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoclean
 
@@ -253,6 +264,7 @@ function cleanup_after() {
 
 # source the default and desired crypto configuration files
 function source_config() {
+
     SETUP_CONF_FILE="${SCRIPTPATH}/config/${project}/${project}.env" 
         
 	if [ -f ${SETUP_CONF_FILE} ]; then
@@ -266,8 +278,12 @@ function source_config() {
 		#source scripts/masternode_install.sh ${1}
 		
 		# main block of function logic starts here
-		build_mn_from_source
-		prepare_mn_interfaces
+	    # if in update more delete theold daemon first, then proceed
+		if [ "$update" -eq 1 ]; then
+			update_mn_from_source
+		else
+		    build_mn_from_source	 
+		fi
 		prepare_mn_interfaces
 		create_mn_user
 		create_mn_dirs
@@ -352,6 +368,41 @@ function build_mn_from_source() {
         fi
 }
 
+function update_mn_from_source() {
+        # if daemon found
+        # 1) stop services
+        # 2) remove the binary
+        # 3) compile desired version
+        if [ -f ${MNODE_DAEMON} ]; then
+                rm -rf ${MNODE_DAEMON}
+                
+        fi        
+                # if code directory does not exists, we create it clone the src
+                if [ ! -d ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT} ]; then
+                        mkdir -p ${CODE_DIR} && cd ${SCRIPTPATH}/${CODE_DIR}
+                        git clone ${GIT_URL} ${GIT_PROJECT}
+                        cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
+                        echo "Checkout desired tag: ${SCVERSION}"
+                        git checkout ${SCVERSION}
+                else
+                        echo "code and project dirs exist, update the git repo and checkout again"
+                        cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
+                        git pull
+                        git checkout ${SCVERSION}
+                fi
+
+                # print ascii banner if a logo exists
+                echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
+                if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
+                        jp2a -b --colors --width=64 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
+                fi  
+                # compilation starts here
+                source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile
+        else
+                echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
+        fi
+}
+
 function prepare_mn_interfaces() {
 
 	# generate the required ipv6 config
@@ -390,6 +441,7 @@ function prepare_mn_interfaces() {
 
 # Declare vars. Flags initalizing to 0.
 wipe=0;
+update=0;
 
 # Execute getopt
 ARGS=$(getopt -o "hp:n:c:r:wu:" -l "help,project:,net:,count:,release:,wipe,update:" -n "install.sh" -- "$@");
@@ -446,11 +498,7 @@ while true; do
             ;;
         -u|--update)
             shift;
-                    if [ -n "$1" ]; 
-                    then
-                        update="$1";
-                        shift;
-                    fi
+                    update="1";
             ;;
  
         --)
