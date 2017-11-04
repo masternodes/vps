@@ -264,7 +264,7 @@ function set_permissions() {
 function wipe_all() {
 
 	rm -f /etc/masternodes/${GIT_PROJECT}_n*.conf
-	rm -f /var/lib/masternodes/${GIT_PROJECT}*
+	rmdir -f /var/lib/masternodes/${GIT_PROJECT}*
 	rm -f /etc/systemd/system/${GIT_PROJECT}_n*.service
 	rm -f ${MNODE_DAEMON}
 
