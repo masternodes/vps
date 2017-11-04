@@ -31,6 +31,7 @@ declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
+source config/default.env
 
 function showbanner() {
 cat << "EOF"
@@ -48,8 +49,8 @@ EOF
 function source_config() {
     SETUP_CONF_FILE="config/${1}/${1}.env"
 	if [ -f ${SETUP_CONF_FILE} ]; then
-		echo "read default config"	
-		source config/default.env
+		#echo "read default config"	
+		#source config/default.env
 		echo "Script version ${SCRIPT_VERSION}, you picked: ${1}"
 		echo "apply config file for ${1}"		
 		source "${SETUP_CONF_FILE}"
