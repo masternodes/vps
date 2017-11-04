@@ -280,10 +280,9 @@ function source_config() {
 		# main block of function logic starts here
 	    # if in update more delete theold daemon first, then proceed
 		if [ "$update" -eq 1 ]; then
-			update_mn_from_source
-		else
-		    build_mn_from_source	 
+			update_mn_from_source  	 
 		fi
+		build_mn_from_source
 		prepare_mn_interfaces
 		create_mn_user
 		create_mn_dirs
@@ -377,30 +376,6 @@ function update_mn_from_source() {
                 rm -rf ${MNODE_DAEMON}
                 
         fi        
-                # if code directory does not exists, we create it clone the src
-                if [ ! -d ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT} ]; then
-                        mkdir -p ${CODE_DIR} && cd ${SCRIPTPATH}/${CODE_DIR}
-                        git clone ${GIT_URL} ${GIT_PROJECT}
-                        cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
-                        echo "Checkout desired tag: ${SCVERSION}"
-                        git checkout ${SCVERSION}
-                else
-                        echo "code and project dirs exist, update the git repo and checkout again"
-                        cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
-                        git pull
-                        git checkout ${SCVERSION}
-                fi
-
-                # print ascii banner if a logo exists
-                echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
-                if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
-                        jp2a -b --colors --width=64 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
-                fi  
-                # compilation starts here
-                source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile
-        else
-                echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
-        fi
 }
 
 function prepare_mn_interfaces() {
