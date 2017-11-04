@@ -45,7 +45,7 @@ EOF
 }
 
 # display the help message
-function help(){
+function show_help(){
     showbanner
     echo "install.sh - a useful helper";
     echo "Usage example:";
