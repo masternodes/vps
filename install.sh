@@ -215,7 +215,7 @@ do
 done
 
 
-[ -n "${count}" ] && SETUP_MNODES_COUNT="${count}"
+[ -n "${count}" ] && SETUP_MNODES_COUNTs="${count}" && echo "COUNT NOT EMPTY"
 # [ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
 # [ -n "${user}" ] && DEFAULT_USER="${user}"
 # [ -n "${passwd}" ] && DEFAULT_PAWD="${passwd}"
