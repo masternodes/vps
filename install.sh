@@ -77,24 +77,36 @@ function source_config() {
 		exit 1   
 	fi
 
-	# Check required arguments
+    # release is from the default config but can ultimately be
+    # overwritten at runtime
 	if [ -z "$count" ]
 	then
 		count=${SETUP_MNODES_COUNT}
 		echo "COUNT EMPTY, setting to default: ${SETUP_MNODES_COUNT}"
 	fi
 
+    # release is from the default project config but can ultimately be
+    # overwritten at runtime
 	if [ -z "$release" ]
 	then
 		release=${SCVERSION}
 		echo "release EMPTY, setting to proj default: ${SCVERSION}"
 	fi
 
-	if [ -z "$net" ]
-	then
+    # net is from the default config but can ultimately be
+    # overwritten at runtime
+	if [ -z "$net" ]; then
 		net=${NETWORK_TYPE}
 		echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
-	fi	
+	fi
+
+    # TODO: PRINT A BOLD WANRING REGARDING MANUAL IPv$ CONFIG STEPS
+    # AND LINK TO THE CORRESPONDING ARTICLE HERE	
+	# check the exact type of network
+	if [ "$net" = "IP4" ]; then
+        echo "YOU will have some mamual work to do, see xxxx for some"
+        echo "details how to add multiple ipv4 addresses on vultr"
+    fi		
 	
 }
 
