@@ -157,7 +157,6 @@ while true; do
                     if [ -n "$1" ]; 
                     then
                         project="$1";
-                        source_config="$1";
                         shift;
                     fi
             ;;
@@ -233,11 +232,11 @@ generate_config "${DEFAULT_IPADDR}" "${WHITE_LIST}" "${WHITE_LIST_NET}"
 
 
 main() {
-    #source_config ${1}
     echo "PROJECT: ${project}"
     echo "SETUP_MNODES_COUNT: ${count}"
     echo "RELEASE: ${release}"
-    echo "NET: ${net}"    
+    echo "NET: ${net}"
+    source_config ${project}    
 }
 
 main "$@"
