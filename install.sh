@@ -274,14 +274,12 @@ function source_config() {
 		echo "apply config file for ${project}"		
 		source "${SETUP_CONF_FILE}"
 
-		echo "running installer script, NOT YET"		
-		#source scripts/masternode_install.sh ${1}
-		
 		# main block of function logic starts here
 	    # if in update more delete theold daemon first, then proceed
 		if [ "$update" -eq 1 ]; then
 			rm -f ${MNODE_DAEMON}  	 
 		fi
+
         check_distro
         swaphack
         install_packages 		
