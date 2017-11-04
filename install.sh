@@ -165,7 +165,10 @@ while true ; do
         -c|--argc)
             case "$2" in
                 "") shift 2 ;;
-                *) ARG_C=$2 ; shift 2 ;;
+                *) ARG_C=$2
+                   ${PROJECT}=$2
+                   shift 2
+                   ;;
             esac ;;
         --) shift ; break ;;
         *) echo "Internal error!" ; exit 1 ;;
@@ -232,7 +235,7 @@ generate_config "${DEFAULT_IPADDR}" "${WHITE_LIST}" "${WHITE_LIST_NET}"
 
 main() {
     #source_config ${1}
-    echo "PROJECT: ${project}"
+    echo "PROJECT: ${PROJECT}"
     echo "CODENAME: ${CODENAME}"
     echo "SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
     echo "RELEASE: ${release}"
