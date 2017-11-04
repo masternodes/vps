@@ -239,6 +239,7 @@ main() {
     source_config ${project} 
     echo "PROJECT: ${project}"
     echo "SETUP_MNODES_COUNT: ${count}"
+    echo "DEFAULT SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
     echo "RELEASE: ${release}"
     echo "NET: ${net}"       
 }
