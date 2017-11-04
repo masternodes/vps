@@ -26,7 +26,6 @@
 # Twitter 	@marsmensch
 
 
-SETUP_MNODES_COUNT=${2}
 CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}'`
 
 ################# DELETE #
