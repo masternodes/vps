@@ -132,12 +132,6 @@ generate_config(){
 
 ##################------------Menu()---------#####################################
 
-# if (( $# < 1 ));
-# then
-#     show_help
-#     exit 1
-# fi    
-
 # Declare vars. Flags initalizing to 0.
 wipe=0;
  
@@ -163,6 +157,7 @@ while true; do
                     if [ -n "$1" ]; 
                     then
                         project="$1";
+                        source_config="$1";
                         shift;
                     fi
             ;;
@@ -224,46 +219,6 @@ do
  
 done
 
-
-# for _PARAMETER in $RUN_OPTS
-# do
-#     case "${_PARAMETER}" in
-#       --project=*)
-#         CODENAME=${_PARAMETER}
-#         #project="${_PARAMETER#--project=}"
-#         echo "CODENAME: ${CODENAME}"
-#         source_config ${CODENAME}
-#       ;;    
-#       --net=*)  
-#         net=${_PARAMETER} #ipaddr_list=$(echo "${_PARAMETER#--net=}" | sed 's/:/\n/g' | sed '/^$/d')
-#       ;;
-#       --count=*)
-#         SETUP_MNODES_COUNT==${_PARAMETER}
-#         #count="${_PARAMETER#--count=}"
-#         echo "SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
-#       ;;
-#       --release=*)
-#         release="${_PARAMETER}"
-#         #release="${_PARAMETER#--relese=}"
-#       ;;
-#       --update|-u)
-#         update_only="true" # set some var here
-#       ;;
-#       --wipe|-w)
-#         remove_install # run uninstall function here
-#         exit 0
-#       ;;      
-#       --help|-h)
-#         show_help
-#         exit 1
-#       ;;
-#       *)
-#          echo "option ${_PARAMETER} is not support"
-#          exit 1
-#       ;;
-# 
-#     esac
-# done
 
 [ -n "${port}" ] && DEFAULT_PORT="${port}"
 [ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
