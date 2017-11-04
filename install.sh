@@ -137,6 +137,7 @@ function source_config() {
 		#source scripts/masternode_install.sh ${1}
 		
 		build_mn_from_source
+		prepare_mn_interfaces
 	else
 		echo "required file ${SETUP_CONF_FILE} does not exist, abort!"
 		exit 1   
@@ -354,9 +355,8 @@ main() {
     #showbanner
     check_distro
     swaphack
-    install_packages
-    build_mn_from_source 
-    prepare_mn_interfaces    
+    install_packages 
+        
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
     echo "START DEFAULTS => "
 	echo "SCRIPT_VERSION:       $SCRIPT_VERSION"
