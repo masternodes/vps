@@ -151,6 +151,7 @@ do
         CODENAME=${_PARAMETER}
         project="${_PARAMETER#--project=}"
         echo "CODENAME: ${CODENAME}"
+        source_config
       ;;    
       --net=*)  
         net=${_PARAMETER} #ipaddr_list=$(echo "${_PARAMETER#--net=}" | sed 's/:/\n/g' | sed '/^$/d')
