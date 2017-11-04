@@ -354,7 +354,8 @@ function build_mn_from_source() {
                         echo "code and project dirs exist, update the git repo and checkout again"
                         cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
                         git pull
-                        echo "2 Checkout desired tag: ${release}"                        
+                        echo "FIX THIS ERROR WHERE RELEASE IS EMPTY! 2 Checkout desired tag: ${release}" 
+                        sleep 25                       
                         git checkout ${release}
                 fi
 
