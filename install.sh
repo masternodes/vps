@@ -382,7 +382,7 @@ function prepare_mn_interfaces() {
 
 	# generate the required ipv6 config
 	if [ "$net" -eq 4 ]; then
-        "echo IPv4 address generation needs to be done manually atm!"
+        echo "IPv4 address generation needs to be done manually atm!"
 	fi	# end ifneteq4
 	
 }
