@@ -228,16 +228,14 @@ generate_config "${DEFAULT_IPADDR}" "${WHITE_LIST}" "${WHITE_LIST_NET}"
 
 
 main() {
-    echo "PROJECT: ${project}"
-    echo "SETUP_MNODES_COUNT: ${count}"
-    echo "RELEASE: ${release}"
-    echo "NET: ${net}"
     source_config ${project} 
+    echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
     echo "PROJECT: ${project}"
     echo "SETUP_MNODES_COUNT: ${count}"
     echo "DEFAULT SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
     echo "RELEASE: ${release}"
-    echo "NET: ${net}"       
+    echo "NET: ${net}"
+    echo "********************** VALUES AFTER CONFIG SOURCING: ************************"           
 }
 
 main "$@"
