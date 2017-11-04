@@ -45,12 +45,11 @@ EOF
 }
 
 # display the help message
-function show_help(){
-	showbanner
-	echo "project is a required parameter !";
-    echo "";
+function help(){
+    showbanner
+    echo "install.sh - a useful helper";
     echo "Usage example:";
-    echo "install.sh (-p|--project) string [(-h|--help)] [(-n|--net) value] [(-c|--count) value] [(-r|--release) value] [(-w|--wipe)] [(-u|--update) value]";
+    echo "installsh (-p|--project) string [(-h|--help)] [(-n|--net) integer] [(-c|--count) integer] [(-r|--release) string] [(-w|--wipe)] [(-u|--update) string]";
     echo "Options:";
     echo "-h or --help: Displays this information.";
     echo "-p or --project string: Project to be installed. Required.";
@@ -390,7 +389,7 @@ function prepare_mn_interfaces() {
 
 # Declare vars. Flags initalizing to 0.
 wipe=0;
- 
+
 # Execute getopt
 ARGS=$(getopt -o "hp:n:c:r:wu:" -l "help,project:,net:,count:,release:,wipe,update:" -n "install.sh" -- "$@");
  
@@ -466,13 +465,13 @@ then
     show_help;
 fi
  
-# Iterate over rest arguments called $arg
-for arg in "$@"
-do
-    # Your code here (remove example below)
-    echo $arg
- 
-done
+## Iterate over rest arguments called $arg
+# for arg in "$@"
+# do
+#     # Your code here (remove example below)
+#     echo $arg
+#  
+# done
 
 #################################################
 # source default config before everything else
