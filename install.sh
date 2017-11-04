@@ -144,13 +144,13 @@ function source_config() {
     # TODO: PRINT A BOLD WANRING REGARDING MANUAL IPv$ CONFIG STEPS
     # AND LINK TO THE CORRESPONDING ARTICLE HERE	
 	# check the exact type of network
-	if [ "$net" = "4" ]; then
+	if [ "$net" -eq 4 ]; then
         echo "YOU will have some mamual work to do, see xxxx for some"
         echo "details how to add multiple ipv4 addresses on vultr"
     fi		
 
 	# user opted for ipv6 (default), so we have to check for ipv6 support
-	if [ "$net" = "6"]; then
+	if [ "$net" -eq 6 ]; then
          check_ipv6
 	fi
 	
