@@ -215,7 +215,7 @@ do
 done
 
 
-[ -n "${count}" ] && count="${SETUP_MNODES_COUNT}"
+# [ -n "${count}" ] && count="${SETUP_MNODES_COUNT}"
 # [ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
 # [ -n "${user}" ] && DEFAULT_USER="${user}"
 # [ -n "${passwd}" ] && DEFAULT_PAWD="${passwd}"
