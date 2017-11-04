@@ -44,6 +44,25 @@ cat << "EOF"
 EOF
 }
 
+# display the help message
+function show_help(){
+	clear
+	#showbanner
+	echo "project is a required parameter !";
+    echo "";
+    echo "Usage example:";
+    echo "install.sh (-p|--project) string [(-h|--help)] [(-n|--net) value] [(-c|--count) value] [(-r|--release) value] [(-w|--wipe)] [(-u|--update) value]";
+    echo "Options:";
+    echo "-h or --help: Displays this information.";
+    echo "-p or --project string: Project to be installed. Required.";
+    echo "-n or --net: IP address type t be used (ipv4 vs ipv6).";
+    echo "-c or --count: Number of masternodes to be installed.";
+    echo "-r or --release: Release version to be installed.";
+    echo "-w or --wipe: Wipe ALL local data.";
+    echo "-u or --update: Update a specific masternode daemon.";
+    exit 1;
+}
+
 function check_distro() {
 	# currently only for Ubuntu 16.04
 	if [[ -r /etc/os-release ]]; then
@@ -103,7 +122,7 @@ fi
 
 # source the default and desired crypto configuration files
 function source_config() {
-    SETUP_CONF_FILE="config/${1}/${1}.env"    
+    SETUP_CONF_FILE="${SCRIPTPATH}/config/${1}/${1}.env"    
     
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		#echo "read default config"	
@@ -157,23 +176,68 @@ function source_config() {
 	
 }
 
-# display the help message
-function show_help(){
-	clear
-	#showbanner
-	echo "project is a required parameter !";
-    echo "";
-    echo "Usage example:";
-    echo "install.sh (-p|--project) string [(-h|--help)] [(-n|--net) value] [(-c|--count) value] [(-r|--release) value] [(-w|--wipe)] [(-u|--update) value]";
-    echo "Options:";
-    echo "-h or --help: Displays this information.";
-    echo "-p or --project string: Project to be installed. Required.";
-    echo "-n or --net: IP address type t be used (ipv4 vs ipv6).";
-    echo "-c or --count: Number of masternodes to be installed.";
-    echo "-r or --release: Release version to be installed.";
-    echo "-w or --wipe: Wipe ALL local data.";
-    echo "-u or --update: Update a specific masternode daemon.";
-    exit 1;
+function build_mn_from_source() {
+        # daemon not found compile it
+        if [ ! -f ${MNODE_DAEMON} ]; then
+                mkdir -p ${SCRIPTPATH}/${CODE_DIR}
+                # if code directory does not exists, we create it clone the src
+                if [ ! -d ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT} ]; then
+                        mkdir -p ${CODE_DIR} && cd ${SCRIPTPATH}/${CODE_DIR}
+                        git clone ${GIT_URL} ${GIT_PROJECT}
+                        cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
+                        echo "Checkout desired tag: ${SCVERSION}"
+                        git checkout ${SCVERSION}
+                else
+                        echo "code and project dirs exist, update the git repo and checkout again"
+                        cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
+                        git pull
+                        git checkout ${SCVERSION}
+                fi
+
+                # print ascii banner if a logo exists
+                echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
+                if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
+                        jp2a -b --colors --width=64 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
+                fi  
+                # compilation starts here
+                source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile
+        else
+                echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
+        fi
+}
+
+function prepare_mn_interfaces() {
+
+	# generate the required ipv6 config
+	if [ "$net" -eq 6 ]; then
+        # vultr specific, needed to work
+	    sed -ie '/iface ${ETH_INTERFACE} inet6 auto/s/^/#/' ${NETWORK_CONFIG}
+	    
+		# move current config out of the way first
+		cp ${NETWORK_CONFIG} ${NETWORK_CONFIG}.${DATE_STAMP}.bkp
+
+		# create the additional ipv6 interfaces, rc.local because it's more generic 	    
+		for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+
+			# check if the interfaces exist	    
+			ip -6 addr | grep -qi "${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}"
+			if [ $? -eq 0 ]
+			then
+			  echo "IP already exists"
+			else
+			  echo "Creating new IP address for ${GIT_PROJECT} masternode nr ${NUM}"
+			  echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
+			  sleep 2
+			  ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
+			fi	
+		done # end forloop	    
+	fi # end ifneteq6
+
+	# generate the required ipv6 config
+	if [ "$net" -eq 4 ]; then
+        "echo IPv4 address generation needs to be done manually atm!"
+	fi	# end ifneteq4
+	
 }
 
 ##################------------Menu()---------#####################################
@@ -285,6 +349,8 @@ main() {
     check_distro
     swaphack
     install_packages
+    build_mn_from_source 
+    prepare_mn_interfaces    
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
     echo "START DEFAULTS => "
 	echo "SCRIPT_VERSION:       $SCRIPT_VERSION"
