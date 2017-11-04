@@ -373,8 +373,7 @@ function update_mn_from_source() {
         # 2) remove the binary
         # 3) compile desired version
         if [ -f ${MNODE_DAEMON} ]; then
-                rm -rf ${MNODE_DAEMON}
-                
+            rm -rf ${MNODE_DAEMON}
         fi        
 }
 
