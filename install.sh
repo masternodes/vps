@@ -66,8 +66,7 @@ function source_config() {
 		#echo "read default config"	
 		#source config/default.env
 		echo "Script version ${SCRIPT_VERSION}, you picked: ${1}"
-		echo "apply config file for ${1}"
-		ls -lah "${SETUP_CONF_FILE}"		
+		echo "apply config file for ${1}"		
 		source "${SETUP_CONF_FILE}"
 
 		echo "running installer script, NOT YET"		
@@ -186,12 +185,8 @@ do
 done
 
 #################################################
-#
 # source default config before everything else
-ls -lah 
-ls -lah ${SCRIPTPATH}/config/default.env
 source ${SCRIPTPATH}/config/default.env
-#
 #################################################
 
 # [ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
