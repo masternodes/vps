@@ -67,27 +67,22 @@ function source_config() {
 }
 
 # display the help message
-function show_help() {
+function show_help(){
 	clear
 	showbanner
-	options=(
-			  "--project@ project shortname" \
-			  "--net@ ip address format ipv4|ipv6" \
-			  "--count@ amount of nodes to be installed" \
-			  "--release@ release to install" \
-			  "--update,-u@ update toversion" \
-			  "--wipe,-w@ wipe all data (!!!)" \
-			  "--help,-h@ print help info" )
-	printf "Usage: %s CRYPTO [OPTIONS]\n\nOptions:\n\n" $0
-
-	for option in "${options[@]}";do
-	  printf "  %-20s%s\n" "$( echo ${option} | sed 's/@.*//g')"  "$( echo ${option} | sed 's/.*@//g')"
-	done	
-	echo -e "\n"
-	exit 1
+    echo "test - test";
+    echo "Usage example:";
+    echo "test (-p|--project) string [(-h|--help)] [(-n|--net) value] [(-c|--count) value] [(-r|--release) value] [(-w|--wipe)] [(-u|--update) value]";
+    echo "Options:";
+    echo "-h or --help: Displays this information.";
+    echo "-p or --project string: Project to be installed. Required.";
+    echo "-n or --net: IP address type t be used (ipv4 vs ipv6).";
+    echo "-c or --count: Number of masternodes to be installed.";
+    echo "-r or --release: Release version to be installed.";
+    echo "-w or --wipe: Wipe ALL local data.";
+    echo "-u or --update: Update a specific masternode daemon.";
+    exit 1;
 }
-
-
 
 remove_install(){
     [ -s "${BIN_SCRIPT}" ] && ${BIN_SCRIPT} stop > /dev/null 2>&1
@@ -136,54 +131,98 @@ generate_config(){
 
 ##################------------Menu()---------#####################################
 
-if (( $# < 1 ));
+# if (( $# < 1 ));
+# then
+#     show_help
+#     exit 1
+# fi    
+
+# Declare vars. Flags initalizing to 0.
+wipe=0;
+ 
+# Execute getopt
+ARGS=$(getopt -o "hp:n:c:r:wu:" -l "help,project:,net:,count:,release:,wipe,update:" -n "test" -- "$@");
+ 
+#Bad arguments
+if [ $? -ne 0 ];
 then
-    show_help
-    exit 1
-fi    
-
-# “a” and “arga” have optional arguments with default values.
-# “b” and “argb” have no arguments, acting as sort of a flag.
-# “c” and “argc” have required arguments.
-
-
-# NEW:
-# “n” and “number” have an optional argument with a default value of "1".
-
-
-# set an initial value for the flag
-ARG_B=0
-
-# read the options
-TEMP=`getopt -o n::bc: --long number::,argb,argc: -n 'test.sh' -- "$@"`
-eval set -- "$TEMP"
-
-# extract options and their arguments into variables.
-while true ; do
+    help;
+fi
+ 
+eval set -- "$ARGS";
+ 
+while true; do
     case "$1" in
-        -n|--number)
-            case "$2" in
-                "") ARG_A='1' ; shift 2 ;;
-                *) ARG_A=$2 ; shift 2 ;;
-            esac ;;
-        -b|--argb) ARG_B=1 ; shift ;;
-        -n|--argc)
-            case "$2" in
-                "") shift 2 ;;
-                *) ARG_C=$2
-                   PROJECT=$2
-                   shift 2
-                   ;;
-            esac ;;
-        --) shift ; break ;;
-        *) echo "Internal error!" ; exit 1 ;;
+        -h|--help)
+            shift;
+            help;
+            ;;
+        -p|--project)
+            shift;
+                    if [ -n "$1" ]; 
+                    then
+                        project="$1";
+                        shift;
+                    fi
+            ;;
+        -n|--net)
+            shift;
+                    if [ -n "$1" ]; 
+                    then
+                        net="$1";
+                        shift;
+                    fi
+            ;;
+        -c|--count)
+            shift;
+                    if [ -n "$1" ]; 
+                    then
+                        count="$1";
+                        shift;
+                    fi
+            ;;
+        -r|--release)
+            shift;
+                    if [ -n "$1" ]; 
+                    then
+                        release="$1";
+                        shift;
+                    fi
+            ;;
+        -w|--wipe)
+            shift;
+                    wipe="1";
+            ;;
+        -u|--update)
+            shift;
+                    if [ -n "$1" ]; 
+                    then
+                        update="$1";
+                        shift;
+                    fi
+            ;;
+ 
+        --)
+            shift;
+            break;
+            ;;
     esac
 done
-
-# do something with the variables -- in this case the lamest possible one :-)
-echo "ARG_A = $ARG_A"
-echo "ARG_B = $ARG_B"
-echo "ARG_C = $ARG_C"
+ 
+# Check required arguments
+if [ -z "$project" ]
+then
+    echo "project is required";
+    help;
+fi
+ 
+# Iterate over rest arguments called $arg
+for arg in "$@"
+do
+    # Your code here (remove example below)
+    echo $arg
+ 
+done
 
 
 # for _PARAMETER in $RUN_OPTS
