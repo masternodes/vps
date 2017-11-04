@@ -280,8 +280,11 @@ function source_config() {
 		# main block of function logic starts here
 	    # if in update more delete theold daemon first, then proceed
 		if [ "$update" -eq 1 ]; then
-			update_mn_from_source  	 
+			rm -f ${MNODE_DAEMON}  	 
 		fi
+        check_distro
+        swaphack
+        install_packages 		
 		build_mn_from_source
 		prepare_mn_interfaces
 		create_mn_user
@@ -367,17 +370,6 @@ function build_mn_from_source() {
         fi
 }
 
-function update_mn_from_source() {
-
-        # if daemon found
-        # 1) stop services
-        # 2) remove the binary
-        # 3) compile desired version
-        if [ -f ${MNODE_DAEMON} ]; then
-            rm -rf ${MNODE_DAEMON}
-        fi        
-
-}
 
 function prepare_mn_interfaces() {
 
@@ -516,9 +508,6 @@ source ${SCRIPTPATH}/config/default.env
 
 main() {
     showbanner
-    check_distro
-    swaphack
-    install_packages 
         
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
     echo "START DEFAULTS => "
