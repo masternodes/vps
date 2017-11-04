@@ -46,13 +46,14 @@ EOF
 
 # display the help message
 function show_help(){
+    clear
     showbanner
     echo "install.sh - a useful helper";
     echo "Usage example:";
     echo "installsh (-p|--project) string [(-h|--help)] [(-n|--net) integer] [(-c|--count) integer] [(-r|--release) string] [(-w|--wipe)] [(-u|--update) string]";
     echo "Options:";
     echo "-h or --help: Displays this information.";
-    echo "-p or --project string: Project to be installed. Required.";
+    echo "-p or --project string: Project to be installed. REQUIRED.";
     echo "-n or --net: IP address type t be used (4 vs. 6).";
     echo "-c or --count: Number of masternodes to be installed.";
     echo "-r or --release: Release version to be installed.";
