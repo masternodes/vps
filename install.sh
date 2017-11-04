@@ -31,7 +31,21 @@ declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-source config/default.env
+
+function check_distro() {
+	# currently only for Ubuntu 16.04
+	if [[ -r /etc/os-release ]]; then
+		. /etc/os-release
+		if [[ "${VERSION_ID}" != "16.04" ]]; then
+			echo "This script only supports ubuntu 16.04 LTS, exiting."
+			exit 1
+		fi
+	else
+		# no, thats not ok!
+		echo "This script only supports ubuntu 16.04 LTS, exiting."	
+		exit 1
+	fi
+}
 
 function showbanner() {
 cat << "EOF"
@@ -81,51 +95,6 @@ function show_help(){
     echo "-u or --update: Update a specific masternode daemon.";
     exit 1;
 }
-
-remove_install(){
-    [ -s "${BIN_SCRIPT}" ] && ${BIN_SCRIPT} stop > /dev/null 2>&1
-    [ -f "${BIN_SCRIPT}" ] && rm "${BIN_SCRIPT}"
-    [ -n "$BIN_DIR" ] && rm -r "$BIN_DIR"
-}
-
-generate_config_ip(){
-    local ipaddr="$1"
-    local port="$2"
-
-    cat <<EOF
-# Generate interface ${ipaddr}
-internal: ${ipaddr}  port = ${port}
-external: ${ipaddr}
-
-EOF
-}
-
-generate_config_white(){
-    local white_ipaddr="$1"
-
-    [ -z "${white_ipaddr}" ] && return 1
-
-    # x.x.x.x/32
-    for ipaddr_range in ${white_ipaddr};do
-        cat <<EOF
-#------------ Network Trust: ${ipaddr_range} ---------------
-pass {
-        from: ${ipaddr_range} to: 0.0.0.0/0
-        method: none
-}
-
-EOF
-    done
-}
-
-generate_config(){
-    local ipaddr_list="$1"
-    local whitelist_url="$2"
-    local whitelist_ip="$3"
-    echo "in generate config NOW"
-}
-
-
 
 ##################------------Menu()---------#####################################
 
@@ -222,6 +191,12 @@ then
     echo "COUNT EMPTY, setting to default"
 fi
 
+#################################################
+#
+# source default config before everything else
+source ${MASTERPATH}/config/default.env
+#
+#################################################
 
 # [ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
 # [ -n "${user}" ] && DEFAULT_USER="${user}"
@@ -235,6 +210,8 @@ fi
 
 
 main() {
+    showbanner
+    check_distro
     source_config ${project} 
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
     echo "PROJECT: ${project}"
