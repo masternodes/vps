@@ -392,7 +392,7 @@ function prepare_mn_interfaces() {
 wipe=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wu:" -l "help,project:,net:,count:,release:,wipe,update:" -n "install.sh" -- "$@");
+ARGS=$(getopt -Qq -o "hp:n:c:r:wu:" -l "help,project:,net:,count:,release:,wipe,update:" -n "install.sh" -- "$@");
  
 #Bad arguments
 if [ $? -ne 0 ];
