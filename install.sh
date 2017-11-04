@@ -25,7 +25,7 @@
 #
 # Twitter 	@marsmensch
 
-SETUP_CONF_FILE="config/${CODENAME}/${CODENAME}.env"
+
 SETUP_MNODES_COUNT=${2}
 CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}'`
 
@@ -50,6 +50,7 @@ EOF
 
 # source the default and desired crypto configuration files
 function source_config() {
+    SETUP_CONF_FILE="config/${1}/${1}.env"
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		echo "read default config"	
 		source config/default.env
