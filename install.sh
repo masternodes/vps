@@ -368,6 +368,7 @@ function build_mn_from_source() {
 }
 
 function update_mn_from_source() {
+
         # if daemon found
         # 1) stop services
         # 2) remove the binary
@@ -375,6 +376,7 @@ function update_mn_from_source() {
         if [ -f ${MNODE_DAEMON} ]; then
             rm -rf ${MNODE_DAEMON}
         fi        
+
 }
 
 function prepare_mn_interfaces() {
