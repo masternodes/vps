@@ -133,6 +133,8 @@ function source_config() {
 
 		echo "running installer script, NOT YET"		
 		#source scripts/masternode_install.sh ${1}
+		
+		build_mn_from_source
 	else
 		echo "required file ${SETUP_CONF_FILE} does not exist, abort!"
 		exit 1   
