@@ -61,8 +61,22 @@ EOF
 
 # source the default and desired crypto configuration files
 function source_config() {
-    SETUP_CONF_FILE="config/${1}/${1}.env"
+    SETUP_CONF_FILE="config/${1}/${1}.env"    
     
+	if [ -f ${SETUP_CONF_FILE} ]; then
+		#echo "read default config"	
+		#source config/default.env
+		echo "Script version ${SCRIPT_VERSION}, you picked: ${1}"
+		echo "apply config file for ${1}"		
+		source "${SETUP_CONF_FILE}"
+
+		echo "running installer script, NOT YET"		
+		#source scripts/masternode_install.sh ${1}
+	else
+		echo "required file ${SETUP_CONF_FILE} does not exist, abort!"
+		exit 1   
+	fi
+
 	# Check required arguments
 	if [ -z "$count" ]
 	then
@@ -80,21 +94,8 @@ function source_config() {
 	then
 		net=${NETWORK_TYPE}
 		echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
-	fi    
-    
-	if [ -f ${SETUP_CONF_FILE} ]; then
-		#echo "read default config"	
-		#source config/default.env
-		echo "Script version ${SCRIPT_VERSION}, you picked: ${1}"
-		echo "apply config file for ${1}"		
-		source "${SETUP_CONF_FILE}"
-
-		echo "running installer script, NOT YET"		
-		#source scripts/masternode_install.sh ${1}
-	else
-		echo "required file ${SETUP_CONF_FILE} does not exist, abort!"
-		exit 1   
-	fi
+	fi	
+	
 }
 
 # display the help message
