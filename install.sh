@@ -122,13 +122,13 @@ fi
 
 # source the default and desired crypto configuration files
 function source_config() {
-    SETUP_CONF_FILE="${SCRIPTPATH}/config/${1}/${1}.env"    
+    SETUP_CONF_FILE="${SCRIPTPATH}/config/${project}/${project}.env"    
     
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		#echo "read default config"	
 		#source config/default.env
-		echo "Script version ${SCRIPT_VERSION}, you picked: ${1}"
-		echo "apply config file for ${1}"		
+		echo "Script version ${SCRIPT_VERSION}, you picked: ${project}"
+		echo "apply config file for ${project}"		
 		source "${SETUP_CONF_FILE}"
 
 		echo "running installer script, NOT YET"		
@@ -167,11 +167,13 @@ function source_config() {
 	if [ "$net" -eq 4 ]; then
         echo "YOU will have some mamual work to do, see xxxx for some"
         echo "details how to add multiple ipv4 addresses on vultr"
+        NETWORK_TYPE=4
     fi		
 
 	# user opted for ipv6 (default), so we have to check for ipv6 support
 	if [ "$net" -eq 6 ]; then
          check_ipv6
+         NETWORK_TYPE=6
 	fi
 	
 }
@@ -383,7 +385,8 @@ main() {
     echo "RELEASE: ${release}"
     echo "PROJECT: ${project}"
     echo "SETUP_MNODES_COUNT: ${count}"
-    echo "NETWORK_TYPE: ${NETWORK_TYPE}"    
+    echo "NETWORK_TYPE: ${NETWORK_TYPE}"
+    echo "NETWORK_TYPE: ${net}"         
        
     echo "END OPTIONS => "
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"           
