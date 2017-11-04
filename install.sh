@@ -50,7 +50,7 @@ function show_help(){
     showbanner
     echo "install.sh - a useful helper";
     echo "Usage example:";
-    echo "installsh (-p|--project) string [(-h|--help)] [(-n|--net) integer] [(-c|--count) integer] [(-r|--release) string] [(-w|--wipe)] [(-u|--update) string]";
+    echo "installsh (-p|--project) string [(-h|--help)] [(-n|--net) int] [(-c|--count) int] [(-r|--release) string] [(-w|--wipe)] [(-u|--update) string]";
     echo "Options:";
     echo "-h or --help: Displays this information.";
     echo "-p or --project string: Project to be installed. REQUIRED.";
