@@ -142,6 +142,17 @@ then
     exit 1
 fi    
 
+# “a” and “arga” have optional arguments with default values.
+# “b” and “argb” have no arguments, acting as sort of a flag.
+# “c” and “argc” have required arguments.
+
+# set an initial value for the flag
+ARG_B=0
+
+# read the options
+TEMP=`getopt -o a::bc: --long arga::,argb,argc: -n 'test.sh' -- "$@"`
+eval set -- "$TEMP"
+
 # extract options and their arguments into variables.
 while true ; do
     case "$1" in
@@ -165,42 +176,6 @@ done
 echo "ARG_A = $ARG_A"
 echo "ARG_B = $ARG_B"
 echo "ARG_C = $ARG_C"
-
-
-# parse options here
-while getopts "pncr:u:w:h" opt; do
-  case ${opt} in
-    h ) # process option h
-        show_help
-      ;;
-    p ) # process option p
-        CODENAME=${OPTARG}
-      ;;
-    n ) # process option n
-        NET=${OPTARG}  
-      ;;
-    c ) # process option c
-        SETUP_MNODES_COUNT=${OPTARG}
-      ;;
-    r ) # process option r
-        SCVERSION=${OPTARG}
-      ;;
-    u ) # process option u
-        echo "run update function with project as parameter here"
-      ;;
-    w ) # process option w
-        echo "run wipe function with project as parameter here"
-      ;;            
-    \? ) 
-        echo "Invalid option: $OPTARG" 1>&2
-        echo "Usage: cmd [-h] [-t]"
-      ;;
-    : )
-      echo "Invalid option: $OPTARG requires an argument" 1>&2
-      ;;      
-  esac
-done
-shift $((OPTIND -1))
 
 
 # for _PARAMETER in $RUN_OPTS
