@@ -70,10 +70,10 @@ function show_help() {
 	clear
 	showbanner
 	options=(
-			  "--project project shortname" \
-			  "--net ip address format ipv4|ipv6" \
-			  "--count amount of nodes to be installed" \
-			  "--release release to install" \
+			  "--project@ project shortname" \
+			  "--net@ ip address format ipv4|ipv6" \
+			  "--count@ amount of nodes to be installed" \
+			  "--release@ release to install" \
 			  "--update,-u@ update toversion" \
 			  "--wipe,-w@ wipe all data (!!!)" \
 			  "--help,-h@ | print help info" )
