@@ -277,6 +277,7 @@ function source_config() {
 		# main block of function logic starts here
 	    # if in update more delete theold daemon first, then proceed
 		if [ "$update" -eq 1 ]; then
+			echo "deleting the old daemon NOW!"
 			rm -f ${MNODE_DAEMON}  	 
 		fi
 
@@ -353,6 +354,7 @@ function build_mn_from_source() {
                         echo "code and project dirs exist, update the git repo and checkout again"
                         cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
                         git pull
+                        echo "Checkout desired tag: ${release}"                        
                         git checkout ${release}
                 fi
 
