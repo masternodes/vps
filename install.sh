@@ -214,8 +214,14 @@ do
  
 done
 
+# Check required arguments
+if [ -z "$count" ]
+then
+    count=${SETUP_MNODES_COUNT}
+    echo "COUNT EMPTY, setting to default"
+fi
 
-[ -z "${count}" ] && SETUP_MNODES_COUNTs="${count}" && echo "COUNT EMPTY"
+
 # [ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
 # [ -n "${user}" ] && DEFAULT_USER="${user}"
 # [ -n "${passwd}" ] && DEFAULT_PAWD="${passwd}"
