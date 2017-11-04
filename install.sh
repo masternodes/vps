@@ -282,7 +282,6 @@ source ${SCRIPTPATH}/config/default.env
 main() {
     #showbanner
     check_distro
-    check_vultr
     swaphack
     install_packages
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
