@@ -236,7 +236,11 @@ main() {
     echo "SETUP_MNODES_COUNT: ${count}"
     echo "RELEASE: ${release}"
     echo "NET: ${net}"
-    source_config ${project}    
+    source_config ${project} 
+    echo "PROJECT: ${project}"
+    echo "SETUP_MNODES_COUNT: ${count}"
+    echo "RELEASE: ${release}"
+    echo "NET: ${net}"       
 }
 
 main "$@"
