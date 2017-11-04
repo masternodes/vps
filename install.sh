@@ -142,6 +142,8 @@ then
 fi    
 
 echo "Current Options: $RUN_OPTS"
+echo "SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
+
 for _PARAMETER in $RUN_OPTS
 do
     case "${_PARAMETER}" in
