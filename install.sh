@@ -166,7 +166,7 @@ while true ; do
             case "$2" in
                 "") shift 2 ;;
                 *) ARG_C=$2
-                   ${PROJECT}=$2
+                   PROJECT=$2
                    shift 2
                    ;;
             esac ;;
