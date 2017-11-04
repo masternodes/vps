@@ -146,7 +146,7 @@ echo "Current Options: $RUN_OPTS"
 echo "SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
 
 # parse options here
-while getopts ":pncruwh" opt; do
+while getopts "pncr:u:w:h" opt; do
   case ${opt} in
     h ) # process option h
         show_help
@@ -155,14 +155,19 @@ while getopts ":pncruwh" opt; do
         CODENAME=${OPTARG}
       ;;
     n ) # process option n
+        NET=${OPTARG}  
       ;;
     c ) # process option c
+        SETUP_MNODES_COUNT=${OPTARG}
       ;;
     r ) # process option r
+        SCVERSION=${OPTARG}
       ;;
     u ) # process option u
+        echo "run update function with project as parameter here"
       ;;
     w ) # process option w
+        echo "run wipe function with project as parameter here"
       ;;            
     \? ) 
         echo "Invalid option: $OPTARG" 1>&2
@@ -231,9 +236,10 @@ generate_config "${DEFAULT_IPADDR}" "${WHITE_LIST}" "${WHITE_LIST_NET}"
 main() {
     #source_config ${1}
     echo "PROJECT: ${project}"
-    echo "COUNT: ${count}"
+    echo "CODENAME: ${CODENAME}"
+    echo "SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
     echo "RELEASE: ${release}"
-    echo "NET: ${net}"    
+    echo "NET: ${NET}"    
 }
 
 main "$@"
