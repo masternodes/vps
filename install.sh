@@ -194,6 +194,7 @@ fi
 #################################################
 #
 # source default config before everything else
+ls -lah 
 source ${MASTERPATH}/config/default.env
 #
 #################################################
