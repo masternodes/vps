@@ -100,7 +100,7 @@ function source_config() {
 # display the help message
 function show_help(){
 	clear
-	showbanner
+	#showbanner
 	echo "project is a required parameter !";
     echo "";
     echo "Usage example:";
@@ -221,7 +221,7 @@ source ${SCRIPTPATH}/config/default.env
 
 
 main() {
-    showbanner
+    #showbanner
     check_distro
 
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
