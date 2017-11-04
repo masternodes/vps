@@ -150,7 +150,7 @@ do
     case "${_PARAMETER}" in
       --project=*)
         CODENAME=${_PARAMETER}
-        project="${_PARAMETER#--project=}"
+        #project="${_PARAMETER#--project=}"
         echo "CODENAME: ${CODENAME}"
         source_config ${CODENAME}
       ;;    
@@ -159,11 +159,12 @@ do
       ;;
       --count=*)
         SETUP_MNODES_COUNT==${_PARAMETER}
-        count="${_PARAMETER#--count=}"
+        #count="${_PARAMETER#--count=}"
         echo "SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
       ;;
       --release=*)
-        release="${_PARAMETER#--relese=}"
+        release="${_PARAMETER}"
+        #release="${_PARAMETER#--relese=}"
       ;;
       --update|-u)
         update_only="true" # set some var here
