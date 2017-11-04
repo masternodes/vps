@@ -213,7 +213,7 @@ done
 if [ -z "$project" ]
 then
     echo "project is required";
-    help;
+    show_help;
 fi
  
 # Iterate over rest arguments called $arg
