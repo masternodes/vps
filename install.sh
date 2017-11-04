@@ -514,7 +514,7 @@ fi
 
 # Check required arguments
 if [ "$wipe" -eq 1 ]; then
-	get_confirmation && wipe_all
+	get_confirmation "Would you really like to WIP ALL DATA!?" && wipe_all
 fi		
  
 ## Iterate over rest arguments called $arg
