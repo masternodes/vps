@@ -103,7 +103,7 @@ function source_config() {
     # TODO: PRINT A BOLD WANRING REGARDING MANUAL IPv$ CONFIG STEPS
     # AND LINK TO THE CORRESPONDING ARTICLE HERE	
 	# check the exact type of network
-	if [ "$net" = "IP4" ]; then
+	if [ "$net" = "4" ]; then
         echo "YOU will have some mamual work to do, see xxxx for some"
         echo "details how to add multiple ipv4 addresses on vultr"
     fi		
@@ -243,6 +243,7 @@ main() {
 	echo "SSH_INBOUND_PORT:     ${SSH_INBOUND_PORT}"
 	echo "SYSTEMD_CONF:         ${SYSTEMD_CONF}"
 	echo "NETWORK_CONFIG:       ${NETWORK_CONFIG}"
+	echo "NETWORK_TYPE:         ${NETWORK_TYPE}"	
 	echo "ETH_INTERFACE:        ${ETH_INTERFACE}"
 	echo "MNODE_CONF_BASE:      ${MNODE_CONF_BASE}"
 	echo "MNODE_DATA_BASE:      ${MNODE_DATA_BASE}"
@@ -267,7 +268,9 @@ main() {
     echo "START OPTIONS => "
     echo "RELEASE: ${release}"
     echo "PROJECT: ${project}"
-    echo "SETUP_MNODES_COUNT: ${count}"    
+    echo "SETUP_MNODES_COUNT: ${count}"
+    echo "NETWORK_TYPE: ${NETWORK_TYPE}"    
+       
     echo "END OPTIONS => "
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"           
 }
