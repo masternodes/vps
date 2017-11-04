@@ -76,7 +76,7 @@ function show_help() {
 			  "--release@ release to install" \
 			  "--update,-u@ update toversion" \
 			  "--wipe,-w@ wipe all data (!!!)" \
-			  "--help,-h@ | print help info" )
+			  "--help,-h@ print help info" )
 	printf "Usage: %s CRYPTO [OPTIONS]\n\nOptions:\n\n" $0
 
 	for option in "${options[@]}";do
@@ -146,13 +146,17 @@ for _PARAMETER in $RUN_OPTS
 do
     case "${_PARAMETER}" in
       --project=*)
-        project="${_PARAMETER#--crypto=}"
+        CODENAME=${_PARAMETER}
+        project="${_PARAMETER#--project=}"
+        echo "CODENAME: ${CODENAME}"
       ;;    
       --net=*)  
         net=${_PARAMETER} #ipaddr_list=$(echo "${_PARAMETER#--net=}" | sed 's/:/\n/g' | sed '/^$/d')
       ;;
       --count=*)
+        SETUP_MNODES_COUNT==${_PARAMETER}
         count="${_PARAMETER#--count=}"
+        echo "SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
       ;;
       --release=*)
         release="${_PARAMETER#--relese=}"
