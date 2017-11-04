@@ -66,7 +66,8 @@ function source_config() {
 		#echo "read default config"	
 		#source config/default.env
 		echo "Script version ${SCRIPT_VERSION}, you picked: ${1}"
-		echo "apply config file for ${1}"		
+		echo "apply config file for ${1}"
+		ls -lah "${SETUP_CONF_FILE}"		
 		source "${SETUP_CONF_FILE}"
 
 		echo "running installer script, NOT YET"		
@@ -214,13 +215,39 @@ source ${SCRIPTPATH}/config/default.env
 main() {
     showbanner
     check_distro
-    source_config ${project} 
+
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
-    echo "PROJECT: ${project}"
-    echo "SETUP_MNODES_COUNT: ${count}"
-    echo "DEFAULT SETUP_MNODES_COUNT: ${SETUP_MNODES_COUNT}"
+    echo "START DEFAULTS => "
+	echo "SCRIPT_VERSION:       $SCRIPT_VERSION"
+	echo "SSH_INBOUND_PORT:     ${SSH_INBOUND_PORT}"
+	echo "SYSTEMD_CONF:         ${SYSTEMD_CONF}"
+	echo "NETWORK_CONFIG:       ${NETWORK_CONFIG}"
+	echo "ETH_INTERFACE:        ${ETH_INTERFACE}"
+	echo "MNODE_CONF_BASE:      ${MNODE_CONF_BASE}"
+	echo "MNODE_DATA_BASE:      ${MNODE_DATA_BASE}"
+	echo "MNODE_USER:           ${MNODE_USER}"
+	echo "MNODE_HELPER:         ${MNODE_HELPER}"
+	echo "MNODE_SWAPSIZE:       ${MNODE_SWAPSIZE}"
+	echo "CODE_DIR:             ${CODE_DIR}"
+    echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"	
+    echo "END DEFAULTS => "
+ 
+    source_config ${project}
+    echo "START PROJECT => "
+	echo "CODENAME:             $CODENAME"
+	echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"
+	echo "MNODE_DAEMON:         ${MNODE_DAEMON}"
+	echo "MNODE_INBOUND_PORT:   ${MNODE_INBOUND_PORT}"
+	echo "GIT_URL:              ${GIT_URL}"
+	echo "SCVERSION:            ${SCVERSION}"
+	echo "NETWORK_BASE_TAG:     ${NETWORK_BASE_TAG}"	
+    echo "END PROJECT => "   	
+	     
+    echo "START OPTIONS => "
     echo "RELEASE: ${release}"
-    echo "NET: ${net}"
+    echo "PROJECT: ${project}"
+    echo "SETUP_MNODES_COUNT: ${count}"    
+    echo "END OPTIONS => "
     echo "********************** VALUES AFTER CONFIG SOURCING: ************************"           
 }
 
