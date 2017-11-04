@@ -44,6 +44,27 @@ cat << "EOF"
 EOF
 }
 
+# in response to your edit, here's how you'd create and use a confirm command based on the
+# first version in my answer (it would work similarly with the other two):
+# To use this function:
+#
+# confirm && hg push ssh://..
+# or
+#
+# confirm "Would you really like to do a push?" && hg push ssh://..
+function get_confirmation() {
+    # call with a prompt string or use a default
+    read -r -p "${1:-Are you sure? [y/N]} " response
+    case "$response" in
+        [yY][eE][sS]|[yY]) 
+            true
+            ;;
+        *)
+            false
+            ;;
+    esac
+}
+
 # display the help message
 function show_help(){
     clear
@@ -57,7 +78,7 @@ function show_help(){
     echo "-n or --net: IP address type t be used (4 vs. 6).";
     echo "-c or --count: Number of masternodes to be installed.";
     echo "-r or --release: Release version to be installed.";
-    echo "-w or --wipe: Wipe ALL local data.";
+    echo "-w or --wipe: Wipe ALL local data for a node type. Combine with the -p option";
     echo "-u or --update: Update a specific masternode daemon. Combine with the -p option";
     exit 1;
 }
@@ -240,6 +261,15 @@ function set_permissions() {
 
 }
 
+function wipe_all() {
+
+	rm -f /etc/masternodes/${GIT_PROJECT}_n*.conf
+	rm -f /var/lib/masternodes/${GIT_PROJECT}*
+	rm -f /etc/systemd/system/${GIT_PROJECT}_n*.service
+	rm -f ${MNODE_DAEMON}
+
+}
+
 function cleanup_after() {
 
 	apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoremove
@@ -287,8 +317,7 @@ function source_config() {
 		if [ -z "$release" ]
 		then
 			release=${SCVERSION}
-			echo "release EMPTY, setting to proj default: ${SCVERSION}"
-			sleep 25  
+			echo "release EMPTY, setting to proj default: ${SCVERSION}" 
 		fi
 
 		# net is from the default config but can ultimately be
@@ -482,6 +511,11 @@ if [ -z "$project" ]
 then
     show_help;
 fi
+
+# Check required arguments
+if [ "$wipe" -eq 1 ]; then
+	get_confirmation && wipe_all
+fi		
  
 ## Iterate over rest arguments called $arg
 # for arg in "$@"
