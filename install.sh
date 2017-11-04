@@ -348,13 +348,13 @@ function build_mn_from_source() {
                         mkdir -p ${CODE_DIR} && cd ${SCRIPTPATH}/${CODE_DIR}
                         git clone ${GIT_URL} ${GIT_PROJECT}
                         cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
-                        echo "Checkout desired tag: ${release}"
+                        echo "1 Checkout desired tag: ${release}"
                         git checkout ${release}
                 else
                         echo "code and project dirs exist, update the git repo and checkout again"
                         cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
                         git pull
-                        echo "Checkout desired tag: ${release}"                        
+                        echo "2 Checkout desired tag: ${release}"                        
                         git checkout ${release}
                 fi
 
