@@ -55,7 +55,7 @@ function show_help(){
     echo "Options:";
     echo "-h or --help: Displays this information.";
     echo "-p or --project string: Project to be installed. Required.";
-    echo "-n or --net: IP address type t be used (ipv4 vs ipv6).";
+    echo "-n or --net: IP address type t be used (4 vs. 6).";
     echo "-c or --count: Number of masternodes to be installed.";
     echo "-r or --release: Release version to be installed.";
     echo "-w or --wipe: Wipe ALL local data.";
