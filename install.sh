@@ -132,7 +132,7 @@ generate_config(){
 wipe=0;
  
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wu:" -l "help,project:,net:,count:,release:,wipe,update:" -n "test" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wu:" -l "help,project:,net:,count:,release:,wipe,update:" -n "install.sh" -- "$@");
  
 #Bad arguments
 if [ $? -ne 0 ];
