@@ -78,11 +78,11 @@ function show_help() {
 			  "--wipe    | -w wipe all data (!!!)" \
 			  "--help,-h@print help info" )
 	printf "Usage: %s [OPTIONS]\n\nOptions:\n\n" $0
-	echo "please give at least a CRYPTO as option"
 
 	for option in "${options[@]}";do
 	  printf "  %-20s%s\n" "$( echo ${option} | sed 's/@.*//g')"  "$( echo ${option} | sed 's/.*@//g')"
 	done
+	echo "please give at least a CRYPTO as option"
 	
 	echo -e "\n"
 	exit 1
