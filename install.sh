@@ -47,7 +47,7 @@ EOF
 # display the help message
 function show_help(){
 	clear
-	#showbanner
+	showbanner
 	echo "project is a required parameter !";
     echo "";
     echo "Usage example:";
@@ -492,7 +492,7 @@ source ${SCRIPTPATH}/config/default.env
 
 
 main() {
-    #showbanner
+    showbanner
     check_distro
     swaphack
     install_packages 
