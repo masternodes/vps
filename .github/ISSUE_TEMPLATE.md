@@ -3,10 +3,14 @@ New coin request:
 
 Hey there and thank you for taking the time to submit an issue!
 
-If you want me to support a new (masternode) coin, please provide the following data with your request:
+If you want me to support a new (masternode) coin, please provide AT LEAST the following data with your request:
 - [ ] Provide a link to the $COIN ANN thread on [bitcointalk](https://bitcointalk.org/).
 - [ ] Provide a link to the $COIN website (if already exists).
 - [ ] Provide a link to the $COIN github repo.
+Optional and helpful (more likely i integrate fast):
+- [ ] Daemon binary (eg /usr/local/bin/pured )
+- [ ] Masternode port number ( eg 51472 )
+- [ ] Newest, stable Git Tag (eg tags/v1.0.0.2)
 
 In case you want to open a bug please provide some basic information about your system.
 

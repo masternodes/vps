@@ -8,7 +8,7 @@
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
 # version 	0.7-alpha
-# date    	2017-11-03
+# date    	2017-11-08
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
@@ -158,9 +158,9 @@ function create_mn_dirs() {
     echo "Creating masternode directories"
     mkdir -p ${MNODE_CONF_BASE}
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-	    if [ ! -d "${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}" ]; then
-	         echo "creating data directory ${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}"
-             mkdir -p ${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}
+	    if [ ! -d "${MNODE_DATA_BASE}/${CODENAME}${NUM}" ]; then
+	         echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}"
+             mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM}
         fi
 	done    
 	
@@ -188,20 +188,20 @@ function create_mn_configuration() {
         PASS=$(date | md5sum | cut -c1-24)
 
 			# we dont want to overwrite an existing config file
-			if [ ! -f ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf ]; then
+			if [ ! -f ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ]; then
                 echo "config doesn't exist, generate it!"
                 
 				# if a template exists, use this instead of the default
-				if [ -e config/${GIT_PROJECT}/${GIT_PROJECT}.conf ]; then
-					echo "configuration template for ${GIT_PROJECT} found, use this instead"
-					cp ${SCRIPTPATH}/config/${GIT_PROJECT}/${GIT_PROJECT}.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+				if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
+					echo "configuration template for ${CODENAME} found, use this instead"
+					cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
 				else
-					echo "No ${GIT_PROJECT} template found, using the default configuration template"			
-					cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf
+					echo "No ${CODENAME} template found, using the default configuration template"			
+					cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
 				fi
 				# replace placeholders
-				echo "running sed on file ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf"
-				sed -e "s/XXX_GIT_PROJECT_XXX/${GIT_PROJECT}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf				   
+				echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"
+				sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf				   
 			fi        			
         done
         
@@ -209,11 +209,11 @@ function create_mn_configuration() {
 
 function create_control_configuration() {
 
-    rm -f /tmp/${GIT_PROJECT}_masternode.conf
+    rm -f /tmp/${CODENAME}_masternode.conf
 	# create one line per masternode with the data we have
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
-		cat >> /tmp/${GIT_PROJECT}_masternode.conf <<-EOF
-			${GIT_PROJECT}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${GIT_PROJECT}MN${NUM} COLLATERAL_TX_FOR_${GIT_PROJECT}MN${NUM} OUTPUT_NO_FOR_${GIT_PROJECT}MN${NUM}	
+		cat >> /tmp/${CODENAME}_masternode.conf <<-EOF
+			${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}	
 		EOF
 	done
 
@@ -224,10 +224,10 @@ function create_systemd_configuration() {
 	# create one config file per masternode
 	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
 	PASS=$(date | md5sum | cut -c1-24)
-		echo "(over)writing systemd config file ${SYSTEMD_CONF}/${GIT_PROJECT}_n${NUM}.service"
-		cat > ${SYSTEMD_CONF}/${GIT_PROJECT}_n${NUM}.service <<-EOF
+		echo "(over)writing systemd config file ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service"
+		cat > ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service <<-EOF
 			[Unit]
-			Description=${GIT_PROJECT} distributed currency daemon
+			Description=${CODENAME} distributed currency daemon
 			After=network.target
                  
 			[Service]
@@ -235,9 +235,9 @@ function create_systemd_configuration() {
 			Group=${MNODE_USER}
          	
 			Type=forking
-			PIDFile=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}/${GIT_PROJECT}.pid
-			ExecStart=${MNODE_DAEMON} -daemon -pid=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}/${GIT_PROJECT}.pid \
-			-conf=${MNODE_CONF_BASE}/${GIT_PROJECT}_n${NUM}.conf -datadir=${MNODE_DATA_BASE}/${GIT_PROJECT}${NUM}
+			PIDFile=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid
+			ExecStart=${MNODE_DAEMON} -daemon -pid=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid \
+			-conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}${NUM}
        		 
 			Restart=always
 			RestartSec=5
@@ -375,15 +375,15 @@ function build_mn_from_source() {
         if [ ! -f ${MNODE_DAEMON} ]; then
                 mkdir -p ${SCRIPTPATH}/${CODE_DIR}
                 # if code directory does not exists, we create it clone the src
-                if [ ! -d ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT} ]; then
+                if [ ! -d ${SCRIPTPATH}/${CODE_DIR}/${CODENAME} ]; then
                         mkdir -p ${CODE_DIR} && cd ${SCRIPTPATH}/${CODE_DIR}
-                        git clone ${GIT_URL} ${GIT_PROJECT}
-                        cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
+                        git clone ${GIT_URL} ${CODENAME}
+                        cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}
                         echo "1 Checkout desired tag: ${release}"
                         git checkout ${release}
                 else
                         echo "code and project dirs exist, update the git repo and checkout again"
-                        cd ${SCRIPTPATH}/${CODE_DIR}/${GIT_PROJECT}
+                        cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}
                         git pull
                         echo "2 Checkout desired tag: ${release}"                      
                         git checkout ${release}
@@ -421,7 +421,7 @@ function prepare_mn_interfaces() {
 			then
 			  echo "IP already exists"
 			else
-			  echo "Creating new IP address for ${GIT_PROJECT} masternode nr ${NUM}"
+			  echo "Creating new IP address for ${CODENAME} masternode nr ${NUM}"
 			  echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
 			  sleep 2
 			  ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
