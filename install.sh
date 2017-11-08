@@ -352,7 +352,8 @@ function source_config() {
 
         check_distro
         swaphack
-        install_packages 		
+        install_packages
+        check_ipv6 		
 		build_mn_from_source
 		prepare_mn_interfaces
 		create_mn_user
@@ -403,6 +404,8 @@ function build_mn_from_source() {
 
 
 function prepare_mn_interfaces() {
+
+    prepare_mn_interfaces
 
 	# generate the required ipv6 config
 	if [ "$net" -eq 6 ]; then
@@ -560,6 +563,7 @@ main() {
 	echo "MNODE_HELPER:         ${MNODE_HELPER}"
 	echo "MNODE_SWAPSIZE:       ${MNODE_SWAPSIZE}"
 	echo "CODE_DIR:             ${CODE_DIR}"
+	echo "ETH_INTERFACE:        ${ETH_INTERFACE}"
     echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"	
     echo "END DEFAULTS => "
  
