@@ -31,7 +31,7 @@ declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
 declare -r SCRIPT_VERSION="v0.7.1"
-declare -r SCRIPT_LOGFILE="${SCRIPTPATH}_${DATE_STAMP}_${SCRIPT_LOGFILE}"
+declare -r SCRIPT_LOGFILE="${SCRIPTPATH}_${DATE_STAMP}_out.log"
 
 function showbanner() {
 cat << "EOF"
