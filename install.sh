@@ -434,10 +434,11 @@ function prepare_mn_interfaces() {
 
 # Declare vars. Flags initalizing to 0.
 wipe=0;
+debug=0;
 update=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wu" -l "help,project:,net:,count:,release:,wipe,update" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wud" -l "help,project:,net:,count:,release:,wipe,update,debug" -n "install.sh" -- "$@");
  
 #Bad arguments
 if [ $? -ne 0 ];
@@ -493,6 +494,10 @@ while true; do
             shift;
                     update="1";
             ;;
+        -d|--debug)
+            shift;
+                    debug="1";
+            ;;            
  
         --)
             shift;
@@ -539,45 +544,53 @@ source ${SCRIPTPATH}/config/default.env
 
 main() {
     showbanner
-        
-    echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
-    echo "START DEFAULTS => "
-	echo "SCRIPT_VERSION:       $SCRIPT_VERSION"
-	echo "SSH_INBOUND_PORT:     ${SSH_INBOUND_PORT}"
-	echo "SYSTEMD_CONF:         ${SYSTEMD_CONF}"
-	echo "NETWORK_CONFIG:       ${NETWORK_CONFIG}"
-	echo "NETWORK_TYPE:         ${NETWORK_TYPE}"	
-	echo "ETH_INTERFACE:        ${ETH_INTERFACE}"
-	echo "MNODE_CONF_BASE:      ${MNODE_CONF_BASE}"
-	echo "MNODE_DATA_BASE:      ${MNODE_DATA_BASE}"
-	echo "MNODE_USER:           ${MNODE_USER}"
-	echo "MNODE_HELPER:         ${MNODE_HELPER}"
-	echo "MNODE_SWAPSIZE:       ${MNODE_SWAPSIZE}"
-	echo "CODE_DIR:             ${CODE_DIR}"
-	echo "ETH_INTERFACE:        ${ETH_INTERFACE}"
-    echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"	
-    echo "END DEFAULTS => "
- 
+
+	# debug
+	if [ "$debug" ]; then
+		echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
+		echo "START DEFAULTS => "
+		echo "SCRIPT_VERSION:       $SCRIPT_VERSION"
+		echo "SSH_INBOUND_PORT:     ${SSH_INBOUND_PORT}"
+		echo "SYSTEMD_CONF:         ${SYSTEMD_CONF}"
+		echo "NETWORK_CONFIG:       ${NETWORK_CONFIG}"
+		echo "NETWORK_TYPE:         ${NETWORK_TYPE}"	
+		echo "ETH_INTERFACE:        ${ETH_INTERFACE}"
+		echo "MNODE_CONF_BASE:      ${MNODE_CONF_BASE}"
+		echo "MNODE_DATA_BASE:      ${MNODE_DATA_BASE}"
+		echo "MNODE_USER:           ${MNODE_USER}"
+		echo "MNODE_HELPER:         ${MNODE_HELPER}"
+		echo "MNODE_SWAPSIZE:       ${MNODE_SWAPSIZE}"
+		echo "CODE_DIR:             ${CODE_DIR}"
+		echo "ETH_INTERFACE:        ${ETH_INTERFACE}"
+		echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"	
+		echo "END DEFAULTS => "
+	fi
+	
+	# source project configuration         
     source_config ${project}
-    echo "START PROJECT => "
-	echo "CODENAME:             $CODENAME"
-	echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"
-	echo "MNODE_DAEMON:         ${MNODE_DAEMON}"
-	echo "MNODE_INBOUND_PORT:   ${MNODE_INBOUND_PORT}"
-	echo "GIT_URL:              ${GIT_URL}"
-	echo "SCVERSION:            ${SCVERSION}"
-	echo "NETWORK_BASE_TAG:     ${NETWORK_BASE_TAG}"	
-    echo "END PROJECT => "   	
-	     
-    echo "START OPTIONS => "
-    echo "RELEASE: ${release}"
-    echo "PROJECT: ${project}"
-    echo "SETUP_MNODES_COUNT: ${count}"
-    echo "NETWORK_TYPE: ${NETWORK_TYPE}"
-    echo "NETWORK_TYPE: ${net}"         
-       
-    echo "END OPTIONS => "
-    echo "********************** VALUES AFTER CONFIG SOURCING: ************************"           
+    
+	# debug
+	if [ "$debug" ]; then
+		echo "START PROJECT => "
+		echo "CODENAME:             $CODENAME"
+		echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"
+		echo "MNODE_DAEMON:         ${MNODE_DAEMON}"
+		echo "MNODE_INBOUND_PORT:   ${MNODE_INBOUND_PORT}"
+		echo "GIT_URL:              ${GIT_URL}"
+		echo "SCVERSION:            ${SCVERSION}"
+		echo "NETWORK_BASE_TAG:     ${NETWORK_BASE_TAG}"	
+		echo "END PROJECT => "   	
+		 
+		echo "START OPTIONS => "
+		echo "RELEASE: ${release}"
+		echo "PROJECT: ${project}"
+		echo "SETUP_MNODES_COUNT: ${count}"
+		echo "NETWORK_TYPE: ${NETWORK_TYPE}"
+		echo "NETWORK_TYPE: ${net}"         
+	   
+		echo "END OPTIONS => "
+		echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
+	fi    
 }
 
 main "$@"
