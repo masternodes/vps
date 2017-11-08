@@ -326,12 +326,6 @@ function source_config() {
 			NETWORK_TYPE=4
 		fi		
 
-		# user opted for ipv6 (default), so we have to check for ipv6 support
-		if [ "$net" -eq 6 ]; then
-			 check_ipv6
-			 NETWORK_TYPE=6
-		fi
-
 		# main block of function logic starts here
 	    # if in update more delete theold daemon first, then proceed
 		if [ "$update" -eq 1 ]; then
@@ -395,7 +389,8 @@ function prepare_mn_interfaces() {
 
     IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 	echo "IPV6_INT_BASE: ${IPV6_INT_BASE}"
-	
+
+    # user opted for ipv6 (default), so we have to check for ipv6 support	
 	# check for vultr ipv6 box active
 	if [ -z "${IPV6_INT_BASE}" ]; then
 		echo "we don't have ipv6 range support on this VPS, please switch to ipv4 with option -n 4"
