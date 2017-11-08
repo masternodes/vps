@@ -31,6 +31,7 @@ declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
 declare -r SCRIPT_VERSION="v0.7.1"
+declare -r SCRIPT_LOGFILE="${SCRIPTPATH}_${DATE_STAMP}_out.log"
 
 function showbanner() {
 cat << "EOF"
@@ -265,19 +266,19 @@ function cleanup_after() {
 	apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoremove
 	apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoclean
 
-	echo "kernel.randomize_va_space=1" > /etc/sysctl.conf
-	echo "net.ipv4.conf.all.rp_filter=1" >> /etc/sysctl.conf
-	echo "net.ipv4.conf.all.accept_source_route=0" >> /etc/sysctl.conf
-	echo "net.ipv4.icmp_echo_ignore_broadcasts=1" >> /etc/sysctl.conf
-	echo "net.ipv4.conf.all.log_martians=1" >> /etc/sysctl.conf
-	echo "net.ipv4.conf.default.log_martians=1" >> /etc/sysctl.conf
-	echo "net.ipv4.conf.all.accept_redirects=0" >> /etc/sysctl.conf
-	echo "net.ipv6.conf.all.accept_redirects=0" >> /etc/sysctl.conf
-	echo "net.ipv4.conf.all.send_redirects=0" >> /etc/sysctl.conf
-	echo "kernel.sysrq=0" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_timestamps=0" >> /etc/sysctl.conf
-	echo "net.ipv4.tcp_syncookies=1" >> /etc/sysctl.conf
-	echo "net.ipv4.icmp_ignore_bogus_error_responses=1" >> /etc/sysctl.conf
+	echo "kernel.randomize_va_space=1" > /etc/sysctl.conf  &> out.log
+	echo "net.ipv4.conf.all.rp_filter=1" >> /etc/sysctl.conf &> out.log
+	echo "net.ipv4.conf.all.accept_source_route=0" >> /etc/sysctl.conf &> out.log
+	echo "net.ipv4.icmp_echo_ignore_broadcasts=1" >> /etc/sysctl.conf &> out.log
+	echo "net.ipv4.conf.all.log_martians=1" >> /etc/sysctl.conf &> out.log
+	echo "net.ipv4.conf.default.log_martians=1" >> /etc/sysctl.conf &> out.log
+	echo "net.ipv4.conf.all.accept_redirects=0" >> /etc/sysctl.conf &> out.log
+	echo "net.ipv6.conf.all.accept_redirects=0" >> /etc/sysctl.conf &> out.log
+	echo "net.ipv4.conf.all.send_redirects=0" >> /etc/sysctl.conf &> out.log
+	echo "kernel.sysrq=0" >> /etc/sysctl.conf &> out.log
+	echo "net.ipv4.tcp_timestamps=0" >> /etc/sysctl.conf &> out.log
+	echo "net.ipv4.tcp_syncookies=1" >> /etc/sysctl.conf &> out.log 
+	echo "net.ipv4.icmp_ignore_bogus_error_responses=1" >> /etc/sysctl.conf &> out.log
 	sysctl -p
 	
 }
