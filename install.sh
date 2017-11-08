@@ -546,7 +546,7 @@ main() {
     showbanner
 
 	# debug
-	if [ "$debug" ]; then
+	if [ "$debug" -eq 1 ]; then
 		echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
 		echo "START DEFAULTS => "
 		echo "SCRIPT_VERSION:       $SCRIPT_VERSION"
@@ -570,7 +570,7 @@ main() {
     source_config ${project}
     
 	# debug
-	if [ "$debug" ]; then
+	if [ "$debug" -eq 1 ]; then
 		echo "START PROJECT => "
 		echo "CODENAME:             $CODENAME"
 		echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"
