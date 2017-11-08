@@ -101,6 +101,7 @@ function check_distro() {
 function check_ipv6() {
     
     declare -r IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
+	echo "IPV6_INT_BASE: ${IPV6_INT_BASE}"
 	# check for vultr ipv6 box active
 	if [ -z "${IPV6_INT_BASE}" ]; then
 		echo "we don't have ipv6 range support on this VPS, please switch to ipv4 with option -n 4"
