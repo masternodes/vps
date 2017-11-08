@@ -393,7 +393,7 @@ function build_mn_from_source() {
 
 function prepare_mn_interfaces() {
 
-    declare -r IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
+    IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 	echo "IPV6_INT_BASE: ${IPV6_INT_BASE}"
 	
 	# check for vultr ipv6 box active
