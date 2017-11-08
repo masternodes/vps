@@ -98,16 +98,6 @@ function check_distro() {
 	fi
 }
 
-function check_ipv6() {
-    
-	# check for vultr ipv6 box active
-	if [ -z "${IPV6_INT_BASE}" ]; then
-		echo "we don't have ipv6 range support on this VPS, please switch to ipv4 with option -n 4"
-		echo "OUTPUT DOCS LINK HERE!"
-		exit 1
-	fi	
-}
-
 function install_packages() {
 	# development and build packages
 	# these are common on all cryptos
@@ -406,6 +396,13 @@ function prepare_mn_interfaces() {
     declare -r IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 	echo "IPV6_INT_BASE: ${IPV6_INT_BASE}"
 	
+	# check for vultr ipv6 box active
+	if [ -z "${IPV6_INT_BASE}" ]; then
+		echo "we don't have ipv6 range support on this VPS, please switch to ipv4 with option -n 4"
+		echo "OUTPUT DOCS LINK HERE!"
+		exit 1
+	fi	
+		
 	# generate the required ipv6 config
 	if [ "$net" -eq 6 ]; then
         # vultr specific, needed to work
