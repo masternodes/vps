@@ -405,8 +405,6 @@ function build_mn_from_source() {
 
 function prepare_mn_interfaces() {
 
-    prepare_mn_interfaces
-
 	# generate the required ipv6 config
 	if [ "$net" -eq 6 ]; then
         # vultr specific, needed to work
