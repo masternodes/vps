@@ -286,9 +286,10 @@ function cleanup_after() {
 
 install_report() {
 
-    echo "********** Installation Plan ***********"
+    echo "************************* Installation Plan *****************************************"
     echo "I am going not install and configure ${count} ${project} masternodes for you now"
-    echo "You have to add your masternode private key to the indicidual config files afterwards"
+    echo "You have to add your masternode private key to the individual config files afterwards"
+    echo "*************************************************************************************"
 
 }
 
