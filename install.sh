@@ -332,6 +332,7 @@ function source_config() {
 		fi	
 
         # TODO TODO TODO
+        echo "NET: $net xxx"
 		if [ $net -ne 4 ] || [ $net -ne 6 ]; then
 			echo "invalid NET!"
 			exit 1;
