@@ -321,19 +321,7 @@ function source_config() {
 		if [ -z "${net}" ]; then
 			net=${NETWORK_TYPE}
 			echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
-		fi		
-
-		# TODO: PRINT A BOLD WANRING REGARDING MANUAL IPv$ CONFIG STEPS
-		# AND LINK TO THE CORRESPONDING ARTICLE HERE	
-		# check the exact type of network
-		if [ "${net}" -eq 4 ]; then
-			NETWORK_TYPE=4
-			echo "You selected IPv4 for networking but there is no automatic workflow for this part."
-			echo "This means you will have some mamual work to do to after this configuration run."
-			echo ""
-			echo "See the following link for instructions how to add multiple ipv4 addresses on vultr:"
-			echo "${IPV4_DOC_LINK}"
-		fi	
+		fi			
 
         # break here of net isn't 4 or 6 
 		if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
@@ -349,14 +337,29 @@ function source_config() {
 		fi
 
 		echo "************************* Installation Plan *****************************************"
-		echo "I am going to install and configure ${count} ${project} masternodes for you now"
+		echo "I am going to install and configure ${count} ${project} masternodes for you now."
 		echo "You have to add your masternode private key to the individual config files afterwards"
 		echo ""
 		echo "Stay tuned!"
+        echo ""
+		# TODO: PRINT A BOLD WANRING REGARDING MANUAL IPv$ CONFIG STEPS
+		# AND LINK TO THE CORRESPONDING ARTICLE HERE	
+		# check the exact type of network
+		if [ "${net}" -eq 4 ]; then
+			NETWORK_TYPE=4
+			echo "You selected IPv4 for networking but there is no automatic workflow for this part."
+			echo "This means you will have some mamual work to do to after this configuration run."
+			echo ""
+			echo "See the following link for instructions how to add multiple ipv4 addresses on vultr:"
+			echo "${IPV4_DOC_LINK}"
+		fi	
 		echo ""
 		echo "A logfile for this run can be found at ${SCRIPT_LOGFILE}"
 		echo "*************************************************************************************"
+
+
 		sleep 3
+		
 
         swaphack
         install_packages	
