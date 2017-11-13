@@ -99,7 +99,7 @@ function check_distro() {
 function install_packages() {
 	# development and build packages
 	# these are common on all cryptos
-	echo "Package installation!"
+	echo "* Package installation!"
 	apt-get -qq update
 	apt-get -qqy -o=Dpkg::Use-Pty=0 install build-essential g++ \
 	protobuf-compiler libboost-all-dev autotools-dev \
@@ -112,7 +112,7 @@ function install_packages() {
 function swaphack() { 
 #check if swap is available
 if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
-	echo "No proper swap, creating it" &>> ${SCRIPT_LOGFILE}
+	echo "* No proper swap, creating it" 
 	# needed because ant servers are ants
 	rm -f /var/mnode_swap.img
 	dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${MNODE_SWAPSIZE}
@@ -123,7 +123,7 @@ if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];the
 	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
 	echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		
 else
-	echo "All good, we have a swap"	
+	echo "* All good, we have a swap"	
 fi
 }
 
@@ -170,7 +170,7 @@ function configure_firewall() {
 
 function validate_netchoice() {
 
-    echo "Validating network rules"		
+    echo "* Validating network rules"		
 
 	# break here of net isn't 4 or 6 
 	if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
@@ -397,25 +397,25 @@ function build_mn_from_source() {
                         mkdir -p ${CODE_DIR} && cd ${SCRIPTPATH}/${CODE_DIR} &>> ${SCRIPT_LOGFILE}
                         git clone ${GIT_URL} ${CODENAME}          &>> ${SCRIPT_LOGFILE}
                         cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}  &>> ${SCRIPT_LOGFILE}
-                        echo "Checking out desired tag: ${release}"   
+                        echo "* Checking out desired GIT tag: ${release}"   
                         git checkout ${release}
                 else
-                        echo "code and project dirs exist, update the git repo and checkout again"
+                        echo "* Updating the existing GIT repo"
                         cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}  &>> ${SCRIPT_LOGFILE}
                         git pull                                  &>> ${SCRIPT_LOGFILE}
-                        echo "Checking out desired tag: ${release}"                      
+                        echo "* Checking out desired GIT tag: ${release}"                      
                         git checkout ${release}                   &>> ${SCRIPT_LOGFILE}
                 fi
 
                 # print ascii banner if a logo exists
-                echo -e "Starting the compilation process for ${CODENAME}, stay tuned"
+                echo -e "* Starting the compilation process for ${CODENAME}, stay tuned"
                 if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
                         jp2a -b --colors --width=64 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
                 fi  
                 # compilation starts here
                 source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile
         else
-                echo "daemon already in place at ${MNODE_DAEMON}, not compiling"
+                echo "* Daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
 }
 
