@@ -1,9 +1,10 @@
 # Slick masternode VPS setup for all your beloved crypto masternodes (Vultr example)
 
+
 ---
 **PLEASE ALSO READ THE README**
 
-Please also see the [README for this project](README.md) that will give you a high-level overview of features. 
+Please also see the [README for this project](../README.md) that will give you a high-level overview of features. 
 
 ---
 
