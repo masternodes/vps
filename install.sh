@@ -422,9 +422,10 @@ function prepare_mn_interfaces() {
     # user opted for ipv6 (default), so we have to check for ipv6 support	
 	# check for vultr ipv6 box active
 	if [ -z "${IPV6_INT_BASE}" ]; then
-		echo "we don't have ipv6 range support on this VPS, please switch to ipv4 with option -n 4"
-		echo "if you do want to install your masternode on the VPS!"
-		echo "OUTPUT DOCS LINK HERE!"
+		echo "No IPv6 support on the VPS but IPv6 is the setup default. Please switch to ipv4 with flag \"-n 4\" if you want to continue."
+		echo ""
+		echo "See the following link for instructions how to add multiple ipv4 addresses on vultr:"
+		echo "${IPV4_DOC_LINK}"
 		exit 1
 	fi	
 		
