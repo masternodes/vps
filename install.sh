@@ -32,6 +32,7 @@ declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
 declare -r SCRIPT_VERSION="v0.7.1"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
+declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 
 function showbanner() {
 cat << "EOF"
@@ -301,7 +302,7 @@ function source_config() {
 
 		# count is from the default config but can ultimately be
 		# overwritten at runtime
-		if [ -z "$count" ]
+		if [ -z "${count}" ]
 		then
 			count=${SETUP_MNODES_COUNT}
 			echo "COUNT EMPTY, setting to default: ${SETUP_MNODES_COUNT}"
@@ -317,7 +318,7 @@ function source_config() {
 
 		# net is from the default config but can ultimately be
 		# overwritten at runtime
-		if [ -z "$net" ]; then
+		if [ -z "${net}" ]; then
 			net=${NETWORK_TYPE}
 			echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
 		fi		
@@ -325,15 +326,17 @@ function source_config() {
 		# TODO: PRINT A BOLD WANRING REGARDING MANUAL IPv$ CONFIG STEPS
 		# AND LINK TO THE CORRESPONDING ARTICLE HERE	
 		# check the exact type of network
-		if [ "$net" -eq 4 ]; then
-			echo "YOU will have some mamual work to do, see xxxx for some"
-			echo "details how to add multiple ipv4 addresses on vultr"
+		if [ "${net}" -eq 4 ]; then
 			NETWORK_TYPE=4
+			echo "You selected IPv4 for networking but there is no automatic workflow for this part."
+			echo "This means you will have some mamual work to do to after this configuration run."
+			echo ""
+			echo "See the following link for instructions how to add multiple ipv4 addresses on vultr:"
+			echo "${IPV4_DOC_LINK}"
 		fi	
 
         # break here of net isn't 4 or 6 
-        echo "NET: $net xxx"
-		if [ $net -ne 4 ] && [ $net -ne 6 ]; then
+		if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
 			echo "invalid NET!"
 			exit 1;
 		fi  			
@@ -350,6 +353,8 @@ function source_config() {
 		echo "You have to add your masternode private key to the individual config files afterwards"
 		echo ""
 		echo "Stay tuned!"
+		echo ""
+		echo "A logfile for this run can be found at ${SCRIPT_LOGFILE}"
 		echo "*************************************************************************************"
 		sleep 3
 
@@ -413,12 +418,13 @@ function prepare_mn_interfaces() {
 	# check for vultr ipv6 box active
 	if [ -z "${IPV6_INT_BASE}" ]; then
 		echo "we don't have ipv6 range support on this VPS, please switch to ipv4 with option -n 4"
+		echo "if you do want to install your masternode on the VPS!"
 		echo "OUTPUT DOCS LINK HERE!"
 		exit 1
 	fi	
 		
 	# generate the required ipv6 config
-	if [ "$net" -eq 6 ]; then
+	if [ "${net}" -eq 6 ]; then
         # vultr specific, needed to work
 	    sed -ie '/iface ${ETH_INTERFACE} inet6 auto/s/^/#/' ${NETWORK_CONFIG}
 	    
@@ -443,7 +449,7 @@ function prepare_mn_interfaces() {
 	fi # end ifneteq6
 
 	# generate the required ipv6 config
-	if [ "$net" -eq 4 ]; then
+	if [ "${net}" -eq 4 ]; then
         echo "IPv4 address generation needs to be done manually atm!"
 	fi	# end ifneteq4
 	
