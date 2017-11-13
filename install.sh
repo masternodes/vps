@@ -347,6 +347,7 @@ function source_config() {
 		# check the exact type of network
 		if [ "${net}" -eq 4 ]; then
 			NETWORK_TYPE=4
+			echo "WARNING:"
 			echo "You selected IPv4 for networking but there is no automatic workflow for this part."
 			echo "This means you will have some mamual work to do to after this configuration run."
 			echo ""
@@ -354,7 +355,8 @@ function source_config() {
 			echo "${IPV4_DOC_LINK}"
 		fi	
 		echo ""
-		echo "A logfile for this run can be found at ${SCRIPT_LOGFILE}"
+		echo "A logfile for this run can be found at the following location:"
+		echo "${SCRIPT_LOGFILE}"
 		echo "*************************************************************************************"
 
 
