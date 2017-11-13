@@ -413,7 +413,7 @@ function build_mn_from_source() {
                         jp2a -b --colors --width=64 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
                 fi  
                 # compilation starts here
-                source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile
+                source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile &>> ${SCRIPT_LOGFILE}
         else
                 echo "* Daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
