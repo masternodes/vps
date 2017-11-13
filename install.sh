@@ -438,8 +438,8 @@ function final_call() {
 	echo "">> ${MNODE_HELPER}_${CODENAME}
 	
 	for NUM in $(seq 1 ${count}); do
-		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
-		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
+		echo "systemctl enable ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
+		echo "systemctl restart ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
 	done
      
 	chmod u+x ${MNODE_HELPER}_${CODENAME}
