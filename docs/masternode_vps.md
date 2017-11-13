@@ -78,9 +78,7 @@ Login to your newly installed node as "root".
 
 ## Masternode script installation
 
-Follow the instructions at [https://github.com/marsmensch/masternode-vps-setup.](https://github.com/marsmensch/masternode-vps-setup.)
-
-Clone the git repository first:
+Clone this git repository first:
 
 ```
 git clone https://github.com/masternodes/vps.git && cd vps
