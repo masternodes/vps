@@ -30,7 +30,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.7.4"
+declare -r SCRIPT_VERSION="v0.7.5"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 
@@ -112,7 +112,7 @@ function install_packages() {
 function swaphack() { 
 #check if swap is available
 if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
-	echo "No proper swap, creating it"
+	echo "No proper swap, creating it" &>> ${SCRIPT_LOGFILE}
 	# needed because ant servers are ants
 	rm -f /var/mnode_swap.img
 	dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${MNODE_SWAPSIZE}
@@ -131,10 +131,10 @@ function create_mn_user() {
 
     # our new mnode unpriv user acc is added 
     if id "${MNODE_USER}" >/dev/null 2>&1; then
-        echo "user exists already, do nothing"
+        echo "user exists already, do nothing" &>> ${SCRIPT_LOGFILE}
     else
         echo "Adding new system user ${MNODE_USER}"
-        adduser --disabled-password --gecos "" ${MNODE_USER}
+        adduser --disabled-password --gecos "" ${MNODE_USER} &>> ${SCRIPT_LOGFILE}
     fi
     
 }
@@ -146,8 +146,8 @@ function create_mn_dirs() {
     mkdir -p ${MNODE_CONF_BASE}
 	for NUM in $(seq 1 ${count}); do
 	    if [ ! -d "${MNODE_DATA_BASE}/${CODENAME}${NUM}" ]; then
-	         echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}"
-             mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM}
+	         echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}" &>> ${SCRIPT_LOGFILE}
+             mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM} &>> ${SCRIPT_LOGFILE}
         fi
 	done    
 	
@@ -174,7 +174,7 @@ function validate_netchoice() {
 
 	# break here of net isn't 4 or 6 
 	if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
-		echo "invalid NET!"
+		echo "invalid NETWORK setting, can only be 4 or 6!"
 		exit 1;
 	fi 
 
@@ -182,7 +182,7 @@ function validate_netchoice() {
 	if [ "${net}" -eq 4 ]; then
 	    IPV6_INT_BASE="#NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER"
 	    NETWORK_BASE_TAG=""
-        echo "IPv4 address generation needs to be done manually atm!"
+        echo "IPv4 address generation needs to be done manually atm!"  &>> ${SCRIPT_LOGFILE}
 	fi	# end ifneteq4		    
 
 }
@@ -195,11 +195,11 @@ function create_mn_configuration() {
 
 			# we dont want to overwrite an existing config file
 			if [ ! -f ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ]; then
-                echo "config doesn't exist, generate it!"
+                echo "individual masternode config doesn't exist, generate it!" &>> ${SCRIPT_LOGFILE}
                 
 				# if a template exists, use this instead of the default
 				if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
-					echo "configuration template for ${CODENAME} found, use this instead"
+					echo "custom configuration template for ${CODENAME} found, use this instead"
 					cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
 				else
 					echo "No ${CODENAME} template found, using the default configuration template"			
@@ -215,7 +215,7 @@ function create_mn_configuration() {
 
 function create_control_configuration() {
 
-    rm -f /tmp/${CODENAME}_masternode.conf
+    rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
 	# create one line per masternode with the data we have
 	for NUM in $(seq 1 ${count}); do
 		cat >> /tmp/${CODENAME}_masternode.conf <<-EOF
@@ -263,17 +263,18 @@ function create_systemd_configuration() {
 function set_permissions() {
 
 	# maybe add a sudoers entry later
-	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE}
+	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} &>> ${SCRIPT_LOGFILE}	
 
 }
 
 function wipe_all() {
     
-    echo "Deleting all ${project} related data!"
-	rm -f /etc/masternodes/${project}_n*.conf
+    echo "Deleting all ${project} related data!" 
+	rm -f /etc/masternodes/${project}_n*.conf 
 	rmdir --ignore-fail-on-non-empty -p /var/lib/masternodes/${project}*
 	rm -f /etc/systemd/system/${project}_n*.service
 	rm -f ${MNODE_DAEMON}
+	echo "DONE!"
 	exit 0
 
 }
@@ -312,7 +313,7 @@ function source_config() {
 		#echo "read default config"	
 		#source config/default.env
 		echo "Script version ${SCRIPT_VERSION}, you picked: ${project}"
-		echo "apply config file for ${project}"		
+		echo "apply config file for ${project}"	&>> ${SCRIPT_LOGFILE}	
 		source "${SETUP_CONF_FILE}"
 
 		# count is from the default config but can ultimately be
@@ -320,7 +321,7 @@ function source_config() {
 		if [ -z "${count}" ]
 		then
 			count=${SETUP_MNODES_COUNT}
-			echo "COUNT EMPTY, setting to default: ${SETUP_MNODES_COUNT}"
+			echo "No number given, installing default number of nodes: ${SETUP_MNODES_COUNT}" &>> ${SCRIPT_LOGFILE}
 		fi
 
 		# release is from the default project config but can ultimately be
@@ -328,26 +329,20 @@ function source_config() {
 		if [ -z "$release" ]
 		then
 			release=${SCVERSION}
-			echo "release EMPTY, setting to proj default: ${SCVERSION}" 
+			echo "release empty, setting to project default: ${SCVERSION}"  &>> ${SCRIPT_LOGFILE}
 		fi
 
 		# net is from the default config but can ultimately be
 		# overwritten at runtime
 		if [ -z "${net}" ]; then
 			net=${NETWORK_TYPE}
-			echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
-		fi			
-# 
-#         break here of net isn't 4 or 6 
-# 		if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
-# 			echo "invalid NET!"
-# 			exit 1;
-# 		fi  			
+			echo "net EMPTY, setting to default: ${NETWORK_TYPE}" &>> ${SCRIPT_LOGFILE}
+		fi			 			
 
 		# main block of function logic starts here
-	    # if in update more delete theold daemon first, then proceed
+	    # if update flag was given, delete the old daemon binary first & proceed
 		if [ "$update" -eq 1 ]; then
-			echo "deleting the old daemon NOW!"
+			echo "update given, deleting the old daemon NOW!" &>> ${SCRIPT_LOGFILE}
 			rm -f ${MNODE_DAEMON}  	 
 		fi
 
@@ -357,9 +352,7 @@ function source_config() {
 		echo ""
 		echo "Stay tuned!"
         echo ""
-		# TODO: PRINT A BOLD WANRING REGARDING MANUAL IPv$ CONFIG STEPS
-		# AND LINK TO THE CORRESPONDING ARTICLE HERE	
-		# check the exact type of network
+		# show a hint for MANUAL IPv4 configuration
 		if [ "${net}" -eq 4 ]; then
 			NETWORK_TYPE=4
 			echo "WARNING:"
@@ -398,20 +391,20 @@ function source_config() {
 function build_mn_from_source() {
         # daemon not found compile it
         if [ ! -f ${MNODE_DAEMON} ]; then
-                mkdir -p ${SCRIPTPATH}/${CODE_DIR}
+                mkdir -p ${SCRIPTPATH}/${CODE_DIR} &>> ${SCRIPT_LOGFILE}
                 # if code directory does not exists, we create it clone the src
                 if [ ! -d ${SCRIPTPATH}/${CODE_DIR}/${CODENAME} ]; then
-                        mkdir -p ${CODE_DIR} && cd ${SCRIPTPATH}/${CODE_DIR}
-                        git clone ${GIT_URL} ${CODENAME}
-                        cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}
-                        echo "1 Checkout desired tag: ${release}"
+                        mkdir -p ${CODE_DIR} && cd ${SCRIPTPATH}/${CODE_DIR} &>> ${SCRIPT_LOGFILE}
+                        git clone ${GIT_URL} ${CODENAME}          &>> ${SCRIPT_LOGFILE}
+                        cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}  &>> ${SCRIPT_LOGFILE}
+                        echo "Checking out desired tag: ${release}"   
                         git checkout ${release}
                 else
                         echo "code and project dirs exist, update the git repo and checkout again"
-                        cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}
-                        git pull
-                        echo "2 Checkout desired tag: ${release}"                      
-                        git checkout ${release}
+                        cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}  &>> ${SCRIPT_LOGFILE}
+                        git pull                                  &>> ${SCRIPT_LOGFILE}
+                        echo "Checking out desired tag: ${release}"                      
+                        git checkout ${release}                   &>> ${SCRIPT_LOGFILE}
                 fi
 
                 # print ascii banner if a logo exists
@@ -430,10 +423,9 @@ function build_mn_from_source() {
 function prepare_mn_interfaces() {
     
     IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
-	echo "IPV6_INT_BASE: ${IPV6_INT_BASE}"
 	
 	validate_netchoice
-	echo "IPV6_INT_BASE AFTER : ${IPV6_INT_BASE}"
+	echo "IPV6_INT_BASE AFTER : ${IPV6_INT_BASE}" &>> ${SCRIPT_LOGFILE}
 
     # user opted for ipv6 (default), so we have to check for ipv6 support	
 	# check for vultr ipv6 box active
@@ -460,22 +452,15 @@ function prepare_mn_interfaces() {
 			ip -6 addr | grep -qi "${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}"
 			if [ $? -eq 0 ]
 			then
-			  echo "IP already exists"
+			  echo "IP for masternode already exists, skipping creation" &>> ${SCRIPT_LOGFILE}
 			else
 			  echo "Creating new IP address for ${CODENAME} masternode nr ${NUM}"
 			  echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
 			  sleep 2
-			  ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}
+			  ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE} &>> ${SCRIPT_LOGFILE}
 			fi	
 		done # end forloop	    
 	fi # end ifneteq6
-
-# 	generate the required ipv6 config
-# 	if [ "${net}" -eq 4 ]; then
-# 	    IPV6_INT_BASE="#NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER"
-# 	    NETWORK_BASE_TAG=""
-#         echo "IPv4 address generation needs to be done manually atm!"
-# 	fi	# end ifneteq4
 	
 }
 
@@ -563,7 +548,7 @@ fi
 
 # Check required arguments
 if [ "$wipe" -eq 1 ]; then
-	get_confirmation "Would you really like to WIPE ALL DATA!? YES or NO" && wipe_all
+	get_confirmation "Would you really like to WIPE ALL DATA!? YES/NO y/n" && wipe_all
 	exit 0
 fi		
  
