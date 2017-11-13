@@ -142,7 +142,7 @@ function create_mn_user() {
 function create_mn_dirs() {
 
     # individual data dirs for now to avoid problems
-    echo "Creating masternode directories"
+    echo "* Creating masternode directories"
     mkdir -p ${MNODE_CONF_BASE}
 	for NUM in $(seq 1 ${count}); do
 	    if [ ! -d "${MNODE_DATA_BASE}/${CODENAME}${NUM}" ]; then
@@ -155,16 +155,17 @@ function create_mn_dirs() {
 
 function configure_firewall() {
 
-    echo "Configuring firewall rules"
+    echo "* Configuring firewall rules"
 	# disallow everything except ssh and masternode inbound ports
-	ufw default deny
+	ufw default deny                          &>> ${SCRIPT_LOGFILE}
 	ufw logging on
-	ufw allow ${SSH_INBOUND_PORT}/tcp
+	ufw allow ${SSH_INBOUND_PORT}/tcp         &>> ${SCRIPT_LOGFILE}
 	# KISS, its always the same port for all interfaces
-	ufw allow ${MNODE_INBOUND_PORT}/tcp
+	ufw allow ${MNODE_INBOUND_PORT}/tcp       &>> ${SCRIPT_LOGFILE}
 	# This will only allow 6 connections every 30 seconds from the same IP address.
-	ufw limit OpenSSH	
-	ufw --force enable 
+	ufw limit OpenSSH	                      &>> ${SCRIPT_LOGFILE}
+	ufw --force enable                        &>> ${SCRIPT_LOGFILE}
+	echo "* Firewall ufw is active and enabled on system startup"
 
 }
 
@@ -227,10 +228,11 @@ function create_control_configuration() {
 
 function create_systemd_configuration() {
 
+    echo "* (over)writing systemd config files for masternodes"
 	# create one config file per masternode
 	for NUM in $(seq 1 ${count}); do
 	PASS=$(date | md5sum | cut -c1-24)
-		echo "(over)writing systemd config file ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service"
+		echo "* (over)writing systemd config file ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service"  &>> ${SCRIPT_LOGFILE}
 		cat > ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service <<-EOF
 			[Unit]
 			Description=${CODENAME} distributed currency daemon
