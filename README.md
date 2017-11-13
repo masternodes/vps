@@ -131,3 +131,55 @@ The management script release will follow within the next couple of days.
 | nodemaster status pivx (all\|number) | systemd process status for a pivx masternode |
 | nodemaster tail pivx (all\|number) | tail debug logs for a pivx masternode |
 
+# Supported cryptos
+
+| CRYPTO  | Logo | Url |
+|--------|--------------|-----|
+| PIVX |  ![PIVX](/assets/pivx.jpg)  |  https://pivx.org/ |
+| DASH |  ![DASH](/assets/dash.jpg)  | https://www.dash.org/ |
+| DESIRE |  ![DESIRE](/assets/desire.jpg)  | https://github.com/lazyboozer/Desire  |
+| PURE |  ![PURE](/assets/pure.jpg)  | https://github.com/puredev321/pure    |
+| ENT  |  ![ENT](/assets/ent.jpg)  | http://ent.eternity-group.org/    |
+| SYNX |  ![SYNX](/assets/synx.jpg)  | http://syndicatelabs.io/  |
+| CHC |  ![CHAIN](/assets/chain.jpg)  | https://www.chaincoin.org/  |
+| ZEN |  ![ZEN](/assets/zen.jpg)  | https://zensystem.io/  |
+| DP |  ![DPRICE](/assets/dprice.jpg)  | http://digitalprice.org/  |
+| VIVO |  ![VIVO](/assets/vivo.jpg)  | https://www.vivocrypto.com/  |
+| ITZ |  ![ITZ](/assets/itz.jpg)  | https://interzone.space/  |
+| MEME |  ![MEME](/assets/meme.jpg)  | http://www.memetic.ai/  |
+| ARC |  ![ARC](/assets/arc.jpg)  | https://arcticcoin.org/  |
+| CRAVE |  ![CRAVE](/assets/crave.jpg)  | https://www.craveproject.com/  |
+| PIE |  ![PIE](/assets/pie.jpg)  | https://github.com/flintsoft/PIE  |
+| XCXT |  ![XCXT](/assets/xcxt.jpg)  | http://coinonatx.com/  |
+| SCORE |  ![SCORE](/assets/score.jpg)  | http://scorecoin.site/ |
+| BITSEND |  ![BITSEND](/assets/bitsend.jpg)  | https://bitsend.info/ |
+| XZC |  ![ZCOIN](/assets/zcoin.jpg)  | https://zcoin.io/ |
+| INSANE |  ![INSN](/assets/insane.jpg)  | https://insanecoin.com/ |
+| XIOS | ![XIOS](/assets/xios.jpg)  | https://bitcointalk.org/index.php?topic=2251159.0/ |
+| HAV | ![HAV](/assets/have.jpg)  | https://bitcointalk.org/index.php?topic=2336026.0 |
+| NTRN | ![NTRN](/assets/ntrn.jpg)  | https://www.neutroncoin.com/ |
+| RNS | ![RNS](/assets/rns.jpg)  | https://bitcointalk.org/index.php?topic=1809933.msg18029683#msg18029683/ |
+| SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
+| BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
+| INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
+| PHORE | ![PHORE](/assets/phore.jpg)  | https://phore.io/ |
+| FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
+| BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
+| MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
+
+
+# Todo
+* provide my Dockerfile & Vagrantfile
+* write more test cases
+* implement a binary option (?) 
+* output all supported cryptos as list within help
+
+# Errors
+* currently not fully idempotent
+
+Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
+
+**Have fun, this is crypto after all!**
+```
+BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
+```
