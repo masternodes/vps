@@ -170,13 +170,7 @@ function configure_firewall() {
 
 function validate_netchoice() {
 
-    echo "Validating network rules"
-	# net is from the default config but can ultimately be
-	# overwritten at runtime
-	if [ -z "${net}" ]; then
-		net=${NETWORK_TYPE}
-		echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
-	fi			
+    echo "Validating network rules"		
 
 	# break here of net isn't 4 or 6 
 	if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
@@ -337,12 +331,12 @@ function source_config() {
 			echo "release EMPTY, setting to proj default: ${SCVERSION}" 
 		fi
 
-# 		net is from the default config but can ultimately be
-# 		overwritten at runtime
-# 		if [ -z "${net}" ]; then
-# 			net=${NETWORK_TYPE}
-# 			echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
-# 		fi			
+		# net is from the default config but can ultimately be
+		# overwritten at runtime
+		if [ -z "${net}" ]; then
+			net=${NETWORK_TYPE}
+			echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
+		fi			
 # 
 #         break here of net isn't 4 or 6 
 # 		if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
