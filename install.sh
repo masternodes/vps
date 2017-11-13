@@ -331,20 +331,12 @@ function source_config() {
 			NETWORK_TYPE=4
 		fi	
 
-        # TODO TODO TODO
+        # break here of net isn't 4 or 6 
         echo "NET: $net xxx"
 		if [ $net -ne 4 ] && [ $net -ne 6 ]; then
 			echo "invalid NET!"
 			exit 1;
-		fi
-        
-        # break here of net isn't 4 or 6 (later +tor)
-        printf "\nTest x <= y : x=$x y=$y\n"
-        if (( x <= y ));then
-           printf "x is less than or equal to y\n"
-        else
-           printf "x is greater than y\n"
-        fi   			
+		fi  			
 
 		# main block of function logic starts here
 	    # if in update more delete theold daemon first, then proceed
