@@ -95,10 +95,10 @@ The *install.sh* script support the following parameters:
 
 | Long Option | Short Option | Values | description |
 | :--- | :--- | --- | --- |
-|  --project=             | -p | project, e.g. "pix" | shortname for the project |
-| --net=                | -n | "4" / "6"  | ip type for masternode. (ipv)6 is default |
-| --release=                | -r | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested  |
-| --count=              | -c | number | amount of masternodes to be configured |
+|  --project             | -p | project, e.g. "pix" | shortname for the project |
+| --net                | -n | "4" / "6"  | ip type for masternode. (ipv)6 is default |
+| --release                | -r | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested  |
+| --count              | -c | number | amount of masternodes to be configured |
 | --update               | -u    | --    | update specified masternode daemon, combine with -p flag |
 | --wipe               | -w    | --    | uninstall & wipe all related master node data, combine with -p flag |
 | --help               | -h    | --    | print help info |
