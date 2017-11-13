@@ -566,7 +566,7 @@ source ${SCRIPTPATH}/config/default.env
 #################################################
 
 main() {
-    echo "logging into ${SCRIPT_LOGFILE}"
+
     echo "starting" &> ${SCRIPT_LOGFILE}
     showbanner
     
