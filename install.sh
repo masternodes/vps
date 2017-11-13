@@ -106,7 +106,7 @@ function install_packages() {
     automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
     make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
     libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
-    libgmp3-dev libevent-dev jp2a pv
+    libgmp3-dev libevent-dev jp2a pv 	&>> ${SCRIPT_LOGFILE}
 }
 
 function swaphack() { 
@@ -415,7 +415,7 @@ function build_mn_from_source() {
                         jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
                 fi  
                 # compilation starts here
-                source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile | pv -t
+                source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile | pv -t -i0.1
         else
                 echo "* Daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
