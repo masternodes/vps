@@ -412,7 +412,7 @@ function build_mn_from_source() {
                 # print ascii banner if a logo exists
                 echo -e "* Starting the compilation process for ${CODENAME}, stay tuned"
                 if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
-                        jp2a -b --colors --width=64 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
+                        jp2a -b --colors --width=32 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
                 fi  
                 # compilation starts here
                 source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile &>> ${SCRIPT_LOGFILE}
