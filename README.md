@@ -17,7 +17,7 @@ Feel free to use my reflink to signup and receive a bonus w/ vultr:
 ---
 **NOTE on the VPS choice for starters**
 
-Vultr is highly recommended for this kind of setup. I created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
+**Vultr** is highly recommended for this kind of setup. I created an [easy step-by-step guide for the VPS provider vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
 
 ---
 
@@ -105,7 +105,7 @@ The *install.sh* script support the following parameters:
 
 ## Help
 
-I activated the "issues" option on github to give you a way to document defects and feature wishes. Feel free top open issues for problems / features you are missing here:
+I activated the "[issues](https://github.com/masternodes/vps/issues)" option on github to give you a way to document defects and feature wishes. Feel free top [open issues](https://github.com/masternodes/vps/issues) for problems / features you are missing here:
 https://github.com/masternodes/vps/issues
 
 I will also happily take any pull requests that make masternode installations easier for everyone ;-)
