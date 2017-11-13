@@ -382,7 +382,9 @@ function source_config() {
 		create_control_configuration
 		create_systemd_configuration 
 		set_permissions
-		cleanup_after 		
+		cleanup_after
+		showbanner
+		final_call 		
 	else
 		echo "required file ${SETUP_CONF_FILE} does not exist, abort!"
 		exit 1   
@@ -419,6 +421,27 @@ function build_mn_from_source() {
         else
                 echo "* Daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
+}
+
+function final_call() {
+	# note outstanding tasks that need manual work
+    echo "************! ALMOST DONE !******************************"	
+	echo "There is still work to do in the configuration templates."
+	echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
+	echo "Add your masternode private keys now."
+	echo "eg in /etc/masternodes/${CODENAME}_n1.conf"	
+
+    # place future helper script accordingly
+    cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
+	echo "">> ${MNODE_HELPER}_${CODENAME}
+	
+	for NUM in $(seq 1 ${count}); do
+		echo "systemctl enable ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
+		echo "systemctl restart ${GIT_PROJECT}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
+	done
+     
+	chmod u+x ${MNODE_HELPER}_${CODENAME}
+	tput sgr0
 }
 
 

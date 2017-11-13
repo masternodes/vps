@@ -1,197 +1,133 @@
-# Masternode nodemaster script introduction
+# Nodemaster
+
+The **Nodemaster** scripts is a collection of utilities to manage, setup and update masternode instances. 
 
 I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part.
+
+If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
+
+**Have fun, this is crypto after all!**
+```
+BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
+```
+
+Feel free to use my reflink to signup and receive a bonus w/ vultr:
+<a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
 ---
 **NOTE on the VPS choice for starters**
 
-Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
+Vultr is highly recommended for this kind of setup. I created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
 
 ---
+
+## About / Background
+
+Many masternode crypto currencies only have incomplete or even non-existing instructions available how to setup a masternode from source. 
+
+This project started as handy bash script to setup my $PIVX masternodes in 2016 when there was almost zero documentation and anything that existed was either $DASH specific, sucked and in most cases both. For that reason, i started to work on a not-so-sucking way to install a lot of different masternodes with next to none manual intervention.
+
+If you are not already aware, visit the project site and join the slack. The website at [https://pivx.org/](https://pivx.org/) is also well worth a visit. 
+
+Many people use binaries, end of with an insecure configuration or fail completely. This is obviously bad for the stability of the individual network.
+
+After doing hundreds of masternode installations in the past two years, i decided to share some of my existing auto-install and management scripts with the community to work on a generalised & reliable setup for all masternode coins.
+
+Comparing with building from source manually, you will benefit from using this script in the following way(s):
+
+* 100% auto-compilation and 99% of configuration on the masternode side of things. It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
+* Developed with recent Ubuntu versions in mind, currently only 16.04 is supported
+* Installs 1-100 (or more!) masternodes in parallel on one machine, with individual config and data
+* Compilation is currently from source for the desired git repo tag (configurable via config files)
+Some security hardening is done, including firewalling and a separate user
+* Automatic startup for all masternode daemons
+* This script needs to run as root, the masternodes will and should not!
+* It's ipv6 enabled, tor/onion will follow
+
+
+## Installation
+
+SSH to your VPS and clone the Github repository:
+
+```bash
+git clone https://github.com/masternodes/vps.git && cd vps
+```
+
+Install & configure your desired master node with options:
+
+```bash
+./install.sh -p pivx
+```
+
+
+## Examples for typical script invocation 
+
+These are only a couple of examples for typical setups. Check my [easy step-by-step guide for [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
+
+**Install & configure 4 PIVX masternodes:**
+
+```bash
+./install.sh -p pivx -c 4
+```
+
+**Install 4 PIVX masternodes, update daemon:**
+
+```bash
+./install.sh -p pivx -c 4 -u
+```
+
+**Install 6 PIVX masternodes with the git release tag "tags/v3.0.4"**
+
+```bash
+./install.sh -p pivx -c 6 -r "tags/v3.0.4"
+```
+
+**Wipe all PIVX masternode data:**
+
+```bash
+./install.sh -p pivx -w
+```
+
+
+## Options
+
+The *install.sh* script support the following parameters: 
+
+| Long Option | Short Option | Values | description |
+| :--- | :--- | --- | --- |
+|  --project=             | -p | project, e.g. "pix" | shortname for the project |
+| --net=                | -n | "4" / "6"  | ip type for masternode. (ipv)6 is default |
+| --release=                | -r | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested  |
+| --count=              | -c | number | amount of masternodes to be configured |
+| --update               | -u    | --    | update specified masternode daemon, combine with -p flag |
+| --wipe               | -w    | --    | uninstall & wipe all related master node data, combine with -p flag |
+| --help               | -h    | --    | print help info |
+
+## Help
 
 I activated the "issues" option on github to give you a way to document defects and feature wishes. Feel free top open issues for problems / features you are missing here:
 https://github.com/masternodes/vps/issues
 
 I will also happily take any pull requests that make masternode installations easier for everyone ;-)
 
-If unsure, ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
+If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
 
 **Have fun, this is crypto after all!**
 ```
 BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
 
-## Wait! What is this?
 
-A not-so-sucking way to install a lot of different masternodes. 
+## Management script (not yet implemented)
 
-## Which crypto projects are currently supported?
+The management script release will follow within the next couple of days. 
 
-PIVX DASH DESIRE PURE ENT SYNX CHC ZEN DPRICE VIVO ITZ MEME ARC CRAVE PIE XCXT SCORE BITSEND XZC INSANE XIOS master nodes. More added as soon as i find the time.
+| command | description |
+| :--- | --- |
+| nodemaster start pivx (all\|number) | start all or a specific pivx masternode(s) |
+| nodemaster restart pivx (all\|number) | stop all or a specific pivx masternode(s) |
+| nodemaster stop pivx (all\|number) | restart all or a specific pivx masternode(s) |
+| nodemaster cleanup pivx (all\|number) | delete chain data for all pivx masternodes |
+| nodemaster status pivx (all\|number) | systemd process status for a pivx masternode |
+| nodemaster tail pivx (all\|number) | tail debug logs for a pivx masternode |
 
-## Can i see a demo?
-
-Sure! Here is a demo showing the script in action for the first couple of seconds (compilation takes a while):
-
-**NOT THERE YET, WORKING on THE RECORDING**
-<img src="assets/nodemaster.gif" alt="example run" class="inline"/
-
-After this run, you have 2 instances of a $INSN masternode, ready for configuration. A not-so-sucking way to install a lot of different masternodes. 
-
-## Which VPS providers are currently supported?
-
-Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md).  
-
-Feel free to use my reflink to signup and receive a bonus w/ vultr: <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
-
-Generally, you can use any provider. Vultr is the only provider i am testing for and you should know what you are doing when you use another provider.
-
-![supported projects](/assets/collage.jpg)
-
-Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy. 
-
-**Have fun, this is crypto after all!**
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
-
-# Notes and features
-* It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
-* Developed with recent Ubuntu versions in mind, including 14.04/15.10/16.04/16.10
-* This script doesn't care about the controller wallet side of things
-* Installs 1-100 (or more!) masternodes in parallel on one machine, with individual config and data
-* Compilation is currently from source for the desired git repo tag (configurable via config files)
-* Some security hardening is done, including firewalling and a separate user
-* Automatic startup for all masternode daemons
-* It's ipv6 enabled, tor/onion will follow
-* This script needs to run as root, the masternodes will and should not!
-
-## How do i install a XXX masternodes with this script?
-
-### 1) SSH to your Linux VPS and clone this repository
-You should be able to do that ;-) Install git if not already present.
-
-```
-git clone https://github.com/masternodes/vps.git && cd vps
-```
-
-### 2) execute the **runme.sh** script
-
-the **runme.sh** script takes the desired crypto and masternode count (optional) as parameters, e.g. to install 3 PURE masternodes:
-
-```
-./runme.sh pure 3
-```
-
-The script downloads, compiles and configures the system now. This will usually take between 5-15 minutes.
-
-<img src="docs/images/masternode_vps/install-the-desired-masternode-and-amount.png" alt="crypto choice" class="inline"/>
-
-The *runme.sh* script outputs an alphabetic list of supported crypto projects when executed without a parameter.
-
-### 3) adapt the master node configuration files
-
-ADD your masternode private key to the configuration file(s) located at ```/etc/masternodes/$CRYPTO_n$NUM.conf```. 
-
-For example, when installing three PURE masternodes are desired, the following configuration files are generated:
-
-```
-* writing config file /etc/masternodes/pure_n1.conf
-* writing config file /etc/masternodes/pure_n2.conf
-* writing config file /etc/masternodes/pure_n3.conf
-```
-
-### 4) activate the master node system services
-
-Still AS ROOT run ```/usr/local/bin/restart_masternodes.sh``` to activate the services permanently.
-
-Individual masternode data directories are located in ```/var/lib/masternodes/${CRYPTO}${NUMBER_OF_NODE}```
-
-## Last step, the controller
-
-To activate the new nodes in your _local_ (not the VPS) controller wallet, add the bind address entries with port to a file called "masternode.conf" as usual.
-
-     MN1 [2002:470:1111:1a4:51]:51472 KEY TX OUTPUT
-     MN2 [2003:470:1111:1a4:52]:51472 KEY TX OUTPUT
-     MN3 [2003:470:1111:1a4:53]:51472 KEY TX OUTPUT
-
-To make this a bit easier for large installations, i implemented a small gimmick in the newest version. Now after the script has run, a partial of the "masternode.conf" file is generated and placed on the VPS eg for XIOS at "/tmp/xios_masternode.conf"
-
-So you can take the contents from there and paste it into your local controller-wallets masternode.conf all that you need to add is the relevant pieces from "masternode outputs"
-
-<img src="docs/images/masternode_vps/controller_conf_partial.png" alt="controller conference generated partial" class="inline"/>
-
-You get the idea, another step to a fully automated setup... ;-)
-
-
-# A dedicated unprivileged user for the masternodes
-
-Subsequently, you should only work as masternode user and not ```root```. The default user account created is ```masternode```.
-
-You can change to this user (as root since "root" can become any account) with the following command:
-
-```
-su - masternode
-```   
-
-If you prefer, you can also set a password for that user with the following command:
-
-```
-passwd masternode
-```
-
-
-# Supported cryptos
-
-| CRYPTO  | Logo | Url |
-|--------|--------------|-----|
-| PIVX |  ![PIVX](/assets/pivx.jpg)  |  https://pivx.org/ |
-| DASH |  ![DASH](/assets/dash.jpg)  | https://www.dash.org/ |
-| DESIRE |  ![DESIRE](/assets/desire.jpg)  | https://github.com/lazyboozer/Desire  |
-| PURE |  ![PURE](/assets/pure.jpg)  | https://github.com/puredev321/pure    |
-| ENT  |  ![ENT](/assets/ent.jpg)  | http://ent.eternity-group.org/    |
-| SYNX |  ![SYNX](/assets/synx.jpg)  | http://syndicatelabs.io/  |
-| CHC |  ![CHAIN](/assets/chain.jpg)  | https://www.chaincoin.org/  |
-| ZEN |  ![ZEN](/assets/zen.jpg)  | https://zensystem.io/  |
-| DP |  ![DPRICE](/assets/dprice.jpg)  | http://digitalprice.org/  |
-| VIVO |  ![VIVO](/assets/vivo.jpg)  | https://www.vivocrypto.com/  |
-| ITZ |  ![ITZ](/assets/itz.jpg)  | https://interzone.space/  |
-| MEME |  ![MEME](/assets/meme.jpg)  | http://www.memetic.ai/  |
-| ARC |  ![ARC](/assets/arc.jpg)  | https://arcticcoin.org/  |
-| CRAVE |  ![CRAVE](/assets/crave.jpg)  | https://www.craveproject.com/  |
-| PIE |  ![PIE](/assets/pie.jpg)  | https://github.com/flintsoft/PIE  |
-| XCXT |  ![XCXT](/assets/xcxt.jpg)  | http://coinonatx.com/  |
-| SCORE |  ![SCORE](/assets/score.jpg)  | http://scorecoin.site/ |
-| BITSEND |  ![BITSEND](/assets/bitsend.jpg)  | https://bitsend.info/ |
-| XZC |  ![ZCOIN](/assets/zcoin.jpg)  | https://zcoin.io/ |
-| INSANE |  ![INSN](/assets/insane.jpg)  | https://insanecoin.com/ |
-| XIOS | ![XIOS](/assets/xios.jpg)  | https://bitcointalk.org/index.php?topic=2251159.0/ |
-| HAV | ![HAV](/assets/have.jpg)  | https://bitcointalk.org/index.php?topic=2336026.0 |
-| NTRN | ![NTRN](/assets/ntrn.jpg)  | https://www.neutroncoin.com/ |
-| RNS | ![RNS](/assets/rns.jpg)  | https://bitcointalk.org/index.php?topic=1809933.msg18029683#msg18029683/ |
-| SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
-| BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
-| INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
-| PHORE | ![PHORE](/assets/phore.jpg)  | https://phore.io/ |
-| FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
-| BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
-| MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
-
-
-# Todo
-* provide my Dockerfile & Vagrantfile
-* provide a delete / uninstall flag
-* create a logfile
-* write more test cases
-* implement a binary option (?) 
-* output all supported cryptos as list within help
-
-# Errors
-* currently not fully idempotent
-
-Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
-
-**Have fun, this is crypto after all!**
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```

@@ -1,17 +1,11 @@
-# Slick masternode VPS setup for all your beloved crypto masternodes
-
-I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part. 
+# Slick masternode VPS setup for all your beloved crypto masternodes (Vultr example)
 
 ---
-**NOTE on the VPS choice for starters**
+**PLEASE ALSO READ THE README**
 
-Vultr is highly recommended for this kind of setup, i even created an [easy step-by-step guide for this provider [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
+Please also see the [README for this project](README.md) that will give you a high-level overview of features. 
 
 ---
-
-Feel free to use my reflink to signup and receive a bonus w/ vultr:
-<a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
-
 
 ## Intro
 
@@ -25,7 +19,10 @@ If you are not already aware, visit the project site and join the slack. The web
 
 I will use vultr for my instructions, but in practice and with a bit of tuning any hoster that gives you multiple free IPv6 addresses. Register / login with vultr.
 
-Feel free to use my reflink [http://www.vultr.com/?ref=6929414-3B.](http://www.vultr.com/?ref=6929414-3B.) It's also great that you can use Bitcoin to pay!
+Feel free to use my reflink to signup and receive a bonus w/ vultr:
+<a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
+
+It's also great that you can use Bitcoin to pay!
 
 <img src="images/masternode_vps/get-a-vps-system-for-your-masternode-s-.png" alt="VPS signup" class="inline"/>
 
@@ -85,23 +82,23 @@ Follow the instructions at [https://github.com/marsmensch/masternode-vps-setup.]
 Clone the git repository first:
 
 ```
-vps:~ git clone https://github.com/masternodes/vps.git && cd vps
+git clone https://github.com/masternodes/vps.git && cd vps
 ```
 
 
 ## Install the desired masternode and amount
 
-Use the *runme.sh* script with the desired crypto and masternode count as parameters, e.g. to install 3 PURE masternodes:
+Use the *./install.sh* script with the desired crypto and masternode count as parameters, e.g. to install 4 PIVX masternodes:
 
 ```
-vps:~ ./runme.sh pure 3
+./install.sh -p pivx -c 4
 ```
 
 The script downloads, compiles and configures the system now. This will usually take between 5-15 minutes.
 
 <img src="images/masternode_vps/install-the-desired-masternode-and-amount.png" alt="VPS sizing" class="inline"/>
 
-The *runme.sh* script outputs an alphabetic list of supported crypto projects when executed without a parameter.
+The *./install.sh* script outputs a list of possible parameters if executed without options.
 
 ## End of installation
 
@@ -119,19 +116,19 @@ The generated configuration files are located at /etc/masternodes/. One file per
 
 ## Insert your masternode private key
 
-In 99% you can use the generated settings as is. The only value you MUST change is the masternode private key, generated in your controller wallet.
+In 99% you can use the generated settings as is. The only value you MUST change is the masternode private key, generated in your controller wallet. Contact the individual crypto community if unsure, although the steps are identical for most master node coins. Check the [Dash documentation for example](https://dashpay.atlassian.net/wiki/spaces/DOC/pages/1867877/Start+multiple+masternodes+from+one+wallet+start-many).
 
 <img src="images/masternode_vps/insert-your-masternode-private-key.png" alt="the master node private key" class="inline"/>
 
 
 ## Start your new masternodes
 
-A script to enable masternode start at boot and local process monitoring has been created at */usr/local/bin/restart_maternodes.sh* for your convenience.
+A script to enable masternode start at boot has been created at */usr/local/bin/activate_masternodes_${CODENAME}.sh* for your convenience. There is exactly one script per installed masternode crypto.
 
-Run it after you finished configuration.
+Run it after you finished configuration, e.g. after a PIVX installation do.
 
 ```
-vps:~ /usr/local/bin/restart_masternodes.sh
+/usr/local/bin/activate_masternodes_pivx.sh
 ```     
 
 ## Last step, the controller
@@ -142,7 +139,7 @@ To activate the new nodes in your _local_ (not the VPS) controller wallet, add t
      MN2 [2003:470:1111:1a4:52]:51472 KEY TX OUTPUT
      MN3 [2003:470:1111:1a4:53]:51472 KEY TX OUTPUT
 
-To make this a bit easier for large installations, i implemented a small gimmick in the newest version. Now after the script has run, a partial of the "masternode.conf" file is generated and placed on the VPS eg for XIOS at "/tmp/xios_masternode.conf"
+To make this a bit easier for large installations, i implemented a small gimmick in the newest version. Now after the script has run, a partial of the "masternode.conf" file is generated and placed on the VPS eg for XIOS at "/tmp/pivx_masternode.conf"
 
 So you can take the contents from there and paste it into your local controller-wallets masternode.conf all that you need to add is the relevant pieces from "masternode outputs"
 
@@ -150,7 +147,7 @@ So you can take the contents from there and paste it into your local controller-
 
 You get the idea, another step to a fully automated setup... ;-)
 
-Ping me at[contact@marsmenschen.com] (mailto:contact@marsmenschen.com) for questions and send some crypto my way if you are happy.
+Please open github issue in case of question and send some crypto my way if you are happy.
 
 **Have fun, this is crypto after all!**
 
