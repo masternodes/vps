@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	0.7-alpha
-# date    	2017-11-08
+# version 	0.7.4-alpha
+# date    	2017-11-13
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
@@ -46,13 +46,9 @@ cat << "EOF"
 EOF
 }
 
-# in response to your edit, here's how you'd create and use a confirm command based on the
-# first version in my answer (it would work similarly with the other two):
 # To use this function:
-#
 # confirm && hg push ssh://..
 # or
-#
 # confirm "Would you really like to do a push?" && hg push ssh://..
 function get_confirmation() {
     # call with a prompt string or use a default
@@ -454,6 +450,7 @@ function prepare_mn_interfaces() {
 
 	# generate the required ipv6 config
 	if [ "${net}" -eq 4 ]; then
+	    IPV6_INT_BASE="NEW_IPv4_ADDRESS"
         echo "IPv4 address generation needs to be done manually atm!"
 	fi	# end ifneteq4
 	
