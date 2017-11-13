@@ -188,7 +188,7 @@ function create_mn_configuration() {
 				fi
 				# replace placeholders
 				echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"
-				sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf				   
+				sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}]/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf				   
 			fi        			
         done
         
@@ -451,6 +451,7 @@ function prepare_mn_interfaces() {
 	# generate the required ipv6 config
 	if [ "${net}" -eq 4 ]; then
 	    IPV6_INT_BASE="NEW_IPv4_ADDRESS"
+	    NETWORK_BASE_TAG=""
         echo "IPv4 address generation needs to be done manually atm!"
 	fi	# end ifneteq4
 	
