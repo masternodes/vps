@@ -151,7 +151,7 @@ function create_mn_dirs() {
     # individual data dirs for now to avoid problems
     echo "Creating masternode directories"
     mkdir -p ${MNODE_CONF_BASE}
-	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+	for NUM in $(seq 1 ${count}); do
 	    if [ ! -d "${MNODE_DATA_BASE}/${CODENAME}${NUM}" ]; then
 	         echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}"
              mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM}
@@ -182,7 +182,7 @@ function create_mn_configuration() {
     echo sleep 5
     
         # create one config file per masternode
-        for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+        for NUM in $(seq 1 ${count}); do
         PASS=$(date | md5sum | cut -c1-24)
 
 			# we dont want to overwrite an existing config file
@@ -213,7 +213,7 @@ function create_control_configuration() {
 
     rm -f /tmp/${CODENAME}_masternode.conf
 	# create one line per masternode with the data we have
-	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+	for NUM in $(seq 1 ${count}); do
 		cat >> /tmp/${CODENAME}_masternode.conf <<-EOF
 			${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}	
 		EOF
@@ -224,7 +224,7 @@ function create_control_configuration() {
 function create_systemd_configuration() {
 
 	# create one config file per masternode
-	for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+	for NUM in $(seq 1 ${count}); do
 	PASS=$(date | md5sum | cut -c1-24)
 		echo "(over)writing systemd config file ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service"
 		cat > ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service <<-EOF
@@ -424,7 +424,7 @@ function prepare_mn_interfaces() {
 		cp ${NETWORK_CONFIG} ${NETWORK_CONFIG}.${DATE_STAMP}.bkp
 
 		# create the additional ipv6 interfaces, rc.local because it's more generic 	    
-		for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
+		for NUM in $(seq 1 ${count}); do
 
 			# check if the interfaces exist	    
 			ip -6 addr | grep -qi "${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}"
