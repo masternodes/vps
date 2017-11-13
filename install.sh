@@ -168,6 +168,31 @@ function configure_firewall() {
 
 }
 
+function validate_netchoice() {
+
+    echo "Validating network rules"
+	# net is from the default config but can ultimately be
+	# overwritten at runtime
+	if [ -z "${net}" ]; then
+		net=${NETWORK_TYPE}
+		echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
+	fi			
+
+	# break here of net isn't 4 or 6 
+	if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
+		echo "invalid NET!"
+		exit 1;
+	fi 
+
+	# generate the required ipv6 config
+	if [ "${net}" -eq 4 ]; then
+	    IPV6_INT_BASE="#NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER"
+	    NETWORK_BASE_TAG=""
+        echo "IPv4 address generation needs to be done manually atm!"
+	fi	# end ifneteq4		    
+
+}
+
 function create_mn_configuration() {
     
         # create one config file per masternode
@@ -286,8 +311,9 @@ function source_config() {
 
     SETUP_CONF_FILE="${SCRIPTPATH}/config/${project}/${project}.env" 
 
-    # first things first, break early
+    # first things first, to break early if things are missing or weird
     check_distro
+    validate_netchoice
         
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		#echo "read default config"	
@@ -312,18 +338,18 @@ function source_config() {
 			echo "release EMPTY, setting to proj default: ${SCVERSION}" 
 		fi
 
-		# net is from the default config but can ultimately be
-		# overwritten at runtime
-		if [ -z "${net}" ]; then
-			net=${NETWORK_TYPE}
-			echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
-		fi			
-
-        # break here of net isn't 4 or 6 
-		if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
-			echo "invalid NET!"
-			exit 1;
-		fi  			
+# 		net is from the default config but can ultimately be
+# 		overwritten at runtime
+# 		if [ -z "${net}" ]; then
+# 			net=${NETWORK_TYPE}
+# 			echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
+# 		fi			
+# 
+#         break here of net isn't 4 or 6 
+# 		if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
+# 			echo "invalid NET!"
+# 			exit 1;
+# 		fi  			
 
 		# main block of function logic starts here
 	    # if in update more delete theold daemon first, then proceed
@@ -448,12 +474,12 @@ function prepare_mn_interfaces() {
 		done # end forloop	    
 	fi # end ifneteq6
 
-	# generate the required ipv6 config
-	if [ "${net}" -eq 4 ]; then
-	    IPV6_INT_BASE="#NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER"
-	    NETWORK_BASE_TAG=""
-        echo "IPv4 address generation needs to be done manually atm!"
-	fi	# end ifneteq4
+# 	generate the required ipv6 config
+# 	if [ "${net}" -eq 4 ]; then
+# 	    IPV6_INT_BASE="#NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER"
+# 	    NETWORK_BASE_TAG=""
+#         echo "IPv4 address generation needs to be done manually atm!"
+# 	fi	# end ifneteq4
 	
 }
 
