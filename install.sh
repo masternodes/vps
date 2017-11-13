@@ -144,6 +144,10 @@ function create_mn_user() {
 
 function create_mn_dirs() {
 
+    echo "COUNT in mn_dirs is: ${count}"
+    echo "SETUP_MNODES_COUNT in mn_dirs is: ${SETUP_MNODES_COUNT}"
+    echo sleep 5
+
     # individual data dirs for now to avoid problems
     echo "Creating masternode directories"
     mkdir -p ${MNODE_CONF_BASE}
@@ -173,6 +177,10 @@ function configure_firewall() {
 
 function create_mn_configuration() {
 
+    echo "COUNT in mn_config is: ${count}"
+    echo "SETUP_MNODES_COUNT in mn_config is: ${SETUP_MNODES_COUNT}"
+    echo sleep 5
+    
         # create one config file per masternode
         for NUM in $(seq 1 ${SETUP_MNODES_COUNT}); do
         PASS=$(date | md5sum | cut -c1-24)
@@ -198,6 +206,10 @@ function create_mn_configuration() {
 }
 
 function create_control_configuration() {
+
+    echo "COUNT in control_config is: ${count}"
+    echo "SETUP_MNODES_COUNT in control_config is: ${SETUP_MNODES_COUNT}"
+    echo sleep 5
 
     rm -f /tmp/${CODENAME}_masternode.conf
 	# create one line per masternode with the data we have
@@ -295,7 +307,7 @@ function source_config() {
 		echo "apply config file for ${project}"		
 		source "${SETUP_CONF_FILE}"
 
-		# release is from the default config but can ultimately be
+		# count is from the default config but can ultimately be
 		# overwritten at runtime
 		if [ -z "$count" ]
 		then
@@ -316,7 +328,7 @@ function source_config() {
 		if [ -z "$net" ]; then
 			net=${NETWORK_TYPE}
 			echo "net EMPTY, setting to default: ${NETWORK_TYPE}"
-		fi
+		fi		
 
 		# TODO: PRINT A BOLD WANRING REGARDING MANUAL IPv$ CONFIG STEPS
 		# AND LINK TO THE CORRESPONDING ARTICLE HERE	
@@ -387,6 +399,10 @@ function build_mn_from_source() {
 
 
 function prepare_mn_interfaces() {
+
+    echo "COUNT in mn_interfaces is: ${count}"
+    echo "SETUP_MNODES_COUNT in mn_interfaces is: ${SETUP_MNODES_COUNT}"
+    echo sleep 5
 
     IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 	echo "IPV6_INT_BASE: ${IPV6_INT_BASE}"
@@ -531,17 +547,6 @@ fi
 # source default config before everything else
 source ${SCRIPTPATH}/config/default.env
 #################################################
-
-# [ -n "${ipaddr_list}" ] && DEFAULT_IPADDR="${ipaddr_list}"
-# [ -n "${user}" ] && DEFAULT_USER="${user}"
-# [ -n "${passwd}" ] && DEFAULT_PAWD="${passwd}"
-# [ -n "${whitelist_ipaddrs}" ] && WHITE_LIST_NET="${whitelist_ipaddrs}"
-# [ -n "${whitelist}" ] && WHITE_LIST="${whitelist}"
-# 
-# generate_config "${DEFAULT_IPADDR}" "${WHITE_LIST}" "${WHITE_LIST_NET}"
-# 
-# [ -u "$update_only" ]  && echo "===========>> update_only, replace daemon!" && cat ${CONFIG_PATH} && exit 0
-
 
 main() {
     echo "logging into ${SCRIPT_LOGFILE}"
