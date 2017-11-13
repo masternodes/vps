@@ -284,10 +284,21 @@ function cleanup_after() {
 	
 }
 
+install_report() {
+
+    echo "********** Installation Plan ***********"
+    echo "I am going not install and configure ${count} ${project} masternodes for you now"
+    echo "You have to add your masternode private key to the indicidual config files afterwards"
+
+}
+
 # source the default and desired crypto configuration files
 function source_config() {
 
     SETUP_CONF_FILE="${SCRIPTPATH}/config/${project}/${project}.env" 
+
+    # first things first, break early
+    check_distro
         
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		#echo "read default config"	
@@ -335,7 +346,7 @@ function source_config() {
 			rm -f ${MNODE_DAEMON}  	 
 		fi
 
-        check_distro
+        install_report
         swaphack
         install_packages	
 		build_mn_from_source
