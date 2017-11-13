@@ -415,7 +415,7 @@ function prepare_mn_interfaces() {
 
     # user opted for ipv6 (default), so we have to check for ipv6 support	
 	# check for vultr ipv6 box active
-	if [ -z "${IPV6_INT_BASE}" ]; then
+	if [ -z "${IPV6_INT_BASE}" ] && [ ${net} -ne 4 ]; then
 		echo "No IPv6 support on the VPS but IPv6 is the setup default. Please switch to ipv4 with flag \"-n 4\" if you want to continue."
 		echo ""
 		echo "See the following link for instructions how to add multiple ipv4 addresses on vultr:"
