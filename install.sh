@@ -284,17 +284,6 @@ function cleanup_after() {
 	
 }
 
-install_report() {
-
-    echo "************************* Installation Plan *****************************************"
-    echo "I am going not install and configure ${count} ${project} masternodes for you now"
-    echo "You have to add your masternode private key to the individual config files afterwards"
-    echo ""
-    echo "Stay tuned!"
-    echo "*************************************************************************************"
-    sleep 3
-}
-
 # source the default and desired crypto configuration files
 function source_config() {
 
@@ -349,7 +338,14 @@ function source_config() {
 			rm -f ${MNODE_DAEMON}  	 
 		fi
 
-        install_report
+		echo "************************* Installation Plan *****************************************"
+		echo "I am going to install and configure ${count} ${project} masternodes for you now"
+		echo "You have to add your masternode private key to the individual config files afterwards"
+		echo ""
+		echo "Stay tuned!"
+		echo "*************************************************************************************"
+		sleep 3
+
         swaphack
         install_packages	
 		build_mn_from_source
