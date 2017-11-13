@@ -429,7 +429,9 @@ function final_call() {
 	echo "There is still work to do in the configuration templates."
 	echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
 	echo "Add your masternode private keys now."
-	echo "eg in /etc/masternodes/${CODENAME}_n1.conf"	
+	echo "eg in /etc/masternodes/${CODENAME}_n1.conf"
+	echo ""
+	echo "last but not least, run /usr/local/bin/activate_masternodes_pivx as root"	
 
     # place future helper script accordingly
     cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
