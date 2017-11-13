@@ -358,14 +358,12 @@ function source_config() {
 		echo "A logfile for this run can be found at the following location:"
 		echo "${SCRIPT_LOGFILE}"
 		echo "*************************************************************************************"
-
-
 		sleep 3
 		
-
+		# main routine
+        prepare_mn_interfaces
         swaphack
-        install_packages
-        prepare_mn_interfaces	
+        install_packages	
 		build_mn_from_source
 		create_mn_user
 		create_mn_dirs
