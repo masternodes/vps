@@ -450,7 +450,7 @@ function prepare_mn_interfaces() {
 
 	# generate the required ipv6 config
 	if [ "${net}" -eq 4 ]; then
-	    IPV6_INT_BASE="NEW_IPv4_ADDRESS_FOR_MASTERNODE_"
+	    IPV6_INT_BASE="#NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER"
 	    NETWORK_BASE_TAG=""
         echo "IPv4 address generation needs to be done manually atm!"
 	fi	# end ifneteq4
