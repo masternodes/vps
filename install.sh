@@ -115,12 +115,12 @@ if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];the
 	echo "* No proper swap, creating it" 
 	# needed because ant servers are ants
 	rm -f /var/mnode_swap.img
-	dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${MNODE_SWAPSIZE}
-	chmod 0600 /var/mnode_swap.img
-	mkswap /var/mnode_swap.img
-	swapon /var/mnode_swap.img
-	echo '/var/mnode_swap.img none swap sw 0 0' | tee -a /etc/fstab
-	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf
+	dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${MNODE_SWAPSIZE} &>> ${SCRIPT_LOGFILE}
+	chmod 0600 /var/mnode_swap.img 
+	mkswap /var/mnode_swap.img &>> ${SCRIPT_LOGFILE}
+	swapon /var/mnode_swap.img &>> ${SCRIPT_LOGFILE} 
+	echo '/var/mnode_swap.img none swap sw 0 0' | tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
+	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
 	echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		
 else
 	echo "* All good, we have a swap"	
@@ -456,7 +456,7 @@ function prepare_mn_interfaces() {
 			then
 			  echo "IP for masternode already exists, skipping creation" &>> ${SCRIPT_LOGFILE}
 			else
-			  echo "Creating new IP address for ${CODENAME} masternode nr ${NUM}"
+			  echo "Creating new IP address for ${CODENAME} masternode nr ${NUM}" &>> ${SCRIPT_LOGFILE}
 			  echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
 			  sleep 2
 			  ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE} &>> ${SCRIPT_LOGFILE}
