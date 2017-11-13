@@ -313,7 +313,6 @@ function source_config() {
 
     # first things first, to break early if things are missing or weird
     check_distro
-    validate_netchoice
         
 	if [ -f ${SETUP_CONF_FILE} ]; then
 		#echo "read default config"	
@@ -435,9 +434,12 @@ function build_mn_from_source() {
 
 
 function prepare_mn_interfaces() {
-
+    
     IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 	echo "IPV6_INT_BASE: ${IPV6_INT_BASE}"
+	
+	validate_netchoice
+	echo "IPV6_INT_BASE AFTER : ${IPV6_INT_BASE}"
 
     # user opted for ipv6 (default), so we have to check for ipv6 support	
 	# check for vultr ipv6 box active
