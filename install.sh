@@ -329,7 +329,13 @@ function source_config() {
 			echo "YOU will have some mamual work to do, see xxxx for some"
 			echo "details how to add multiple ipv4 addresses on vultr"
 			NETWORK_TYPE=4
-		fi		
+		fi	
+
+        # break here of net isn't 4 or 6 (later +tor)
+        if [! $net -eq 4 ] ||  [! $net -eq 6 ]; then
+            echo "invalid NET!"
+            exit 1;
+        fi    			
 
 		# main block of function logic starts here
 	    # if in update more delete theold daemon first, then proceed
