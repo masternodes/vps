@@ -144,10 +144,6 @@ function create_mn_user() {
 
 function create_mn_dirs() {
 
-    echo "COUNT in mn_dirs is: ${count}"
-    echo "SETUP_MNODES_COUNT in mn_dirs is: ${SETUP_MNODES_COUNT}"
-    echo sleep 5
-
     # individual data dirs for now to avoid problems
     echo "Creating masternode directories"
     mkdir -p ${MNODE_CONF_BASE}
@@ -176,10 +172,6 @@ function configure_firewall() {
 }
 
 function create_mn_configuration() {
-
-    echo "COUNT in mn_config is: ${count}"
-    echo "SETUP_MNODES_COUNT in mn_config is: ${SETUP_MNODES_COUNT}"
-    echo sleep 5
     
         # create one config file per masternode
         for NUM in $(seq 1 ${count}); do
@@ -206,10 +198,6 @@ function create_mn_configuration() {
 }
 
 function create_control_configuration() {
-
-    echo "COUNT in control_config is: ${count}"
-    echo "SETUP_MNODES_COUNT in control_config is: ${SETUP_MNODES_COUNT}"
-    echo sleep 5
 
     rm -f /tmp/${CODENAME}_masternode.conf
 	# create one line per masternode with the data we have
@@ -265,11 +253,12 @@ function set_permissions() {
 
 function wipe_all() {
     
-    echo "PROJECT TO DELETE IS: ${project} xxxx"
+    echo "Deleting all ${project} related data!"
 	rm -f /etc/masternodes/${project}_n*.conf
 	rmdir --ignore-fail-on-non-empty -p /var/lib/masternodes/${project}*
 	rm -f /etc/systemd/system/${project}_n*.service
 	rm -f ${MNODE_DAEMON}
+	exit 0
 
 }
 
@@ -400,10 +389,6 @@ function build_mn_from_source() {
 
 function prepare_mn_interfaces() {
 
-    echo "COUNT in mn_interfaces is: ${count}"
-    echo "SETUP_MNODES_COUNT in mn_interfaces is: ${SETUP_MNODES_COUNT}"
-    echo sleep 5
-
     IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
 	echo "IPV6_INT_BASE: ${IPV6_INT_BASE}"
 
@@ -531,7 +516,7 @@ fi
 
 # Check required arguments
 if [ "$wipe" -eq 1 ]; then
-	get_confirmation "Would you really like to WIP ALL DATA!?" && wipe_all
+	get_confirmation "Would you really like to WIPE ALL DATA!? YES or NO" && wipe_all
 	exit 0
 fi		
  
