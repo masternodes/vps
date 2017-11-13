@@ -400,7 +400,7 @@ function build_mn_from_source() {
                         git clone ${GIT_URL} ${CODENAME}          &>> ${SCRIPT_LOGFILE}
                         cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}  &>> ${SCRIPT_LOGFILE}
                         echo "* Checking out desired GIT tag: ${release}"   
-                        git checkout ${release}
+                        git checkout ${release}                   &>> ${SCRIPT_LOGFILE}
                 else
                         echo "* Updating the existing GIT repo"
                         cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}  &>> ${SCRIPT_LOGFILE}
@@ -412,7 +412,7 @@ function build_mn_from_source() {
                 # print ascii banner if a logo exists
                 echo -e "* Starting the compilation process for ${CODENAME}, stay tuned"
                 if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
-                        jp2a -b --colors --width=32 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
+                        jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
                 fi  
                 # compilation starts here
                 source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile &>> ${SCRIPT_LOGFILE}
