@@ -166,6 +166,7 @@ The management script release will follow within the next couple of days.
 | FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
 | BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
 | MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
+| MAGNET | ![MAGNET](/assets/magnet.jpg) | https://magnetwork.io |
 
 
 # Todo
