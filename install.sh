@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	0.7.4-alpha
-# date    	2017-11-13
+# version 	0.7.6
+# date    	2017-11-16
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
@@ -30,7 +30,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.7.5"
+declare -r SCRIPT_VERSION="v0.7.6"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 
@@ -46,10 +46,11 @@ cat << "EOF"
 EOF
 }
 
-# To use this function:
-# confirm && hg push ssh://..
-# or
-# confirm "Would you really like to do a push?" && hg push ssh://..
+# /*
+# confirmation message as optional parameter, asks for confirmation
+# get_confirmation && COMMAND_TO_RUN or prepend a message
+# */
+# 
 function get_confirmation() {
     # call with a prompt string or use a default
     read -r -p "${1:-Are you sure? [y/N]} " response
@@ -63,7 +64,9 @@ function get_confirmation() {
     esac
 }
 
-# display the help message
+#
+# /* no parameters, displays the help message */
+#
 function show_help(){
     clear
     showbanner
@@ -81,6 +84,9 @@ function show_help(){
     exit 1;
 }
 
+#
+# /* no parameters, checks if we are running on a supported Ubuntu release */
+#
 function check_distro() {
 	# currently only for Ubuntu 16.04
 	if [[ -r /etc/os-release ]]; then
@@ -96,6 +102,9 @@ function check_distro() {
 	fi
 }
 
+#
+# /* no parameters, installs the base set of packages that are required for all projects */
+#
 function install_packages() {
 	# development and build packages
 	# these are common on all cryptos
@@ -109,6 +118,9 @@ function install_packages() {
     libgmp3-dev libevent-dev jp2a pv 	&>> ${SCRIPT_LOGFILE}
 }
 
+#
+# /* no parameters, creates and activates a swapfile since VPS servers often do not have enough RAM for compilation */
+#
 function swaphack() { 
 #check if swap is available
 if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
@@ -120,13 +132,16 @@ if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];the
 	mkswap /var/mnode_swap.img &>> ${SCRIPT_LOGFILE}
 	swapon /var/mnode_swap.img &>> ${SCRIPT_LOGFILE} 
 	echo '/var/mnode_swap.img none swap sw 0 0' | tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
-	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
-	echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		
+	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf               &>> ${SCRIPT_LOGFILE}
+	echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		&>> ${SCRIPT_LOGFILE}
 else
 	echo "* All good, we have a swap"	
 fi
 }
 
+#
+# /* no parameters, creates and activates a dedicated masternode user */
+#
 function create_mn_user() {
 
     # our new mnode unpriv user acc is added 
@@ -139,6 +154,9 @@ function create_mn_user() {
     
 }
 
+#
+# /* no parameters, creates a masternode data directory (one per masternode)  */
+#
 function create_mn_dirs() {
 
     # individual data dirs for now to avoid problems
@@ -153,6 +171,9 @@ function create_mn_dirs() {
 	
 }
 
+#
+# /* no parameters, creates a minimal set of firewall rules that allows INBOUND masternode p2p & SSH ports */
+#
 function configure_firewall() {
 
     echo "* Configuring firewall rules"
@@ -169,6 +190,9 @@ function configure_firewall() {
 
 }
 
+#
+# /* no parameters, checks if the choice of networking matches w/ this VPS installation */
+#
 function validate_netchoice() {
 
     echo "* Validating network rules"		
@@ -188,6 +212,10 @@ function validate_netchoice() {
 
 }
 
+#
+# /* no parameters, generates one masternode configuration file per masternode in the default
+#    directory (eg. /etc/masternodes/${CODENAME} and replaces the existing placeholders if possible */
+# 
 function create_mn_configuration() {
     
         # create one config file per masternode
@@ -200,14 +228,14 @@ function create_mn_configuration() {
                 
 				# if a template exists, use this instead of the default
 				if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
-					echo "custom configuration template for ${CODENAME} found, use this instead"
+					echo "custom configuration template for ${CODENAME} found, use this instead" &>> ${SCRIPT_LOGFILE}
 					cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
 				else
 					echo "No ${CODENAME} template found, using the default configuration template"			
 					cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
 				fi
 				# replace placeholders
-				echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"
+				echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf" &>> ${SCRIPT_LOGFILE}
 				sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXX/${NUM}]/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf				   
 			fi        			
         done
@@ -431,7 +459,7 @@ function final_call() {
 	echo "Add your masternode private keys now."
 	echo "eg in /etc/masternodes/${CODENAME}_n1.conf"
 	echo ""
-	echo "last but not least, run /usr/local/bin/activate_masternodes_pivx as root"	
+	echo "last but not least, run /usr/local/bin/activate_masternodes_${CODENAME} as root to activate your nodes."	
 
     # place future helper script accordingly
     cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
