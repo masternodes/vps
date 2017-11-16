@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	0.7.6
-# date    	2017-11-16
+# version 	v0.7.8
+# date    	2017-11-22
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
@@ -30,7 +30,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.7.6"
+declare -r SCRIPT_VERSION="v0.7.8"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 
@@ -79,6 +79,7 @@ function show_help(){
     echo "-n or --net: IP address type t be used (4 vs. 6).";
     echo "-c or --count: Number of masternodes to be installed.";
     echo "-r or --release: Release version to be installed.";
+    echo "-s or --sentinel: Add sentinel monitoring for a node type. Combine with the -p option";    
     echo "-w or --wipe: Wipe ALL local data for a node type. Combine with the -p option";
     echo "-u or --update: Update a specific masternode daemon. Combine with the -p option";
     exit 1;
@@ -115,7 +116,7 @@ function install_packages() {
     automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
     make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
     libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
-    libgmp3-dev libevent-dev jp2a pv 	&>> ${SCRIPT_LOGFILE}
+    libgmp3-dev libevent-dev jp2a pv virtualenv	&>> ${SCRIPT_LOGFILE}
 }
 
 #
@@ -172,6 +173,112 @@ function create_mn_dirs() {
 }
 
 #
+# /* no parameters, creates a sentinel config for a set of masternodes (one per masternode)  */
+#
+function create_sentinel_setup() {
+
+	# if code directory does not exists, we create it clone the src
+	if [ ! -d /usr/share/sentinel ]; then
+		cd /usr/share                                               &>> ${SCRIPT_LOGFILE}
+		git clone https://github.com/dashpay/sentinel.git sentinel  &>> ${SCRIPT_LOGFILE}
+		cd sentinel                                                 &>> ${SCRIPT_LOGFILE}
+	else
+		echo "* Updating the existing sentinel GIT repo"
+		cd /usr/share/sentinel        &>> ${SCRIPT_LOGFILE}
+		git pull                      &>> ${SCRIPT_LOGFILE}
+	fi
+	
+	# create a globally accessible venv and install sentinel requirements
+	virtualenv --system-site-packages /usr/share/sentinelvenv      &>> ${SCRIPT_LOGFILE}
+	/usr/share/sentinelvenv/bin/pip install -r requirements.txt    &>> ${SCRIPT_LOGFILE}
+
+    # create one sentinel config file per masternode
+	for NUM in $(seq 1 ${count}); do
+	    if [ ! -f "/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf" ]; then
+	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}    
+		     echo "dash_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"   > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "network=mainnet"                                         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "db_name=database/${CODENAME}_${NUM}_sentinel.db"         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "db_driver=sqlite"                                        >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf     
+        fi
+	done 
+
+    echo "RUN export SENTINEL_CONFIG=/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf; /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
+#
+# WE WILL DO THAT VIA NODEMASTER UTILITY
+# AND WRITE A DOC FOR THAT
+# 
+# 1st => Delete and re-index masternode config
+#
+# Before starting the steps make sure to restart your masternode with
+# reindex so you are using the fresh blockchain. Delete mncache.dat and
+# mnpayments.dat from your vivocore folder before reindexing.
+# cd .vivocore   // Your Vivocore folder
+# ./vivo-cli stop
+# rm mncache.dat
+# rm mnpayments.dat
+# ./vivod -daemon -reindex
+#
+# 2nd => Clone and install ONE Sentinel instance
+#
+# git clone https://github.com/dashpay/sentinel.git sentinel
+# cd sentinel
+# git clone https://github.com/dashpay/sentinel.git
+# virtualenv venv
+# venv/bin/pip install -r requirements.txt
+# 
+# 3rd => Configure multiple Sentinels for every masternode
+# => sentinel.conf
+# Uncomment the #dash_conf line at the top and add the path to your MN’s vivo.conf. S
+# venv/bin/python bin/sentinel.py
+# 
+# You should see: “vivod not synced with network! Awaiting full sync before running Sentinel.”
+#
+# Wait until the reindex has complete and the wallet has sync’d
+# ./vivo-cli mnsync status
+# This is what you’re waiting to see:
+# 
+# AssetId 999, all trues, one false, and a FINISHED
+# {
+# “AssetID”: 999,
+# “AssetName”: “MASTERNODE_SYNC_FINISHED”,
+# “Attempt”: 0,
+# “IsBlockchainSynced”: true,
+# “IsMasternodeListSynced”: true,
+# “IsWinnersListSynced”: true,
+# “IsSynced”: true,
+# “IsFailed”: false
+# }
+#  
+# 
+# At this point, your remote masternode is synchronized and chatting with the network
+# but is not accepted as a masternode because it hasn’t been introduced to the network
+# by your collateral
+#
+# venv/bin/python bin/sentinel.py
+# should return nothing but silence. This is how you know it’s working, and your masternode is working.
+#
+# 5th => Create a crontab entry as masternode user (!) to wake sentinel every five minutes
+#
+#
+#
+#crontab -e
+#
+#* * * * * cd /home/YOURUSERNAME/.vivocore/sentinel && ./venv/bin/python bin/sentinel.py 2>&1 >> sentinel-cron.log
+
+#     individual data dirs for now to avoid problems
+#     echo "* Creating masternode directories"
+#     mkdir -p ${MNODE_CONF_BASE}
+# 	for NUM in $(seq 1 ${count}); do
+# 	    if [ ! -d "${MNODE_DATA_BASE}/${CODENAME}${NUM}" ]; then
+# 	         echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}" &>> ${SCRIPT_LOGFILE}
+#              mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM} &>> ${SCRIPT_LOGFILE}
+#         fi
+# 	done    
+	
+}
+
+#
 # /* no parameters, creates a minimal set of firewall rules that allows INBOUND masternode p2p & SSH ports */
 #
 function configure_firewall() {
@@ -179,7 +286,7 @@ function configure_firewall() {
     echo "* Configuring firewall rules"
 	# disallow everything except ssh and masternode inbound ports
 	ufw default deny                          &>> ${SCRIPT_LOGFILE}
-	ufw logging on
+	ufw logging on                            &>> ${SCRIPT_LOGFILE}
 	ufw allow ${SSH_INBOUND_PORT}/tcp         &>> ${SCRIPT_LOGFILE}
 	# KISS, its always the same port for all interfaces
 	ufw allow ${MNODE_INBOUND_PORT}/tcp       &>> ${SCRIPT_LOGFILE}
@@ -218,32 +325,39 @@ function validate_netchoice() {
 # 
 function create_mn_configuration() {
     
+        # always return to the script root
+        cd ${SCRIPTPATH}
+        
         # create one config file per masternode
         for NUM in $(seq 1 ${count}); do
         PASS=$(date | md5sum | cut -c1-24)
 
 			# we dont want to overwrite an existing config file
 			if [ ! -f ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ]; then
-                echo "individual masternode config doesn't exist, generate it!" &>> ${SCRIPT_LOGFILE}
-                
+                echo "individual masternode config doesn't exist, generate it!"                  &>> ${SCRIPT_LOGFILE}
+
 				# if a template exists, use this instead of the default
 				if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
-					echo "custom configuration template for ${CODENAME} found, use this instead" &>> ${SCRIPT_LOGFILE}
-					cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
+					echo "custom configuration template for ${CODENAME} found, use this instead"                      &>> ${SCRIPT_LOGFILE}
+					cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf  &>> ${SCRIPT_LOGFILE}
 				else
-					echo "No ${CODENAME} template found, using the default configuration template"			
-					cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
+					echo "No ${CODENAME} template found, using the default configuration template"			          &>> ${SCRIPT_LOGFILE}
+					cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf                  &>> ${SCRIPT_LOGFILE}
 				fi
 				# replace placeholders
-				echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf" &>> ${SCRIPT_LOGFILE}
-				sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXX/${NUM}]/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf				   
+				echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"                                &>> ${SCRIPT_LOGFILE}
+				sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXY/${NUM}]/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf				   
 			fi        			
         done
         
 }
 
+#
+# /* no parameters, generates a masternode configuration file per masternode in the default */
+# 
 function create_control_configuration() {
 
+    # delete any old stuff that's still around
     rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
 	# create one line per masternode with the data we have
 	for NUM in $(seq 1 ${count}); do
@@ -254,6 +368,9 @@ function create_control_configuration() {
 
 }
 
+#
+# /* no parameters, generates a a pre-populated masternode systemd config file */
+# 
 function create_systemd_configuration() {
 
     echo "* (over)writing systemd config files for masternodes"
@@ -290,6 +407,9 @@ function create_systemd_configuration() {
 
 }
 
+#
+# /* set all permissions to the masternode user */
+# 
 function set_permissions() {
 
 	# maybe add a sudoers entry later
@@ -297,6 +417,9 @@ function set_permissions() {
 
 }
 
+#
+# /* wipe all files and folders generated by the script for a specific project */
+# 
 function wipe_all() {
     
     echo "Deleting all ${project} related data!" 
@@ -309,6 +432,12 @@ function wipe_all() {
 
 }
 
+#
+# /*
+# remove packages and stuff we don't need anymore and set some recommended
+# kernel parameters
+# */
+# 
 function cleanup_after() {
 
 	apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoremove
@@ -331,6 +460,10 @@ function cleanup_after() {
 	
 }
 
+#
+# /* project as parameter, sources the project specific parameters and runs the main logic */
+# 
+
 # source the default and desired crypto configuration files
 function source_config() {
 
@@ -340,8 +473,6 @@ function source_config() {
     check_distro
         
 	if [ -f ${SETUP_CONF_FILE} ]; then
-		#echo "read default config"	
-		#source config/default.env
 		echo "Script version ${SCRIPT_VERSION}, you picked: ${project}"
 		echo "apply config file for ${project}"	&>> ${SCRIPT_LOGFILE}	
 		source "${SETUP_CONF_FILE}"
@@ -391,6 +522,11 @@ function source_config() {
 			echo ""
 			echo "See the following link for instructions how to add multiple ipv4 addresses on vultr:"
 			echo "${IPV4_DOC_LINK}"
+		fi        
+		# sentinel setup 
+		if [ "$sentinel" -eq 1 ]; then
+			echo "* I will also generate a Sentinel configuration for you."
+			create_sentinel_setup  	 
 		fi	
 		echo ""
 		echo "A logfile for this run can be found at the following location:"
@@ -405,6 +541,11 @@ function source_config() {
 		build_mn_from_source
 		create_mn_user
 		create_mn_dirs
+		# sentinel setup 
+		if [ "$sentinel" -eq 1 ]; then
+			echo "* Sentinel setup chosen" &>> ${SCRIPT_LOGFILE}
+			create_sentinel_setup  	 
+		fi		
 		configure_firewall      
 		create_mn_configuration
 		create_control_configuration
@@ -420,6 +561,9 @@ function source_config() {
 	
 }
 
+#
+# /* no parameters, builds the required masternode binary from sources. Exits if already exists and "update" not given  */
+# 
 function build_mn_from_source() {
         # daemon not found compile it
         if [ ! -f ${MNODE_DAEMON} ]; then
@@ -451,6 +595,9 @@ function build_mn_from_source() {
         fi
 }
 
+#
+# /* no parameters, print some (hopefully) helpful advice  */
+# 
 function final_call() {
 	# note outstanding tasks that need manual work
     echo "************! ALMOST DONE !******************************"	
@@ -474,7 +621,9 @@ function final_call() {
 	tput sgr0
 }
 
-
+#
+# /* no parameters, create the required network configuration. IPv6 is auto.  */
+# 
 function prepare_mn_interfaces() {
     
     IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
@@ -525,9 +674,10 @@ function prepare_mn_interfaces() {
 wipe=0;
 debug=0;
 update=0;
+sentinel=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wud" -l "help,project:,net:,count:,release:,wipe,update,debug" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wsud" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug" -n "install.sh" -- "$@");
  
 #Bad arguments
 if [ $? -ne 0 ];
@@ -579,6 +729,10 @@ while true; do
             shift;
                     wipe="1";
             ;;
+        -s|--sentinel)
+            shift;
+                    sentinel="1";
+            ;;            
         -u|--update)
             shift;
                     update="1";
@@ -606,14 +760,6 @@ if [ "$wipe" -eq 1 ]; then
 	get_confirmation "Would you really like to WIPE ALL DATA!? YES/NO y/n" && wipe_all
 	exit 0
 fi		
- 
-## Iterate over rest arguments called $arg
-# for arg in "$@"
-# do
-#     # Your code here (remove example below)
-#     echo $arg
-#  
-# done
 
 #################################################
 # source default config before everything else
