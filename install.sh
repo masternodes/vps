@@ -196,14 +196,14 @@ function create_sentinel_setup() {
 	for NUM in $(seq 1 ${count}); do
 	    if [ ! -f "/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf" ]; then
 	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}    
-		     echo "dash_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf" > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "network=mainnet"                                       >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "db_name=database/${CODENAME}${NUM}sentinel.db"         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "db_driver=sqlite"                                      >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf     
+		     echo "dash_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"   > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "network=mainnet"                                         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "db_name=database/${CODENAME}_${NUM}_sentinel.db"         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "db_driver=sqlite"                                        >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf     
         fi
 	done 
 
-    echo "RUN export SENTINEL_CONFIG=INDIV_CONFIG /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
+    echo "RUN export SENTINEL_CONFIG=/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
 #
 # WE WILL DO THAT VIA NODEMASTER UTILITY
 # AND WRITE A DOC FOR THAT
