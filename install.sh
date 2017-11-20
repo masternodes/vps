@@ -203,7 +203,7 @@ function create_sentinel_setup() {
         fi
 	done 
 
-    echo "RUN export SENTINEL_CONFIG=/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
+    echo "RUN export SENTINEL_CONFIG=/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf; /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
 #
 # WE WILL DO THAT VIA NODEMASTER UTILITY
 # AND WRITE A DOC FOR THAT
@@ -334,15 +334,16 @@ function create_mn_configuration() {
                 echo "individual masternode config doesn't exist, generate it!" &>> ${SCRIPT_LOGFILE}
                 
 				# if a template exists, use this instead of the default
+				ls -lah config/${CODENAME}/${CODENAME}.conf
 				if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
-					echo "custom configuration template for ${CODENAME} found, use this instead" &>> ${SCRIPT_LOGFILE}
+					echo "custom configuration template for ${CODENAME} found, use this instead"
 					cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
 				else
 					echo "No ${CODENAME} template found, using the default configuration template"			
 					cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
 				fi
 				# replace placeholders
-				echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf" &>> ${SCRIPT_LOGFILE}
+				echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"
 				sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXX/${NUM}]/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf				   
 			fi        			
         done
