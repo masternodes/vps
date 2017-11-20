@@ -2,4 +2,4 @@
 
 cd src
 make -f makefile.unix USE_UPNP=-
-cp Syndicated ${MNODE_DAEMON}
+cp magnetd ${MNODE_DAEMON}
