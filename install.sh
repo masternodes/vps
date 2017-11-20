@@ -664,9 +664,10 @@ function prepare_mn_interfaces() {
 wipe=0;
 debug=0;
 update=0;
+sentinel=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wud" -l "help,project:,net:,count:,release:,wipe,update,debug" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wsud" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug" -n "install.sh" -- "$@");
  
 #Bad arguments
 if [ $? -ne 0 ];
@@ -718,6 +719,10 @@ while true; do
             shift;
                     wipe="1";
             ;;
+        -s|--sentinel)
+            shift;
+                    sentinel="1";
+            ;;            
         -u|--update)
             shift;
                     update="1";
