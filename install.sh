@@ -331,10 +331,11 @@ function create_mn_configuration() {
 
 			# we dont want to overwrite an existing config file
 			if [ ! -f ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ]; then
-                echo "individual masternode config doesn't exist, generate it!" &>> ${SCRIPT_LOGFILE}
-                
+                echo "individual masternode config doesn't exist, generate it!"
+
 				# if a template exists, use this instead of the default
 				ls -lah config/${CODENAME}/${CODENAME}.conf
+				echo "PWD: ${PWD}"
 				if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
 					echo "custom configuration template for ${CODENAME} found, use this instead"
 					cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
