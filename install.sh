@@ -196,10 +196,10 @@ function create_sentinel_setup() {
 	for NUM in $(seq 1 ${count}); do
 	    if [ ! -f "/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf" ]; then
 	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}    
-		     echo "dash_conf=MASTERNODE_CONFIG_FORNUMBER_XXX_HERE" > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "network=mainnet"                                >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "db_name=database/sentinel.db"                   >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "db_driver=sqlite"                               >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf     
+		     echo "dash_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf" > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "network=mainnet"                                       >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "db_name=database/${CODENAME}${NUM}sentinel.db"         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "db_driver=sqlite"                                      >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf     
         fi
 	done 
 
@@ -286,7 +286,7 @@ function configure_firewall() {
     echo "* Configuring firewall rules"
 	# disallow everything except ssh and masternode inbound ports
 	ufw default deny                          &>> ${SCRIPT_LOGFILE}
-	ufw logging on
+	ufw logging on                            &>> ${SCRIPT_LOGFILE}
 	ufw allow ${SSH_INBOUND_PORT}/tcp         &>> ${SCRIPT_LOGFILE}
 	# KISS, its always the same port for all interfaces
 	ufw allow ${MNODE_INBOUND_PORT}/tcp       &>> ${SCRIPT_LOGFILE}
