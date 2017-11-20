@@ -535,7 +535,11 @@ function source_config() {
 		build_mn_from_source
 		create_mn_user
 		create_mn_dirs
-		create_sentinel_setup
+		# sentinel setup 
+		if [ "$sentinel" -eq 1 ]; then
+			echo "* Sentinel setup chosen" &>> ${SCRIPT_LOGFILE}
+			create_sentinel_setup  	 
+		fi		
 		configure_firewall      
 		create_mn_configuration
 		create_control_configuration
