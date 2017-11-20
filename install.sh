@@ -177,7 +177,39 @@ function create_mn_dirs() {
 #
 function create_sentinel_setup() {
 
+	# if code directory does not exists, we create it clone the src
+	if [ ! -d /usr/share/sentinel ]; then
+		cd /usr/share                                               &>> ${SCRIPT_LOGFILE}
+		git clone https://github.com/dashpay/sentinel.git sentinel  &>> ${SCRIPT_LOGFILE}
+		cd sentinel                                                 &>> ${SCRIPT_LOGFILE}
+	else
+		echo "* Updating the existing sentinel GIT repo"
+		cd /usr/share/sentinel        &>> ${SCRIPT_LOGFILE}
+		git pull                      &>> ${SCRIPT_LOGFILE}
+	fi
+	
+	# create a globally accessible venv and install sentinel requirements
+	virtualenv --system-site-packages /usr/share/sentinelvenv      &>> ${SCRIPT_LOGFILE}
+	/usr/share/sentinelvenv/bin/pip install -r requirements.txt    &>> ${SCRIPT_LOGFILE}
+
+    # create one sentinel config file per masternode
+	for NUM in $(seq 1 ${count}); do
+	    if [ ! -f "/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf" ]; then
+	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}    
+		     cat > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf <<-EOF
+                dash_conf=MASTERNODE_CONFIG_FORNUMBER_XXX_HERE
+                network=mainnet
+                db_name=database/sentinel.db
+                db_driver=sqlite
+			 EOF               
+        fi
+	done 
+
+    echo "RUN export SENTINEL_CONFIG=INDIV_CONFIG /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
 #
+# WE WILL DO THAT VIA NODEMASTER UTILITY
+# AND WRITE A DOC FOR THAT
+# 
 # 1st => Delete and re-index masternode config
 #
 # Before starting the steps make sure to restart your masternode with
@@ -191,7 +223,7 @@ function create_sentinel_setup() {
 #
 # 2nd => Clone and install ONE Sentinel instance
 #
-# git clone https://github.com/dashpay/sentinel.git
+# git clone https://github.com/dashpay/sentinel.git sentinel
 # cd sentinel
 # git clone https://github.com/dashpay/sentinel.git
 # virtualenv venv
@@ -236,15 +268,15 @@ function create_sentinel_setup() {
 #
 #* * * * * cd /home/YOURUSERNAME/.vivocore/sentinel && ./venv/bin/python bin/sentinel.py 2>&1 >> sentinel-cron.log
 
-    # individual data dirs for now to avoid problems
-    echo "* Creating masternode directories"
-    mkdir -p ${MNODE_CONF_BASE}
-	for NUM in $(seq 1 ${count}); do
-	    if [ ! -d "${MNODE_DATA_BASE}/${CODENAME}${NUM}" ]; then
-	         echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}" &>> ${SCRIPT_LOGFILE}
-             mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM} &>> ${SCRIPT_LOGFILE}
-        fi
-	done    
+#     individual data dirs for now to avoid problems
+#     echo "* Creating masternode directories"
+#     mkdir -p ${MNODE_CONF_BASE}
+# 	for NUM in $(seq 1 ${count}); do
+# 	    if [ ! -d "${MNODE_DATA_BASE}/${CODENAME}${NUM}" ]; then
+# 	         echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}" &>> ${SCRIPT_LOGFILE}
+#              mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM} &>> ${SCRIPT_LOGFILE}
+#         fi
+# 	done    
 	
 }
 
@@ -503,6 +535,7 @@ function source_config() {
 		build_mn_from_source
 		create_mn_user
 		create_mn_dirs
+		create_sentinel_setup
 		configure_firewall      
 		create_mn_configuration
 		create_control_configuration

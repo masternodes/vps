@@ -76,10 +76,10 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 ./install.sh -p pivx -c 4 -u
 ```
 
-**Install 6 PIVX masternodes with the git release tag "tags/v3.0.5"**
+**Install 6 PIVX masternodes with the git release tag "tags/v3.0.5.1"**
 
 ```bash
-./install.sh -p pivx -c 6 -r "tags/v3.0.4"
+./install.sh -p pivx -c 6 -r "tags/v3.0.5.1"
 ```
 
 **Wipe all PIVX masternode data:**
