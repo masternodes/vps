@@ -196,12 +196,10 @@ function create_sentinel_setup() {
 	for NUM in $(seq 1 ${count}); do
 	    if [ ! -f "/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf" ]; then
 	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}    
-		     cat > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf <<-EOF
-                dash_conf=MASTERNODE_CONFIG_FORNUMBER_XXX_HERE
-                network=mainnet
-                db_name=database/sentinel.db
-                db_driver=sqlite
-			 EOF               
+		     echo "dash_conf=MASTERNODE_CONFIG_FORNUMBER_XXX_HERE" > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "network=mainnet"                                >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "db_name=database/sentinel.db"                   >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+             echo "db_driver=sqlite"                               >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf     
         fi
 	done 
 
