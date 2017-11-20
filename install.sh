@@ -325,6 +325,9 @@ function validate_netchoice() {
 # 
 function create_mn_configuration() {
     
+        # always return to the script root
+        cd ${SCRIPTPATH}
+        
         # create one config file per masternode
         for NUM in $(seq 1 ${count}); do
         PASS=$(date | md5sum | cut -c1-24)
