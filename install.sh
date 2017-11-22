@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	0.7.7
-# date    	2017-11-16
+# version 	v0.7.8
+# date    	2017-11-22
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
@@ -30,7 +30,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.7.7"
+declare -r SCRIPT_VERSION="v0.7.8"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 
@@ -522,6 +522,11 @@ function source_config() {
 			echo ""
 			echo "See the following link for instructions how to add multiple ipv4 addresses on vultr:"
 			echo "${IPV4_DOC_LINK}"
+		fi        
+		# sentinel setup 
+		if [ "$sentinel" -eq 1 ]; then
+			echo "* I will also generate a Sentinel configuration for you."
+			create_sentinel_setup  	 
 		fi	
 		echo ""
 		echo "A logfile for this run can be found at the following location:"
