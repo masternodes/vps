@@ -103,20 +103,46 @@ The *install.sh* script support the following parameters:
 | --wipe               | -w    | --    | uninstall & wipe all related master node data, combine with -p flag |
 | --help               | -h    | --    | print help info |
 
-## Help
+## Troubleshooting the masternode on the VPS
 
-I activated the "[issues](https://github.com/masternodes/vps/issues)" option on github to give you a way to document defects and feature wishes. Feel free top [open issues](https://github.com/masternodes/vps/issues) for problems / features you are missing here:
-https://github.com/masternodes/vps/issues
+If you want to check the status of your masternode, the best way is currently running the cli e.g. via
 
-I will also happily take any pull requests that make masternode installations easier for everyone ;-)
+```
+/usr/local/bin/mue-cli -conf=/etc/masternodes/mue_n1.conf getinfo
+
+{
+  "version": 1000302,
+  "protocolversion": 70701,
+  "walletversion": 61000,
+  "balance": 0.00000000,
+  "privatesend_balance": 0.00000000,
+  "blocks": 209481,
+  "timeoffset": 0,
+  "connections": 5,
+  "proxy": "",
+  "difficulty": 42882.54964804553,
+  "testnet": false,
+  "keypoololdest": 1511380627,
+  "keypoolsize": 1001,
+  "paytxfee": 0.00000000,
+  "relayfee": 0.00010000,
+  "errors": ""
+}
+```
+
+# Help, Issues and Questions
+
+I activated the "[issues](https://github.com/masternodes/vps/issues)" option on github to give you a way to document defects and feature wishes. Feel free top [open issues](https://github.com/masternodes/vps/issues) for problems / features you are missing here: [https://github.com/masternodes/vps/issues](https://github.com/masternodes/vps/issues).
+
+I might not be able to reply immediately, but i do usually within a couple of days at worst. I will also happily take any pull requests that make masternode installations easier for everyone ;-)
 
 If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
 
 **Have fun, this is crypto after all!**
+
 ```
 BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
-
 
 ## Management script (not yet implemented)
 

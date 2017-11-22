@@ -127,7 +127,7 @@ A script to enable masternode start at boot has been created at */usr/local/bin/
 Run it after you finished configuration, e.g. after a PIVX installation do.
 
 ```
-/usr/local/bin/activate_masternodes_pivx.sh
+/usr/local/bin/activate_masternodes_pivx
 ```     
 
 ## Last step, the controller
@@ -146,7 +146,39 @@ So you can take the contents from there and paste it into your local controller-
 
 You get the idea, another step to a fully automated setup... ;-)
 
-Please open github issue in case of question and send some crypto my way if you are happy.
+## Troubleshooting the masternode on the VPS
+
+If you want to check the status of your masternode, the best way is currently running the cli e.g. via
+
+```
+/usr/local/bin/mue-cli -conf=/etc/masternodes/mue_n1.conf getinfo
+
+{
+  "version": 1000302,
+  "protocolversion": 70701,
+  "walletversion": 61000,
+  "balance": 0.00000000,
+  "privatesend_balance": 0.00000000,
+  "blocks": 209481,
+  "timeoffset": 0,
+  "connections": 5,
+  "proxy": "",
+  "difficulty": 42882.54964804553,
+  "testnet": false,
+  "keypoololdest": 1511380627,
+  "keypoolsize": 1001,
+  "paytxfee": 0.00000000,
+  "relayfee": 0.00010000,
+  "errors": ""
+}
+```
+
+
+# Issues and Questions
+
+Please open github issue in case of questions or issues. I might not be able to reply immediately, but i do usually within a couple of days at worst.
+
+If my scripts work for you, please send some crypto my way here:
 
 **Have fun, this is crypto after all!**
 
