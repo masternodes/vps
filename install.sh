@@ -182,10 +182,12 @@ function create_sentinel_setup() {
 		cd /usr/share                                               &>> ${SCRIPT_LOGFILE}
 		git clone https://github.com/dashpay/sentinel.git sentinel  &>> ${SCRIPT_LOGFILE}
 		cd sentinel                                                 &>> ${SCRIPT_LOGFILE}
+		rm -f rm sentinel.conf                                      &>> ${SCRIPT_LOGFILE}
 	else
 		echo "* Updating the existing sentinel GIT repo"
 		cd /usr/share/sentinel        &>> ${SCRIPT_LOGFILE}
 		git pull                      &>> ${SCRIPT_LOGFILE}
+		rm -f rm sentinel.conf        &>> ${SCRIPT_LOGFILE}
 	fi
 	
 	# create a globally accessible venv and install sentinel requirements
@@ -203,79 +205,12 @@ function create_sentinel_setup() {
         fi
 	done 
 
-    echo "RUN export SENTINEL_CONFIG=/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf; /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
-#
-# WE WILL DO THAT VIA NODEMASTER UTILITY
-# AND WRITE A DOC FOR THAT
-# 
-# 1st => Delete and re-index masternode config
-#
-# Before starting the steps make sure to restart your masternode with
-# reindex so you are using the fresh blockchain. Delete mncache.dat and
-# mnpayments.dat from your vivocore folder before reindexing.
-# cd .vivocore   // Your Vivocore folder
-# ./vivo-cli stop
-# rm mncache.dat
-# rm mnpayments.dat
-# ./vivod -daemon -reindex
-#
-# 2nd => Clone and install ONE Sentinel instance
-#
-# git clone https://github.com/dashpay/sentinel.git sentinel
-# cd sentinel
-# git clone https://github.com/dashpay/sentinel.git
-# virtualenv venv
-# venv/bin/pip install -r requirements.txt
-# 
-# 3rd => Configure multiple Sentinels for every masternode
-# => sentinel.conf
-# Uncomment the #dash_conf line at the top and add the path to your MN’s vivo.conf. S
-# venv/bin/python bin/sentinel.py
-# 
-# You should see: “vivod not synced with network! Awaiting full sync before running Sentinel.”
-#
-# Wait until the reindex has complete and the wallet has sync’d
-# ./vivo-cli mnsync status
-# This is what you’re waiting to see:
-# 
-# AssetId 999, all trues, one false, and a FINISHED
-# {
-# “AssetID”: 999,
-# “AssetName”: “MASTERNODE_SYNC_FINISHED”,
-# “Attempt”: 0,
-# “IsBlockchainSynced”: true,
-# “IsMasternodeListSynced”: true,
-# “IsWinnersListSynced”: true,
-# “IsSynced”: true,
-# “IsFailed”: false
-# }
-#  
-# 
-# At this point, your remote masternode is synchronized and chatting with the network
-# but is not accepted as a masternode because it hasn’t been introduced to the network
-# by your collateral
-#
-# venv/bin/python bin/sentinel.py
-# should return nothing but silence. This is how you know it’s working, and your masternode is working.
-#
-# 5th => Create a crontab entry as masternode user (!) to wake sentinel every five minutes
-#
-#
-#
-#crontab -e
-#
-#* * * * * cd /home/YOURUSERNAME/.vivocore/sentinel && ./venv/bin/python bin/sentinel.py 2>&1 >> sentinel-cron.log
-
-#     individual data dirs for now to avoid problems
-#     echo "* Creating masternode directories"
-#     mkdir -p ${MNODE_CONF_BASE}
-# 	for NUM in $(seq 1 ${count}); do
-# 	    if [ ! -d "${MNODE_DATA_BASE}/${CODENAME}${NUM}" ]; then
-# 	         echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}" &>> ${SCRIPT_LOGFILE}
-#              mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM} &>> ${SCRIPT_LOGFILE}
-#         fi
-# 	done    
-	
+    echo "Generated a Sentinel config for you. To activate Sentinel run"
+    echo "export SENTINEL_CONFIG=${MNODE_CONF_BASE}/${CODENAME}${NUM}_sentinel.conf; /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
+    echo ""
+    echo "If it works, add the command as cronjob:  "
+    echo "* * * * * export SENTINEL_CONFIG=${MNODE_CONF_BASE}/${CODENAME}${NUM}_sentinel.conf; /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py 2>&1 >> /var/log/sentinel/sentinel-cron.log"
+    	
 }
 
 #
@@ -413,7 +348,7 @@ function create_systemd_configuration() {
 function set_permissions() {
 
 	# maybe add a sudoers entry later
-	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} &>> ${SCRIPT_LOGFILE}	
+	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel &>> ${SCRIPT_LOGFILE}	
 
 }
 
@@ -525,8 +460,7 @@ function source_config() {
 		fi        
 		# sentinel setup 
 		if [ "$sentinel" -eq 1 ]; then
-			echo "* I will also generate a Sentinel configuration for you."
-			create_sentinel_setup  	 
+			echo "I will also generate a Sentinel configuration for you." 	 
 		fi	
 		echo ""
 		echo "A logfile for this run can be found at the following location:"
