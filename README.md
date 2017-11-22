@@ -10,7 +10,7 @@ If this script helped you in any way, please contribute some feedback. BTC donat
 
 Donate here:
 
-<a href="https://gitcoin.co/tip/send/2/"><img src='https://gitcoin.co/static/v2/images/promo_buttons/slice_01.png' width=267px height=52px /></a>
+<a href="https://gitcoin.co/tip/send/2/"><img src='https://gitcoin.co/static/v2/images/promo_buttons/slice_01.png' width=267px height=52px></a>
 
 or send BTC to:
 
@@ -215,7 +215,7 @@ Ping me at contact@marsmenschen.com for questions and send some crypto my way if
 
 Donate here:
 
-<a href="https://gitcoin.co/tip/send/2/"><img src='https://gitcoin.co/static/v2/images/promo_buttons/slice_01.png' width=267px height=52px /></a>
+<a href="https://gitcoin.co/tip/send/2/"><img src='https://gitcoin.co/static/v2/images/promo_buttons/slice_01.png' width=267px height=52px></a>
 
 or send BTC to:
 
