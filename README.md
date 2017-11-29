@@ -88,6 +88,11 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 ./install.sh -p pivx -w
 ```
 
+**Install 2 PIVX masternodes and configure sentinel monitoring:**
+
+```bash
+./install.sh -p pivx -c 2 -s
+```
 
 ## Options
 
@@ -193,6 +198,7 @@ The management script release will follow within the next couple of days.
 | FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
 | BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
 | MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
+| ALQO | ![ALQO](/assets/alqo.jpg) | https://alqo.org |
 
 
 # Todo
