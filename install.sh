@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	v0.7.8
-# date    	2017-11-22
+# version 	v0.7.9
+# date    	2017-11-29
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
@@ -30,7 +30,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.7.8"
+declare -r SCRIPT_VERSION="v0.7.9"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 
@@ -443,7 +443,11 @@ function source_config() {
 		fi
 
 		echo "************************* Installation Plan *****************************************"
-		echo "I am going to install and configure ${count} ${project} masternodes for you now."
+		echo ""
+		echo "I am going to install and configure masternodes "
+        echo "=> ${count} ${project} masternode(s) in version ${SCVERSION} "
+        echo "for you now."
+        echo ""
 		echo "You have to add your masternode private key to the individual config files afterwards"
 		echo ""
 		echo "Stay tuned!"
@@ -465,8 +469,9 @@ function source_config() {
 		echo ""
 		echo "A logfile for this run can be found at the following location:"
 		echo "${SCRIPT_LOGFILE}"
+		echo ""
 		echo "*************************************************************************************"
-		sleep 3
+		sleep 5
 		
 		# main routine
         prepare_mn_interfaces
