@@ -444,7 +444,7 @@ function source_config() {
 
 		echo "************************* Installation Plan *****************************************"
 		echo ""
-		echo "I am going to install and configure masternodes "
+		echo "I am going to install and configure "
         echo "=> ${count} ${project} masternode(s) in version ${SCVERSION} "
         echo "for you now."
         echo ""
