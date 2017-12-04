@@ -100,6 +100,7 @@ The *install.sh* script support the following parameters:
 | --release                | -r | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested  |
 | --count              | -c | number | amount of masternodes to be configured |
 | --update               | -u    | --    | update specified masternode daemon, combine with -p flag |
+| --sentinel               | -s    | --    | install and configure sentinel for node monitoring |
 | --wipe               | -w    | --    | uninstall & wipe all related master node data, combine with -p flag |
 | --help               | -h    | --    | print help info |
 
@@ -192,7 +193,6 @@ The management script release will follow within the next couple of days.
 | FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
 | BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
 | MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
-| MAGNET | ![MAGNET](/assets/magnet.jpg) | https://magnetwork.io |
 
 
 # Todo
