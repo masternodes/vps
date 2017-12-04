@@ -199,7 +199,7 @@ The management script release will follow within the next couple of days.
 | BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
 | MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
 | ALQO | ![ALQO](/assets/alqo.jpg) | https://alqo.org |
-
+| YUP | ![YUP](/assets/yup.jpg) | http://yupcrypto.com/ |
 
 # Todo
 * provide my Dockerfile & Vagrantfile
