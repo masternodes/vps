@@ -1,7 +1,7 @@
 #!/bin/bash               				
 #                   
-# version 	0.62-alpha
-# date    	2017-10-31
+# version 	1.0-alpha
+# date    	2017-11-05
 #
 # function	masternode activation script
 #			This scripts needs to be run as root
