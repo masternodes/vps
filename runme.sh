@@ -1,17 +1,10 @@
-#!/bin/bash
-#  ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
-#  ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
-#  ██╔██╗ ██║██║   ██║██║  ██║█████╗  ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
-#  ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
-#  ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
-#  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-#                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				           
+#!/bin/bash                				           
 #
-# version: 	0.5-beta
-# date:    	2017-10-21
+# version: 	1.0
+# date:    	2017-11-05
 # function:	part of the masternode scripts, source the proper config file
 #
-# Twitter: 	@marsmensch
+#
 #                                                                      
 # 	Instructions:
 #               Run this script and wait. After a while you should have a working
@@ -22,7 +15,7 @@
 #               - Generic Ubuntu support will be added at a later point in time
 #
 #	System requirements:
-#               - A vultr micro instance works for up to 5 masternodes 
+#               - A masterhash S instance works for up to 5 masternodes 
 #				- Activate the free IPv6 option
 #
 
