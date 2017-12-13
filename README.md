@@ -201,6 +201,7 @@ The management script release will follow within the next couple of days.
 | ALQO | ![ALQO](/assets/alqo.jpg) | https://alqo.org |
 | YUP | ![YUP](/assets/yup.jpg) | http://yupcrypto.com/ |
 | MTNC | ![MTNC](/assets/mtnc.jpg) | http://www.masternodecoin.org/ |
+| BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
 
 # Todo
 * provide my Dockerfile & Vagrantfile
