@@ -202,6 +202,7 @@ The management script release will follow within the next couple of days.
 | YUP | ![YUP](/assets/yup.jpg) | http://yupcrypto.com/ |
 | MTNC | ![MTNC](/assets/mtnc.jpg) | http://www.masternodecoin.org/ |
 | CROWN | ![CROWN](/assets/crown.jpg) | https://crown.tech/ |
+| BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
 
 # Todo
 * provide my Dockerfile & Vagrantfile
