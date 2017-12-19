@@ -194,7 +194,6 @@ The management script release will follow within the next couple of days.
 | SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
 | BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
 | INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
-| PHORE | ![PHORE](/assets/phore.jpg)  | https://phore.io/ |
 | FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
 | BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
 | MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
