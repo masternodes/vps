@@ -203,6 +203,7 @@ The management script release will follow within the next couple of days.
 | MTNC | ![MTNC](/assets/mtnc.jpg) | http://www.masternodecoin.org/ |
 | BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
 | DTMI | ![DTMI](/assets/dtmi.jpg) | https://bitcointalk.org/index.php?topic=2325196.0 |
+| MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
 
 # Todo
 * provide my Dockerfile & Vagrantfile
