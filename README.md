@@ -201,6 +201,7 @@ The management script release will follow within the next couple of days.
 | ALQO | ![ALQO](/assets/alqo.jpg) | https://alqo.org |
 | YUP | ![YUP](/assets/yup.jpg) | http://yupcrypto.com/ |
 | MTNC | ![MTNC](/assets/mtnc.jpg) | http://www.masternodecoin.org/ |
+| CROWN | ![CROWN](/assets/crown.jpg) | https://crown.tech/ |
 | BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
 | DTMI | ![DTMI](/assets/dtmi.jpg) | https://bitcointalk.org/index.php?topic=2325196.0 |
 | MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
