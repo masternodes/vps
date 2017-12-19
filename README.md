@@ -204,6 +204,8 @@ The management script release will follow within the next couple of days.
 | BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
 | DTMI | ![DTMI](/assets/dtmi.jpg) | https://bitcointalk.org/index.php?topic=2325196.0 |
 | MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
+| CROWD | ![CROWD](/assets/crowd.jpg) | http://crowdcoin.site/ |
+| NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
 
 # Todo
 * provide my Dockerfile & Vagrantfile
