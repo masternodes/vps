@@ -194,16 +194,18 @@ The management script release will follow within the next couple of days.
 | SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
 | BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
 | INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
-| PHORE | ![PHORE](/assets/phore.jpg)  | https://phore.io/ |
 | FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
 | BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
 | MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
 | ALQO | ![ALQO](/assets/alqo.jpg) | https://alqo.org |
 | YUP | ![YUP](/assets/yup.jpg) | http://yupcrypto.com/ |
 | MTNC | ![MTNC](/assets/mtnc.jpg) | http://www.masternodecoin.org/ |
+| CROWN | ![CROWN](/assets/crown.jpg) | https://crown.tech/ |
+| BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
 | DTMI | ![DTMI](/assets/dtmi.jpg) | https://bitcointalk.org/index.php?topic=2325196.0 |
 | MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
-
+| CROWD | ![CROWD](/assets/crowd.jpg) | http://crowdcoin.site/ |
+| NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
 
 # Todo
 * provide my Dockerfile & Vagrantfile

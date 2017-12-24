@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./autogen.sh
+./configure --with-incompatible-bdb --disable-tests --without-miniupnpc
+make
+make install
