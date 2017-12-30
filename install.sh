@@ -352,7 +352,8 @@ function create_systemd_configuration() {
 function set_permissions() {
 
 	# maybe add a sudoers entry later
-	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel &>> ${SCRIPT_LOGFILE}	
+	mkdir -p /var/log/sentinel
+	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel /usr/share/sentinel/database &>> ${SCRIPT_LOGFILE}
 
 }
 
