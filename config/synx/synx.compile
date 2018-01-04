@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# monkey patching b/c synx ...
+cp ../../config/synx/rpcrawtxbuild.patch src/
+patch -p0 < src/rpcrawtxbuild.patch
+# end monkey patching
+
 cd src
 make -f makefile.unix USE_UPNP=-
 cp Syndicated ${MNODE_DAEMON}
