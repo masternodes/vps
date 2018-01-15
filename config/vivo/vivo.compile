@@ -6,6 +6,7 @@ patch -p0 < src/secp256k1buildfix.patch
 # end monkey patching
 
 chmod u+x ./autogen.sh
+chmod u+x share/genbuild.sh
 ./autogen.sh
 ./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
 make
