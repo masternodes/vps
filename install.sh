@@ -7,7 +7,7 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	v0.8.4
+# version 	v0.8.5
 # date    	2018-01-16
 #
 # function:	part of the masternode scripts, source the proper config file
@@ -30,7 +30,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.8.4"
+declare -r SCRIPT_VERSION="v0.8.5"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 
@@ -535,6 +535,12 @@ function build_mn_from_source() {
         else
                 echo "* Daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
+        
+		# if it's not available after compilation, theres something wrong
+        if [ ! -f ${MNODE_DAEMON} ]; then
+                echo "COMPILATION FAILED! Please open an issue at https://github.com/masternodes/vps/issues. Thank you!"
+                exit 1        
+        fi       
 }
 
 #
@@ -570,8 +576,21 @@ function final_call() {
 # /* no parameters, create the required network configuration. IPv6 is auto.  */
 # 
 function prepare_mn_interfaces() {
-    
-    IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
+
+    # this allows for more flexibility since every provider uses another default interface
+    # current default is:
+    # * ens3 (vultr) w/ a fallback to "eth0" (Hetzner)
+    #
+	ETH_STATUS=$(cat /sys/class/net/${ETH_INTERFACE}/operstate) &>> ${SCRIPT_LOGFILE}
+
+	# Check if the default interface exists
+	if [[ "${ETH_STATUS}" = "up" ]]; then
+			IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
+	# try eth0 as fallback
+	elif [[ "$ETH_STATUS" = "down" ]] || [[ "$ETH_STATUS" = "" ]]; then
+			echo "Default interface doesn't exist, switching to eth0" &>> ${SCRIPT_LOGFILE}
+			export ${ETH_INTERFACE}="eth0"
+	fi
 	
 	validate_netchoice
 	echo "IPV6_INT_BASE AFTER : ${IPV6_INT_BASE}" &>> ${SCRIPT_LOGFILE}
@@ -732,7 +751,6 @@ main() {
 		echo "MNODE_HELPER:         ${MNODE_HELPER}"
 		echo "MNODE_SWAPSIZE:       ${MNODE_SWAPSIZE}"
 		echo "CODE_DIR:             ${CODE_DIR}"
-		echo "ETH_INTERFACE:        ${ETH_INTERFACE}"
 		echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"	
 		echo "END DEFAULTS => "
 	fi
