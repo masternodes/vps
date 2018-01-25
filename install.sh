@@ -582,15 +582,17 @@ function prepare_mn_interfaces() {
     # * ens3 (vultr) w/ a fallback to "eth0" (Hetzner)
     #
 	ETH_STATUS=$(cat /sys/class/net/${ETH_INTERFACE}/operstate) &>> ${SCRIPT_LOGFILE}
+    IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)" &>> ${SCRIPT_LOGFILE}
+	
 
-	# Check if the default interface exists
-	if [[ "${ETH_STATUS}" = "up" ]]; then
-			IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
-	# try eth0 as fallback
-	elif [[ "$ETH_STATUS" = "down" ]] || [[ "$ETH_STATUS" = "" ]]; then
-			echo "Default interface doesn't exist, switching to eth0" &>> ${SCRIPT_LOGFILE}
-			export ${ETH_INTERFACE}="eth0"
-	fi
+    # Check if the default interface exists
+    if [[ "${ETH_STATUS}" = "up" ]]; then
+        IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
+        # try eth0 as fallback
+    elif [[ "$ETH_STATUS" = "down" ]] || [[ "$ETH_STATUS" = "" ]]; then
+        echo "Default interface doesn't exist, switching to eth0"
+        export ETH_INTERFACE="eth0"
+    fi
 	
 	validate_netchoice
 	echo "IPV6_INT_BASE AFTER : ${IPV6_INT_BASE}" &>> ${SCRIPT_LOGFILE}
