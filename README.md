@@ -4,8 +4,8 @@ This masternode installation script vastly simplifies the setup of a Phore maste
 
 * IPv6 Support
 * Installs 1-100 (or more!) Phore masternodes in parallel on one VPS, with individual phore.conf and data directories
-* It an install masternodes for other coins on the same VPS as Phore
-* 100% auto-compilation and 99% of configuration on the masternode side of things. 
+* It can install masternodes for other coins on the same VPS as Phore
+* 100% auto-compilation and 99% of configuration on the masternode side of things 
 * Automatically compiling from the latest Phore release tag, or another tag can be specified
 * Some security hardening is done, including firewalling and a separate user, increasing security
 * Automatic startup for all masternode daemons
@@ -19,6 +19,7 @@ Some notes and requirements:
 This project was forked from https://github.com/masternodes/vps. @marsmensch (Florian) is the primary author behind this VPS installation script for masternodes. If you would like to donate to him, you can use the BTC address below
 
 **Have fun, this is crypto after all!**
+
 ```
 BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
@@ -30,6 +31,7 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 For new masternode owners, **Vultr** is recommended as a VPS hosting provider, but other providers that allow direct root SSH login access and offer Ubunto 16.04 may work.
 
 You can use the following referral link to sign up with Vultr for VPS hosting:
+
 <a href="https://www.vultr.com/?ref=7316561"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
 ## Deploy a new system
