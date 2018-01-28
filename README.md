@@ -206,6 +206,7 @@ The management script release will follow within the next couple of days.
 | MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
 | CROWD | ![CROWD](/assets/crowd.jpg) | http://crowdcoin.site/ |
 | NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
+| COSMOS | ![COSMOS](/assets/cosmos.jpg) | https://cosmoscoin.co/ |
 
 # Todo
 * provide my Dockerfile & Vagrantfile
