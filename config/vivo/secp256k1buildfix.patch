@@ -1,0 +1,14 @@
+--- src/secp256k1/old_Makefile.am	2018-01-04 18:37:35.116643051 +0000
++++ src/secp256k1/Makefile.am	2018-01-04 18:38:22.400697181 +0000
+@@ -75,8 +75,9 @@
+ endif
+ 
+ if USE_ECMULT_STATIC_PRECOMPUTATION
+-CPPFLAGS_FOR_BUILD +=-I$(top_srcdir)
+-CFLAGS_FOR_BUILD += -Wall -Wextra -Wno-unused-function
++CPPFLAGS_FOR_BUILD = -I$(top_srcdir)
++CFLAGS_FOR_BUILD = -Wall -Wextra -Wno-unused-function
++CC_FOR_BUILD = g++
+ 
+ gen_context_OBJECTS = gen_context.o
+ gen_context_BIN = gen_context$(BUILD_EXEEXT)

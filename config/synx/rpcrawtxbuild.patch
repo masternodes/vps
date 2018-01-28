@@ -1,0 +1,15 @@
+--- src/old_rpcrawtransaction.cpp	2018-01-04 18:09:03.904497370 +0000
++++ src/rpcrawtransaction.cpp	2018-01-04 18:11:57.957359497 +0000
+@@ -214,12 +214,7 @@
+             CTxDestination address;
+             if (ExtractDestination(pk, address))
+             {
+-                #warning BOOST_VERSION
+-                #if ((BOOST_VERSION / 10000 == 1) && (BOOST_VERSION / 100 % 1000 == 58))
+                 const CScriptID& hash = boost::get<CScriptID>(address);
+-                #else
+-                const CScriptID& hash = boost::get<CScriptID&>(address);
+-                #endif
+                 CScript redeemScript;
+                 if (pwalletMain->GetCScript(hash, redeemScript))
+                     entry.push_back(Pair("redeemScript", HexStr(redeemScript.begin(), redeemScript.end())));

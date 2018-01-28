@@ -111,7 +111,7 @@ The *install.sh* script support the following parameters:
 
 ## Troubleshooting the masternode on the VPS
 
-If you want to check the status of your masternode, the best way is currently running the cli e.g. via
+If you want to check the status of your masternode, the best way is currently running the cli e.g. for $MUE via
 
 ```
 /usr/local/bin/mue-cli -conf=/etc/masternodes/mue_n1.conf getinfo
@@ -207,6 +207,10 @@ The management script release will follow within the next couple of days.
 | CROWD | ![CROWD](/assets/crowd.jpg) | http://crowdcoin.site/ |
 | NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
 | COSMOS | ![COSMOS](/assets/cosmos.jpg) | https://cosmoscoin.co/ |
+| NODE | ![NODE](/assets/node.jpg) | https://bitnodes.co/ |
+| SUB1X | ![SUB1X](/assets/sub1x.jpg) | https://bitcointalk.org/index.php?topic=2282282.0 |
+| SEND | ![SEND](/assets/send.jpg) | https://socialsend.io/ |
+| CREAM | ![CREAM](/assets/cream.jpg) | http://cream.technology/ |
 
 # Todo
 * provide my Dockerfile & Vagrantfile
