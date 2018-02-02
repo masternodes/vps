@@ -579,7 +579,7 @@ function prepare_mn_interfaces() {
     #
 
     # check for the default interface status
-    if [ ! -f /sys/class/net/${ETH_INTERFACE} ]; then
+    if [ ! -f /sys/class/net/${ETH_INTERFACE}/operstate ]; then
         echo "Default interface doesn't exist, switching to eth0"
         export ETH_INTERFACE="eth0"
     fi
