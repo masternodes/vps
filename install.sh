@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	v0.8.5
-# date    	2018-01-16
+# version 	v0.9
+# date    	2018-02-02
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
@@ -16,12 +16,8 @@
 #               Run this script w/ the desired parameters. Leave blank or use -h for help.
 #
 #	Platforms: 	
-#               - Linux Ubuntu 16.04 LTS ONLY on a Vultr VPS (its by far the cheapest option)
+#               - Linux Ubuntu 16.04 LTS ONLY on a Vultr, Hetzner or DigitalOcean VPS
 #               - Generic Ubuntu support will be added at a later point in time
-#
-#	System requirements:
-#               - A vultr micro instance works for up to 5 masternodes 
-#				- Activate the free IPv6 option for best results
 #
 # Twitter 	@marsmensch
 
@@ -30,7 +26,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.8.5"
+declare -r SCRIPT_VERSION="v0.9"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 
@@ -579,13 +575,21 @@ function prepare_mn_interfaces() {
 
     # this allows for more flexibility since every provider uses another default interface
     # current default is:
-    # * ens3 (vultr) w/ a fallback to "eth0" (Hetzner)
+    # * ens3 (vultr) w/ a fallback to "eth0" (Hetzner, DO & Linode w/ IPv4 only)
     #
-    ETH_STATUS=$(cat /sys/class/net/${ETH_INTERFACE}/operstate) &>> ${SCRIPT_LOGFILE}
 
+	# check for the default interface status
+	if [ ! -f /sys/class/net/${ETH_INTERFACE} ]; then
+	    echo "Default interface doesn't exist, switching to eth0"
+		export ETH_INTERFACE="eth0"
+	else 
+	    ETH_STATUS=$(cat /sys/class/net/${ETH_INTERFACE}/operstate)  		        
+	fi  
+
+    # check interface status
     if [[ "${ETH_STATUS}" = "down" ]] || [[ "${ETH_STATUS}" = "" ]]; then
-        echo "Default interface doesn't exist, switching to eth0"
-        export ETH_INTERFACE="eth0"
+        echo "Default interface is down, fallback didn't work. Break here."
+        exit 1
     fi
 
     IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)" &>> ${SCRIPT_LOGFILE}
