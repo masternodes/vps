@@ -7,7 +7,7 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	v0.9
+# version 	v0.9.1
 # date    	2018-02-02
 #
 # function:	part of the masternode scripts, source the proper config file
@@ -26,7 +26,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.9"
+declare -r SCRIPT_VERSION="v0.9.1"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 
@@ -578,13 +578,14 @@ function prepare_mn_interfaces() {
     # * ens3 (vultr) w/ a fallback to "eth0" (Hetzner, DO & Linode w/ IPv4 only)
     #
 
-	# check for the default interface status
-	if [ ! -f /sys/class/net/${ETH_INTERFACE} ]; then
-	    echo "Default interface doesn't exist, switching to eth0"
-		export ETH_INTERFACE="eth0"
-	else 
-	    ETH_STATUS=$(cat /sys/class/net/${ETH_INTERFACE}/operstate)  		        
-	fi  
+    # check for the default interface status
+    if [ ! -f /sys/class/net/${ETH_INTERFACE} ]; then
+        echo "Default interface doesn't exist, switching to eth0"
+        export ETH_INTERFACE="eth0"
+    fi
+
+    # get the current interface state
+    ETH_STATUS=$(cat /sys/class/net/${ETH_INTERFACE}/operstate)
 
     # check interface status
     if [[ "${ETH_STATUS}" = "down" ]] || [[ "${ETH_STATUS}" = "" ]]; then
