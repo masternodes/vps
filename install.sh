@@ -595,7 +595,7 @@ function prepare_mn_interfaces() {
     fi
 
     # DO ipv6 fix, are we on DO?
-    if [[ -z $(grep --quiet "::8888" ${DO_NET_CONF}) ]] || [[ -f ${DO_NET_CONF} ]]; then
+    if [[ -z $(grep --quiet "::8888" ${DO_NET_CONF}) ]] && [[ -f ${DO_NET_CONF} ]]; then
         sed -i '/iface eth0 inet6 static/a dns-nameservers 2001:4860:4860::8844 2001:4860:4860::8888 8.8.8.8 127.0.0.1' ${DO_NET_CONF}
         ifdown ${ETH_INTERFACE}; ifup ${ETH_INTERFACE};
     fi
