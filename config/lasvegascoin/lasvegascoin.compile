@@ -1,5 +1,7 @@
 #!/bin/bash   
 
+chmod +x ./autogen.sh
+mkdir -p ./src/secp256k1/build-aux/m4
 ./autogen.sh
 ./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
 make
