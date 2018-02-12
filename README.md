@@ -213,6 +213,8 @@ While you have this file opened, copy the information that follows after mastern
 Once you have your masternode private key entered, press <font color="Green">Ctrl+X</font> .
 Then press <font color="Green">Y</font> to save, and press Enter to exit.
 
+Finally, close and restart your Phore wallet so that it will have the new masternode configuration.
+
 ## Start your masternodes
 A script for starting all masternodes on the VPS has been created at /usr/local/bin/activate_masternodes_phore.sh.
 Run this command after your masternode configuration written above.
