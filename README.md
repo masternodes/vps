@@ -169,6 +169,7 @@ The management script release will follow within the next couple of days.
 |--------|--------------|-----|
 | PIVX |  ![PIVX](/assets/pivx.jpg)  |  https://pivx.org/ |
 | DASH |  ![DASH](/assets/dash.jpg)  | https://www.dash.org/ |
+| InstaCash |  ![instacash](/assets/ich.png)  | https://www.instacash.cc/ |
 | DESIRE |  ![DESIRE](/assets/desire.jpg)  | https://github.com/lazyboozer/Desire  |
 | PURE |  ![PURE](/assets/pure.jpg)  | https://github.com/puredev321/pure    |
 | ENT  |  ![ENT](/assets/ent.jpg)  | http://ent.eternity-group.org/    |
