@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	v0.7.8
-# date    	2017-11-22
+# version 	v0.9.1
+# date    	2018-02-02
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
@@ -16,12 +16,8 @@
 #               Run this script w/ the desired parameters. Leave blank or use -h for help.
 #
 #	Platforms: 	
-#               - Linux Ubuntu 16.04 LTS ONLY on a Vultr VPS (its by far the cheapest option)
+#               - Linux Ubuntu 16.04 LTS ONLY on a Vultr, Hetzner or DigitalOcean VPS
 #               - Generic Ubuntu support will be added at a later point in time
-#
-#	System requirements:
-#               - A vultr micro instance works for up to 5 masternodes 
-#				- Activate the free IPv6 option for best results
 #
 # Twitter 	@marsmensch
 
@@ -30,9 +26,10 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.7.8"
+declare -r SCRIPT_VERSION="v0.9.1"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
+declare -r DO_NET_CONF="/etc/network/interfaces.d/50-cloud-init.cfg"
 
 function showbanner() {
 cat << "EOF"
@@ -42,7 +39,7 @@ cat << "EOF"
  ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
  ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-                                                             ╚╗ @marsmensch 2016-2017 ╔╝                   				
+                                                             ╚╗ @marsmensch 2016-2018 ╔╝                   				
 EOF
 }
 
@@ -82,6 +79,7 @@ function show_help(){
     echo "-s or --sentinel: Add sentinel monitoring for a node type. Combine with the -p option";    
     echo "-w or --wipe: Wipe ALL local data for a node type. Combine with the -p option";
     echo "-u or --update: Update a specific masternode daemon. Combine with the -p option";
+    echo "-r or --release: Release version to be installed.";    
     exit 1;
 }
 
@@ -110,8 +108,8 @@ function install_packages() {
 	# development and build packages
 	# these are common on all cryptos
 	echo "* Package installation!"
-	apt-get -qq update
-	apt-get -qqy -o=Dpkg::Use-Pty=0 install build-essential g++ \
+	apt-get -qq -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update
+	apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install build-essential g++ \
 	protobuf-compiler libboost-all-dev autotools-dev \
     automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
     make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
@@ -443,7 +441,11 @@ function source_config() {
 		fi
 
 		echo "************************* Installation Plan *****************************************"
-		echo "I am going to install and configure ${count} ${project} masternodes for you now."
+		echo ""
+		echo "I am going to install and configure "
+        echo "=> ${count} ${project} masternode(s) in version ${SCVERSION} "
+        echo "for you now."
+        echo ""
 		echo "You have to add your masternode private key to the individual config files afterwards"
 		echo ""
 		echo "Stay tuned!"
@@ -465,8 +467,9 @@ function source_config() {
 		echo ""
 		echo "A logfile for this run can be found at the following location:"
 		echo "${SCRIPT_LOGFILE}"
+		echo ""
 		echo "*************************************************************************************"
-		sleep 3
+		sleep 5
 		
 		# main routine
         prepare_mn_interfaces
@@ -520,13 +523,21 @@ function build_mn_from_source() {
                 # print ascii banner if a logo exists
                 echo -e "* Starting the compilation process for ${CODENAME}, stay tuned"
                 if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
-                        jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/${CODENAME}.jpg     
+                        jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/${CODENAME}.jpg
+                else
+                        jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/default.jpg          
                 fi  
                 # compilation starts here
                 source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile | pv -t -i0.1
         else
                 echo "* Daemon already in place at ${MNODE_DAEMON}, not compiling"
         fi
+        
+		# if it's not available after compilation, theres something wrong
+        if [ ! -f ${MNODE_DAEMON} ]; then
+                echo "COMPILATION FAILED! Please open an issue at https://github.com/masternodes/vps/issues. Thank you!"
+                exit 1        
+        fi       
 }
 
 #
@@ -539,6 +550,9 @@ function final_call() {
 	echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
 	echo "Add your masternode private keys now."
 	echo "eg in /etc/masternodes/${CODENAME}_n1.conf"
+	echo ""
+    echo "=> All configuration files are in: ${MNODE_CONF_BASE}"
+    echo "=> All Data directories are in: ${MNODE_DATA_BASE}"
 	echo ""
 	echo "last but not least, run /usr/local/bin/activate_masternodes_${CODENAME} as root to activate your nodes."	
 
@@ -559,8 +573,39 @@ function final_call() {
 # /* no parameters, create the required network configuration. IPv6 is auto.  */
 # 
 function prepare_mn_interfaces() {
+
+    # this allows for more flexibility since every provider uses another default interface
+    # current default is:
+    # * ens3 (vultr) w/ a fallback to "eth0" (Hetzner, DO & Linode w/ IPv4 only)
+    #
+
+    # check for the default interface status
+    if [ ! -f /sys/class/net/${ETH_INTERFACE}/operstate ]; then
+        echo "Default interface doesn't exist, switching to eth0"
+        export ETH_INTERFACE="eth0"
+    fi
+
+    # get the current interface state
+    ETH_STATUS=$(cat /sys/class/net/${ETH_INTERFACE}/operstate)
+
+    # check interface status
+    if [[ "${ETH_STATUS}" = "down" ]] || [[ "${ETH_STATUS}" = "" ]]; then
+        echo "Default interface is down, fallback didn't work. Break here."
+        exit 1
+    fi
     
-    IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)"
+    # DO ipv6 fix, are we on DO? 
+    # check for DO network config file
+    if [ -f ${DO_NET_CONF} ]; then
+        # found the DO config
+		if ! grep -q "::8888" ${DO_NET_CONF}; then
+			echo "ipv6 fix not found, applying!"
+			sed -i '/iface eth0 inet6 static/a dns-nameservers 2001:4860:4860::8844 2001:4860:4860::8888 8.8.8.8 127.0.0.1' ${DO_NET_CONF}
+			ifdown ${ETH_INTERFACE}; ifup ${ETH_INTERFACE};
+		fi
+    fi
+
+    IPV6_INT_BASE="$(ip -6 addr show dev ${ETH_INTERFACE} | grep inet6 | awk -F '[ \t]+|/' '{print $3}' | grep -v ^fe80 | grep -v ^::1 | cut -f1-4 -d':' | head -1)" &>> ${SCRIPT_LOGFILE}
 	
 	validate_netchoice
 	echo "IPV6_INT_BASE AFTER : ${IPV6_INT_BASE}" &>> ${SCRIPT_LOGFILE}
@@ -721,7 +766,6 @@ main() {
 		echo "MNODE_HELPER:         ${MNODE_HELPER}"
 		echo "MNODE_SWAPSIZE:       ${MNODE_SWAPSIZE}"
 		echo "CODE_DIR:             ${CODE_DIR}"
-		echo "ETH_INTERFACE:        ${ETH_INTERFACE}"
 		echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"	
 		echo "END DEFAULTS => "
 	fi

@@ -88,6 +88,11 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 ./install.sh -p pivx -w
 ```
 
+**Install 2 PIVX masternodes and configure sentinel monitoring:**
+
+```bash
+./install.sh -p pivx -c 2 -s
+```
 
 ## Options
 
@@ -100,12 +105,13 @@ The *install.sh* script support the following parameters:
 | --release                | -r | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested  |
 | --count              | -c | number | amount of masternodes to be configured |
 | --update               | -u    | --    | update specified masternode daemon, combine with -p flag |
+| --sentinel               | -s    | --    | install and configure sentinel for node monitoring |
 | --wipe               | -w    | --    | uninstall & wipe all related master node data, combine with -p flag |
 | --help               | -h    | --    | print help info |
 
 ## Troubleshooting the masternode on the VPS
 
-If you want to check the status of your masternode, the best way is currently running the cli e.g. via
+If you want to check the status of your masternode, the best way is currently running the cli e.g. for $MUE via
 
 ```
 /usr/local/bin/mue-cli -conf=/etc/masternodes/mue_n1.conf getinfo
@@ -188,10 +194,22 @@ The management script release will follow within the next couple of days.
 | SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
 | BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
 | INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
-| PHORE | ![PHORE](/assets/phore.jpg)  | https://phore.io/ |
 | FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
 | BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
 | MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
+| ALQO | ![ALQO](/assets/alqo.jpg) | https://alqo.org |
+| YUP | ![YUP](/assets/yup.jpg) | http://yupcrypto.com/ |
+| MTNC | ![MTNC](/assets/mtnc.jpg) | http://www.masternodecoin.org/ |
+| CROWN | ![CROWN](/assets/crown.jpg) | https://crown.tech/ |
+| BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
+| DTMI | ![DTMI](/assets/dtmi.jpg) | https://bitcointalk.org/index.php?topic=2325196.0 |
+| MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
+| CROWD | ![CROWD](/assets/crowd.jpg) | http://crowdcoin.site/ |
+| NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
+| NODE | ![NODE](/assets/node.jpg) | https://bitnodes.co/ |
+| SUB1X | ![SUB1X](/assets/sub1x.jpg) | https://bitcointalk.org/index.php?topic=2282282.0 |
+| SEND | ![SEND](/assets/send.jpg) | https://socialsend.io/ |
+| CREAM | ![CREAM](/assets/cream.jpg) | http://cream.technology/ |
 
 
 # Todo
