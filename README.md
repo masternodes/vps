@@ -1,228 +1,334 @@
-# Nodemaster
+# Phore Masternode VPS Installation
 
-The **Nodemaster** scripts is a collection of utilities to manage, setup and update masternode instances. 
+This masternode installation script vastly simplifies the setup of a Phore masternode running on a virtual private server (VPS), and it also adds a number of other powerful features, including:
 
-I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part.
+* IPv6 Support
+* Installs 1-100 (or more!) Phore masternodes in parallel on one VPS, with individual phore.conf and data directories
+* It can install masternodes for other coins on the same VPS as Phore
+* 100% auto-compilation and 99% of configuration on the masternode side of things 
+* Automatically compiling from the latest Phore release tag, or another tag can be specified
+* Some security hardening is done, including firewalling and a separate user, increasing security
+* Automatic startup for all masternode daemons
 
-If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
+Some notes and requirements:
+
+* Script has only been tested on a Vultr VPS, but should work almost anywhere where IPv6 addresses are available
+* Currently only Ubunto 16.04 Linux is supported
+* This script needs to run as root or with sudo, the masternodes will and should not!
+
+This project was forked from https://github.com/masternodes/vps. @marsmensch (Florian) is the primary author behind this VPS installation script for masternodes. If you would like to donate to him, you can use the BTC address below
 
 **Have fun, this is crypto after all!**
+
 ```
 BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
 
-Feel free to use my reflink to signup and receive a bonus w/ vultr:
-<a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
+# Install guide on vultr
 
----
-**NOTE on the VPS choice for starters**
+## How to get VPS server
 
-**Vultr** is highly recommended for this kind of setup. I created an [easy step-by-step guide for the VPS provider vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
+For new masternode owners, **Vultr** is recommended as a VPS hosting provider, but other providers that allow direct root SSH login access and offer Ubunto 16.04 may work.
 
----
+You can use the following referral link to sign up with Vultr for VPS hosting:
 
-## About / Background
+<a href="https://www.vultr.com/?ref=7316561"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
-Many masternode crypto currencies only have incomplete or even non-existing instructions available how to setup a masternode from source. 
+## Deploy a new system
 
-This project started as handy bash script to setup my $PIVX masternodes in 2016 when there was almost zero documentation and anything that existed was either $DASH specific, sucked and in most cases both. For that reason, i started to work on a not-so-sucking way to install a lot of different masternodes with next to none manual intervention.
+First, create a new VPS by clicking that small "+" button.
 
-If you are not already aware, visit the project site and join the slack. The website at [https://pivx.org/](https://pivx.org/) is also well worth a visit. 
+<img src="docs/images/masternode_vps/deploy-a-new-system.png" alt="VPS creation" class="inline"/>
 
-Many people use binaries, end of with an insecure configuration or fail completely. This is obviously bad for the stability of the individual network.
+## Location choice
 
-After doing hundreds of masternode installations in the past two years, i decided to share some of my existing auto-install and management scripts with the community to work on a generalised & reliable setup for all masternode coins.
+You can choose any location. You may wish to have it hosted in a city/country near you, or choose a different area to help with the global decentralization of the Phore masternode network.
 
-Comparing with building from source manually, you will benefit from using this script in the following way(s):
+<img src="docs/images/masternode_vps/location-choice.png" alt="VPS location choice" class="inline"/>
 
-* 100% auto-compilation and 99% of configuration on the masternode side of things. It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
-* Developed with recent Ubuntu versions in mind, currently only 16.04 is supported
-* Installs 1-100 (or more!) masternodes in parallel on one machine, with individual config and data
-* Compilation is currently from source for the desired git repo tag (configurable via config files)
-Some security hardening is done, including firewalling and a separate user
-* Automatic startup for all masternode daemons
-* This script needs to run as root, the masternodes will and should not!
-* It's ipv6 enabled, tor/onion will follow
+## Linux distribution (Ubuntu 16.04 LTS)
 
+Select Ubuntu 16.04.
 
-## Installation
+<img src="docs/images/masternode_vps/linux-distribution--ubuntu-1604-lts-.png" alt="VPS location choice" class="inline"/>
 
-SSH to your VPS and clone the Github repository:
+## VPS size
+
+The 25 GB SSD / 1024MBB Memory instance is enough for 2-3 masternodes. You may need more memory as the Phore blockchain grows over time, or if you want to run more masternodes.
+
+<img src="docs/images/masternode_vps/vps-size.png" alt="VPS sizing" class="inline"/>
+
+## Activating additional features (IPv6)
+
+Toggle "Enable IPv6" to activate that feature--at Vultr there is no additional cost for this.
+
+<img src="docs/images/masternode_vps/activating-additional-features--ipv6-.png" alt="VPS sizing" class="inline"/>
+
+You may wish to enable DDOS Protection to protect your masternodes against a potential denial of service attack, especially if you are running multiple masternodes from one VPS. Vultr charges an additional fee for this.
+
+## Hostnames & number of VPS
+
+Choose how many instances you want and click "Deploy Now".
+
+<img src="docs/images/masternode_vps/hostnames--amp--number-of-vps.png" alt="VPS sizing" class="inline"/>
+
+## Installation of PuTTY as SSH client (Windows)
+If you are running your wallet from Windows, install PuTTY while the server is being set up. You can download PuTTY from here: http://www.putty.org/. Skip this step if you are using a Mac--you will use the built in Terminal application instead.
+
+Once PuTTY is installed, return to the Vultr dashboard to get the login details by clicking on the ... to the right of your server, and select Server Details.
+
+## Accessing your VPS via SSH
+
+Copy your password for SSH access from the server details page.
+<img src="docs/images/masternode_vps/accessing-your-vps-via-ssh.png" alt="check hostname and password" class="inline"/>
+
+Now open PuTTY to add the server.
+
+<img src="docs/images/masternode_vps/login-to-vps-via-PuTTY.png" alt="login to VPS" class="inline"/>
+
+Enter the IP address in the Host Name field, and enter the server name you wish to use for this VPS (e.g., MN01) to Saved Sessions. Click save.
+
+Click the open button. When the console has opened, click Yes in the PuTTY Security Alert box.
+<img src="docs/images/masternode_vps/PuTTY-Security-Alert.png" alt="Alert from PuTTY" class="inline"/>
+
+Now enter your server login details provided in your Vultr account.
+You cannot Ctrl+V to paste in the console. Either right click the mouse or type shift+insert (sometimes
+on keyboard it will just be INS key)
+
+User: root
+Password: (paste or type password)
+
+When you paste it will not display, so don't try to paste again.
+Just paste once and press Enter.
+
+For Mac users, open Terminal (e.g., Press Command-Space and type Terminal and press Enter). Then type:
+
+```
+ssh -l root <IP address>
+```
+## Install Masternode
+
+Login to your newly installed node as "root".
+
+<img src="docs/images/masternode_vps/first-ssh-session.png" alt="VPS sizing" class="inline"/>
+
+Enter this command to copy the Masternode installation script and install a single Phore Masternode:
 
 ```bash
-git clone https://github.com/masternodes/vps.git && cd vps
+git clone https://github.com/phoreproject/vps.git && cd vps
+./install.sh -p phore
 ```
 
-Install & configure your desired master node with options:
+This prepares the system and installs the Phore Masternode daemon. This includes downloading the latest Phore masternode release, creating a swap file, configuring the firewall, and compiling the Phore Masternode from source code. This process takes about 10-15 minutes.
+
+<img src="docs/images/masternode_vps/install-the-desired-masternode-and-amount.png" alt="VPS configuration" class="inline"/>
+
+While that is underway, go back to your local desktop and open phore-qt.
+
+### More complex situations (ignore if you are installing a single masternode on a new VPS)
+
+If you wish to install more than one masternode on the same VPS, you can add a -c parameter to tell the script how many to configure, so for example this would install three Phore masternodes:
 
 ```bash
-./install.sh -p pivx
+git clone https://github.com/phoreproject/vps.git && cd vps
+./install.sh -p phore -c 3
 ```
 
-
-## Examples for typical script invocation 
-
-These are only a couple of examples for typical setups. Check my [easy step-by-step guide for [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
-
-**Install & configure 4 PIVX masternodes:**
+If you are upgrading your masternode(s) to a new release, you can add a -u parameter:
 
 ```bash
-./install.sh -p pivx -c 4
+git clone https://github.com/phoreproject/vps.git && cd vps
+./install.sh -p phore -u
 ```
 
-**Install 4 PIVX masternodes, update daemon:**
+The project is configured to use the latest official release of the Phore masternode code, and we will update this project each time a new release is issued, but without downloading the latest version of this project and using the -u parameter, the script will not update an existing Phore node that is already installed.
+
+## Configure Phore Wallet
+### Step1 - Create Collateral Transaction
+Once the wallet is open on your local computer, generate a new receive address and label it however you want to identify your masternode rewards (e.g., Phore-MN-1). This label will show up in your transactions each time you receive a block reward.
+
+Click the Request payment button, and copy the address.
+
+<img src="docs/images/masternode_vps/step1-newaddress.png" alt="making new address" class="inline"/>
+
+Now go to the Send tab, paste the copied address, and send *exactly* 10,000 PHR to it in a single transaction. Wait for it to confirm on the blockchain. This is the collateral transaction that will be locked and paired with your new masternode. If you are setting up more than one masternode at one time, repeat this process for each one.
+
+<img src="docs/images/masternode_vps/step1-send10kphr.png" alt="sending 10kPHR" class="inline"/>
+
+### Step 2 - Generate Masternode Private Key
+Go to the **[Tools > Debug Console]** and enter these commands below:
 
 ```bash
-./install.sh -p pivx -c 4 -u
+masternode genkey
 ```
+This will produce a masternode private key:
 
-**Install 6 PIVX masternodes with the git release tag "tags/v3.0.5.1"**
+<img src="docs/images/masternode_vps/step2-masternodegenkey.png" alt="generating masternode private key" class="inline"/>
+
+Copy this value to a text file.t will be needed for both the phore configuration file on the masternode VPS, and the masternode configuration file on the wallet computer. 
+
+If you are setting up multiple masternodes, repeat this step for each one. Each time you run the masternode genkey command it will give you a new private key--it doesn't matter which one you use, but it is important that it is unique for each masternode and that the VPS phore configuration file and wallet masternode configuration file match (see below).
+
+### Step 3 - Masternode Outputs
+
+This will give you the rest of the information you need to configure your masternode in your Phore wallet--the transaction ID and the output index.
 
 ```bash
-./install.sh -p pivx -c 6 -r "tags/v3.0.5.1"
+masternode outputs
 ```
 
-**Wipe all PIVX masternode data:**
+<img src="docs/images/masternode_vps/step3-masternodeoutputs.png" alt="getting transaction id" class="inline"/>
+
+The long string of characters is the *Transaction ID* for your masternode collateral transaction. The number after the long string is the *Index*. Copy and paste these into the text file next to the private key you generated in Step 2.
+
+If you have multiple masternodes in the same wallet and have done the 10,000 PHR transactions for each of them, masternode outputs will display transaction IDs and indexes for each one. You can choose which private key to go with each transaction ID and index, as long as they are all different, and you make sure the corresponding lines in masternode.conf and the VPS phore configuration files match (see below).
+
+## End of installations
+When the script finishes, it will look similar to this:
+
+<img src="docs/images/masternode_vps/end-of-installation.png" alt="installation ended" class="inline"/>
+
+You only have a few steps remaining to complete your masternode configuration.
+## Configure masternode configuration files
+Since this installation method supports multiple masternodes, the phore configuration files have a node number added to them (e.g., phore_n1.conf, phore_n2.conf), stored in the /etc/masternodes directory. If you have a single masternode on the VPS, you will only need to edit /etc/masternodes/phore_n1.conf.
+
+To open phore_n1.conf for editing, enter these commands:
+```bash
+sudo apt-get install nano
+nano /etc/masternodes/phore_n1.conf
+```
+The next step adds your masternode private key.
+
+## Add masternode private key
+What you need to change is only masternode private key.
+(We recommend using IPv6 which is the default, but if you choose IPv4 when you ran the installation script, please edit #NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER to your VPS IP address).
+After typing the nano command, you will see something similar to this.
+
+<img src="docs/images/masternode_vps/insert-your-masternode-private-key.png" alt="add private key" class="inline"/>
+
+Copy the masternode private key from the text file you saved it in, and replace HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_phore_1 with that private key (this typically begins with an 8).
+
+While you have this file opened, copy the information that follows after masternodeaddr=, starting with the open bracket. This is the masternode's IPv6 address and port, and will be needed for the wallet's masternode.conf file.
+
+Once you have your masternode private key entered, press <font color="Green">Ctrl+X</font> .
+Then press <font color="Green">Y</font> to save, and press Enter to exit.
+
+Finally, close and restart your Phore wallet so that it will have the new masternode configuration.
+
+## Start your masternodes
+A script for starting all masternodes on the VPS has been created at /usr/local/bin/activate_masternodes_phore.sh.
+Run this command after your masternode configuration written above.
 
 ```bash
-./install.sh -p pivx -w
+/usr/local/bin/activate_masternodes_phore
 ```
 
-**Install 2 PIVX masternodes and configure sentinel monitoring:**
+The masternode daemons will start and begin loading the Phore blockchain.
+
+## Finishing Wallet Configuration & Activate Masternode
+To activate your nodes from your wallet, one of the last steps is to add a line for the masternode in the masternode.conf file. This file has the following format, with each value separated with a space:
+
+* alias IP:Port masternodeprivatekey collateral_transaction_ID collateral_output_index
+* alias - A short name you use to identify the masternode, you can choose this name as long as it is without spaces (e.g., Phore-MN-1)
+* IP:Port - The IP address (either IPv6 or IPv4) and the Port where the masternode is running, separated by a colon (:). You copied this from the phore.conf file on the VPS.
+* collateral_transaction_ID: This is the transaction ID you copied from masternode outputs.
+* collateral_output_index: This is the index you copied from masternode outputs.
+
+From the wallet menu, edit the local wallet **masternode.conf** file. **[Tools > Open Masternode Configuration File]**
+Add the MN conf line, like the example below to the masternode.conf file. Save it, and close the file. It will look like the following example, using your values for each of the fields above. A common mistake is mixing up the private key and the collateral transaction ID--to make this easier, the private key usually begins with an 8.
+
+example.
+```
+Phore-MN-1 [2001:19f0:5001:ca6:2085::1]:11771 88xrxxxxxxxxxxxxxxxxxxxxxxx7K 6b4c9xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx7ee23 0
+```
+
+The image below shows another example using an IPv4 IP address. If you followed this guide you are probably using an IPv6 address that looks like the line above.
+
+<img src="docs/images/masternode_vps/masternode-conf.png" alt="editing masternode.conf" class="inline"/>
+
+If you are running multiple masternodes, you need to add one of these lines for each masternode, and make sure the private key on each line matches the corresponding private key you entered in the VPS phore configuration file for that masternode.
+## Check syncing status of masternode
+The masternode cannot complete activation until it is fully synced with the Phore blockchain network.
+
+To check the status of your masternode, please enter this command in the VPS terminal. If you have multiple masternodes on the same VPS, you can change n1 to n2 etc. below to check the status of each one.
 
 ```bash
-./install.sh -p pivx -c 2 -s
+/usr/local/bin/phore-cli -conf=/etc/masternodes/phore_n1.conf getinfo
 ```
-
-## Options
-
-The *install.sh* script support the following parameters: 
-
-| Long Option | Short Option | Values | description |
-| :--- | :--- | --- | --- |
-|  --project             | -p | project, e.g. "pix" | shortname for the project |
-| --net                | -n | "4" / "6"  | ip type for masternode. (ipv)6 is default |
-| --release                | -r | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested  |
-| --count              | -c | number | amount of masternodes to be configured |
-| --update               | -u    | --    | update specified masternode daemon, combine with -p flag |
-| --sentinel               | -s    | --    | install and configure sentinel for node monitoring |
-| --wipe               | -w    | --    | uninstall & wipe all related master node data, combine with -p flag |
-| --help               | -h    | --    | print help info |
-
-## Troubleshooting the masternode on the VPS
-
-If you want to check the status of your masternode, the best way is currently running the cli e.g. for $MUE via
-
+The output will look like this:
 ```
-/usr/local/bin/mue-cli -conf=/etc/masternodes/mue_n1.conf getinfo
-
 {
-  "version": 1000302,
-  "protocolversion": 70701,
+  "version": 1010000,
+  "protocolversion": 7002,
   "walletversion": 61000,
   "balance": 0.00000000,
   "privatesend_balance": 0.00000000,
-  "blocks": 209481,
+  "blocks": 176209,
   "timeoffset": 0,
-  "connections": 5,
+  "connections": 44,
   "proxy": "",
   "difficulty": 42882.54964804553,
   "testnet": false,
-  "keypoololdest": 1511380627,
-  "keypoolsize": 1001,
-  "paytxfee": 0.00000000,
-  "relayfee": 0.00010000,
-  "errors": ""
+  "moneysupply" : 11814171.53907114,
+  "zPHRsupply" : {
+      "1" : 263.00000000,
+      "5" : 135.00000000,
+      "10" : 500.00000000,
+      "50" : 700.00000000,
+      "100" : 1300.00000000,
+      "500" : 5000.00000000,
+      "1000" : 11000.00000000,
+      "5000" : 90000.00000000,
+      "total" : 108898.00000000
+  },
+  "keypoololdest" : 1507302593,
+  "keypoolsize" : 1001,
+  "paytxfee" : 0.00000000,
+  "relayfee" : 0.00010000,
+  "staking status" : "Staking Not Active",
+  "errors" : ""
 }
 ```
 
-# Help, Issues and Questions
+We're looking at the *blocks*, and need that to be the latest block in the blockchain. You can check your local wallet to see the latest block by hovering over the green check mark.
 
-I activated the "[issues](https://github.com/masternodes/vps/issues)" option on github to give you a way to document defects and feature wishes. Feel free top [open issues](https://github.com/masternodes/vps/issues) for problems / features you are missing here: [https://github.com/masternodes/vps/issues](https://github.com/masternodes/vps/issues).
+<img src="docs/images/masternode_vps/check-blocks-number.png" alt="checking syncing status" class="inline"/>
 
-I might not be able to reply immediately, but i do usually within a couple of days at worst. I will also happily take any pull requests that make masternode installations easier for everyone ;-)
+Once your masternode has synced up to the latest block, go to next step. The syncing process may take 15-30 minutes or more as the Phore blockchain grows. You can keep checking progress with the command above, by pressing the up arrow and Enter to repeat it.
 
-If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
+## Start Masternode
 
-**Have fun, this is crypto after all!**
+Go to the debug console of your Phore wallet **[Tools->Debug Console]** and enter the following command, replacing **mn-alias** with the name of the masternode in the Alias column of the Masternodes tab:
 
 ```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
+startmasternode alias false mn-alias
 ```
 
-## Management script (not yet implemented)
+You may need to unlock the wallet **[Settings->Unlock Wallet]** before you run this command, entering your passphrase. You can lock the wallet after it is finished.
 
-The management script release will follow within the next couple of days. 
-
-| command | description |
-| :--- | --- |
-| nodemaster start pivx (all\|number) | start all or a specific pivx masternode(s) |
-| nodemaster restart pivx (all\|number) | stop all or a specific pivx masternode(s) |
-| nodemaster stop pivx (all\|number) | restart all or a specific pivx masternode(s) |
-| nodemaster cleanup pivx (all\|number) | delete chain data for all pivx masternodes |
-| nodemaster status pivx (all\|number) | systemd process status for a pivx masternode |
-| nodemaster tail pivx (all\|number) | tail debug logs for a pivx masternode |
-
-# Supported cryptos
-
-| CRYPTO  | Logo | Url |
-|--------|--------------|-----|
-| PIVX |  ![PIVX](/assets/pivx.jpg)  |  https://pivx.org/ |
-| DASH |  ![DASH](/assets/dash.jpg)  | https://www.dash.org/ |
-| DESIRE |  ![DESIRE](/assets/desire.jpg)  | https://github.com/lazyboozer/Desire  |
-| PURE |  ![PURE](/assets/pure.jpg)  | https://github.com/puredev321/pure    |
-| ENT  |  ![ENT](/assets/ent.jpg)  | http://ent.eternity-group.org/    |
-| SYNX |  ![SYNX](/assets/synx.jpg)  | http://syndicatelabs.io/  |
-| CHC |  ![CHAIN](/assets/chain.jpg)  | https://www.chaincoin.org/  |
-| ZEN |  ![ZEN](/assets/zen.jpg)  | https://zensystem.io/  |
-| DP |  ![DPRICE](/assets/dprice.jpg)  | http://digitalprice.org/  |
-| VIVO |  ![VIVO](/assets/vivo.jpg)  | https://www.vivocrypto.com/  |
-| ITZ |  ![ITZ](/assets/itz.jpg)  | https://interzone.space/  |
-| MEME |  ![MEME](/assets/meme.jpg)  | http://www.memetic.ai/  |
-| ARC |  ![ARC](/assets/arc.jpg)  | https://arcticcoin.org/  |
-| CRAVE |  ![CRAVE](/assets/crave.jpg)  | https://www.craveproject.com/  |
-| PIE |  ![PIE](/assets/pie.jpg)  | https://github.com/flintsoft/PIE  |
-| XCXT |  ![XCXT](/assets/xcxt.jpg)  | http://coinonatx.com/  |
-| SCORE |  ![SCORE](/assets/score.jpg)  | http://scorecoin.site/ |
-| BITSEND |  ![BITSEND](/assets/bitsend.jpg)  | https://bitsend.info/ |
-| XZC |  ![ZCOIN](/assets/zcoin.jpg)  | https://zcoin.io/ |
-| INSANE |  ![INSN](/assets/insane.jpg)  | https://insanecoin.com/ |
-| XIOS | ![XIOS](/assets/xios.jpg)  | https://bitcointalk.org/index.php?topic=2251159.0/ |
-| HAV | ![HAV](/assets/have.jpg)  | https://bitcointalk.org/index.php?topic=2336026.0 |
-| NTRN | ![NTRN](/assets/ntrn.jpg)  | https://www.neutroncoin.com/ |
-| RNS | ![RNS](/assets/rns.jpg)  | https://bitcointalk.org/index.php?topic=1809933.msg18029683#msg18029683/ |
-| SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
-| BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
-| INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
-| FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
-| BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
-| MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
-| ALQO | ![ALQO](/assets/alqo.jpg) | https://alqo.org |
-| YUP | ![YUP](/assets/yup.jpg) | http://yupcrypto.com/ |
-| MTNC | ![MTNC](/assets/mtnc.jpg) | http://www.masternodecoin.org/ |
-| CROWN | ![CROWN](/assets/crown.jpg) | https://crown.tech/ |
-| BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
-| DTMI | ![DTMI](/assets/dtmi.jpg) | https://bitcointalk.org/index.php?topic=2325196.0 |
-| MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
-| CROWD | ![CROWD](/assets/crowd.jpg) | http://crowdcoin.site/ |
-| NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
-| PHORE | ![PHORE](/assets/phore.jpg) | http://phore.io/ |
-| NODE | ![NODE](/assets/node.jpg) | https://bitnodes.co/ |
-| SUB1X | ![SUB1X](/assets/sub1x.jpg) | https://bitcointalk.org/index.php?topic=2282282.0 |
-| SEND | ![SEND](/assets/send.jpg) | https://socialsend.io/ |
-
-# Todo
-* provide my Dockerfile & Vagrantfile
-* write more test cases
-* implement a binary option (?) 
-* output all supported cryptos as list within help
-
-# Errors
-* currently not fully idempotent
-
-Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
-
-**Have fun, this is crypto after all!**
+If everything was setup correctly, after entering the command you will see something like this:
 ```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
+{
+"overall" : "Successfully started 1 masternodes, failed to start 0, total 1",
+"detail" : {
+"status" : {
+"alias" : "phore-mn01",
+"result" : "successful"
+}
 ```
+If you are setting up multiple masternodes, repeat this for each one. You can now close the debug console, return the Masternodes tab and check the status:
+<img src="docs/images/masternode_vps/check-masternode-status.png" alt="checking syncing status" class="inline"/>
+
+It should say ENABLED, and within an hour, the timer in the Active column should start increasing.
+
+Your Phore masternode is now set up and running! Depending on how many masternodes there are, it may take 12-24 hours before you see your first masternode reward--this is normal and rewards should come at more regular intervals after the first one.
+
+<img src="docs/images/masternode_vps/rewards.png" alt="rewards" class="inline"/>
+
+## Issues and Questions
+Please open a GitHub Issue if there are problems with this installation method. Many Phore team members activel support people installing masternodes and can provide assistance in the Phore Discord channel.
+Here is a Discord invitation:
+
+https://discord.gg/sbgdcdv
+
+If you would like to make a donation to Phore's ongoing development, you can send Phore to the core team at this address: PDjGJMDzvJnvbxxgR1bgPm77fFLxn3KAg8
