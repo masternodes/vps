@@ -1,0 +1,6 @@
+#!/bin/bash
+
+./autogen.sh
+./configure --enable-tests=no --without-gui
+make
+make install

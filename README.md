@@ -1,6 +1,6 @@
 # Nodemaster
 
-The **Nodemaster** scripts is a collection of utilities to manage, setup and update masternode instances. 
+The **Nodemaster** scripts is a collection of utilities to manage, setup and update masternode instances.
 
 I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part.
 
@@ -17,17 +17,17 @@ Feel free to use my reflink to signup and receive a bonus w/ vultr:
 ---
 **NOTE on the VPS choice for starters**
 
-**Vultr** is highly recommended for this kind of setup. I created an [easy step-by-step guide for the VPS provider vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
+**Vultr** is highly recommended for this kind of setup. I created an [easy step-by-step guide for the VPS provider vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
 
 ---
 
 ## About / Background
 
-Many masternode crypto currencies only have incomplete or even non-existing instructions available how to setup a masternode from source. 
+Many masternode crypto currencies only have incomplete or even non-existing instructions available how to setup a masternode from source.
 
 This project started as handy bash script to setup my $PIVX masternodes in 2016 when there was almost zero documentation and anything that existed was either $DASH specific, sucked and in most cases both. For that reason, i started to work on a not-so-sucking way to install a lot of different masternodes with next to none manual intervention.
 
-If you are not already aware, visit the project site and join the slack. The website at [https://pivx.org/](https://pivx.org/) is also well worth a visit. 
+If you are not already aware, visit the project site and join the slack. The website at [https://pivx.org/](https://pivx.org/) is also well worth a visit.
 
 Many people use binaries, end of with an insecure configuration or fail completely. This is obviously bad for the stability of the individual network.
 
@@ -60,9 +60,9 @@ Install & configure your desired master node with options:
 ```
 
 
-## Examples for typical script invocation 
+## Examples for typical script invocation
 
-These are only a couple of examples for typical setups. Check my [easy step-by-step guide for [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts. 
+These are only a couple of examples for typical setups. Check my [easy step-by-step guide for [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
 
 **Install & configure 4 PIVX masternodes:**
 
@@ -96,7 +96,7 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 
 ## Options
 
-The *install.sh* script support the following parameters: 
+The *install.sh* script support the following parameters:
 
 | Long Option | Short Option | Values | description |
 | :--- | :--- | --- | --- |
@@ -152,7 +152,7 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 
 ## Management script (not yet implemented)
 
-The management script release will follow within the next couple of days. 
+The management script release will follow within the next couple of days.
 
 | command | description |
 | :--- | --- |
@@ -210,12 +210,13 @@ The management script release will follow within the next couple of days.
 | SUB1X | ![SUB1X](/assets/sub1x.jpg) | https://bitcointalk.org/index.php?topic=2282282.0 |
 | SEND | ![SEND](/assets/send.jpg) | https://socialsend.io/ |
 | CREAM | ![CREAM](/assets/cream.jpg) | http://cream.technology/ |
+| AXE | ![AXE](/assets/axe.jpg) | https://axerunners.github.io |
 
 
 # Todo
 * provide my Dockerfile & Vagrantfile
 * write more test cases
-* implement a binary option (?) 
+* implement a binary option (?)
 * output all supported cryptos as list within help
 
 # Errors
