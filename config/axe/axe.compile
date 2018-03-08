@@ -1,6 +1,6 @@
 #!/bin/bash
 
 ./autogen.sh
-./configure --enable-tests=no --without-gui
+./configure --enable-tests=no --without-gui --with-incompatible-bdb
 make
 make install
