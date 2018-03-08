@@ -1,10 +1,14 @@
 #!/bin/bash
 
-# monkey patching b/c synx ...
-cp ../../config/synx/rpcrawtxbuild.patch src/
-patch -p0 < src/rpcrawtxbuild.patch
-# end monkey patching
-
+# compile fix
 cd src
-make -f makefile.unix USE_UPNP=-
-cp Syndicated ${MNODE_DAEMON}
+wget https://raw.githubusercontent.com/SyndicateLtd/SyndicateQT/master/src/bignum.h
+cd ..
+#
+
+chmod u+x ./autogen.sh share/genbuild.sh
+
+./autogen.sh
+./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+make
+make install
