@@ -115,8 +115,7 @@ Login to your newly installed node as "root".
 Enter this command to copy the Masternode installation script and install a single Phore Masternode:
 
 ```bash
-git clone https://github.com/phoreproject/vps.git && cd vps
-./install.sh -p phore
+git clone https://github.com/phoreproject/vps.git && cd vps && ./install.sh -p phore
 ```
 
 This prepares the system and installs the Phore Masternode daemon. This includes downloading the latest Phore masternode release, creating a swap file, configuring the firewall, and compiling the Phore Masternode from source code. This process takes about 10-15 minutes.
