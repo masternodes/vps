@@ -458,6 +458,8 @@ function source_config() {
 		echo ""
 		echo "I am going to install and configure "
         echo "=> ${count} ${project} masternode(s) in version ${SCVERSION} "
+		echo "SCVERSION:            ${SCVERSION}"
+		echo "RELEASE:              ${release}"			        
         echo "for you now."
         echo ""
 		echo "You have to add your masternode private key to the individual config files afterwards"
