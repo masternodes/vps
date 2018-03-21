@@ -429,7 +429,7 @@ function source_config() {
 		# overwritten at runtime
 		if [ -z "$release" ]
 		then
-			SCVERSION="$release"
+			release=${SCVERSION}
 			echo "release empty, setting to project default: ${SCVERSION}"  &>> ${SCRIPT_LOGFILE}
 		fi
 
@@ -457,7 +457,7 @@ function source_config() {
 		echo "************************* Installation Plan *****************************************"
 		echo ""
 		echo "I am going to install and configure "
-        echo "=> ${count} ${project} masternode(s) in version ${SCVERSION} "
+        echo "=> ${count} ${project} masternode(s) in version ${release}"
 		echo "SCVERSION:            ${SCVERSION}"
 		echo "RELEASE:              ${release}"			        
         echo "for you now."
