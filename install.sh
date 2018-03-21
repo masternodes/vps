@@ -429,7 +429,7 @@ function source_config() {
 		# overwritten at runtime
 		if [ -z "$release" ]
 		then
-			release=${SCVERSION}
+			SCVERSION="$release"
 			echo "release empty, setting to project default: ${SCVERSION}"  &>> ${SCRIPT_LOGFILE}
 		fi
 
