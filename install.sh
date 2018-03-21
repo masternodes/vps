@@ -767,6 +767,8 @@ main() {
 		echo "MNODE_HELPER:         ${MNODE_HELPER}"
 		echo "MNODE_SWAPSIZE:       ${MNODE_SWAPSIZE}"
 		echo "CODE_DIR:             ${CODE_DIR}"
+		echo "SCVERSION:            ${SCVERSION}"
+		echo "RELEASE:              ${release}"			
 		echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"	
 		echo "END DEFAULTS => "
 	fi
@@ -783,6 +785,7 @@ main() {
 		echo "MNODE_INBOUND_PORT:   ${MNODE_INBOUND_PORT}"
 		echo "GIT_URL:              ${GIT_URL}"
 		echo "SCVERSION:            ${SCVERSION}"
+		echo "RELEASE:              ${release}"		
 		echo "NETWORK_BASE_TAG:     ${NETWORK_BASE_TAG}"	
 		echo "END PROJECT => "   	
 		 
