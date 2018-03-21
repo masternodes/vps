@@ -418,26 +418,12 @@ function source_config() {
 			echo "No number given, installing default number of nodes: ${SETUP_MNODES_COUNT}" &>> ${SCRIPT_LOGFILE}
 		fi
 
-		# debug
-		if [ "$debug" -eq 1 ]; then
-			echo "********************** VALUES BEFORE CONFIG SOURCING: ************************"
-			echo "SCVERSION:            ${SCVERSION}"
-			echo "RELEASE:              ${release}"			
-		fi
-
 		# release is from the default project config but can ultimately be
 		# overwritten at runtime
 		if [ -z "$release" ]
 		then
 			release=${SCVERSION}
 			echo "release empty, setting to project default: ${SCVERSION}"  &>> ${SCRIPT_LOGFILE}
-		fi
-
-		# debug
-		if [ "$debug" -eq 1 ]; then
-			echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
-			echo "SCVERSION:            ${SCVERSION}"
-			echo "RELEASE:              ${release}"			
 		fi
 
 		# net is from the default config but can ultimately be
@@ -457,9 +443,7 @@ function source_config() {
 		echo "************************* Installation Plan *****************************************"
 		echo ""
 		echo "I am going to install and configure "
-        echo "=> ${count} ${project} masternode(s) in version ${release}"
-		echo "SCVERSION:            ${SCVERSION}"
-		echo "RELEASE:              ${release}"			        
+        echo "=> ${count} ${project} masternode(s) in version ${release}"	        
         echo "for you now."
         echo ""
 		echo "You have to add your masternode private key to the individual config files afterwards"
