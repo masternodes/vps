@@ -701,6 +701,7 @@ while true; do
                     if [ -n "$1" ]; 
                     then
                         release="$1";
+                        SCVERSION="$1"
                         shift;
                     fi
             ;;
