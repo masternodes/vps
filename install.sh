@@ -418,12 +418,26 @@ function source_config() {
 			echo "No number given, installing default number of nodes: ${SETUP_MNODES_COUNT}" &>> ${SCRIPT_LOGFILE}
 		fi
 
+		# debug
+		if [ "$debug" -eq 1 ]; then
+			echo "********************** VALUES BEFORE CONFIG SOURCING: ************************"
+			echo "SCVERSION:            ${SCVERSION}"
+			echo "RELEASE:              ${release}"			
+		fi
+
 		# release is from the default project config but can ultimately be
 		# overwritten at runtime
 		if [ -z "$release" ]
 		then
 			release=${SCVERSION}
 			echo "release empty, setting to project default: ${SCVERSION}"  &>> ${SCRIPT_LOGFILE}
+		fi
+
+		# debug
+		if [ "$debug" -eq 1 ]; then
+			echo "********************** VALUES AFTER CONFIG SOURCING: ************************"
+			echo "SCVERSION:            ${SCVERSION}"
+			echo "RELEASE:              ${release}"			
 		fi
 
 		# net is from the default config but can ultimately be
