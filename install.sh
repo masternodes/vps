@@ -263,6 +263,11 @@ function create_mn_configuration() {
 
         # always return to the script root
         cd ${SCRIPTPATH}
+        for NUM in $(seq 1 ${count}); do
+          if [ -n "${PRIVKEY[${NUM}]}" ]; then
+            echo ${PRIVKEY[${NUM}]} >> tmp.txt
+          fi
+        done
         dup=$(sort -t 8 tmp.txt | uniq -c | sort -nr | head -1 | awk '{print substr($0, 7, 1)}')
         if [ 1 -ne "$dup" ]; then
           echo "Inputted private key was duplicated. Please restart this script."
@@ -736,7 +741,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[1]="$1";
-                        echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
@@ -745,7 +749,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[2]="$1";
-                        echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
@@ -754,7 +757,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[3]="$1";
-                        echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
@@ -763,7 +765,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[4]="$1";
-                        echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
@@ -772,7 +773,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[5]="$1";
-			                  echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
@@ -781,7 +781,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[6]="$1";
-			                  echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
@@ -790,7 +789,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[7]="$1";
-			                  echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
@@ -799,7 +797,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[8]="$1";
-			                  echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
@@ -808,7 +805,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[9]="$1";
-			                  echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
@@ -817,7 +813,6 @@ while true; do
                     if [ -n "$1" ];
                     then
                         PRIVKEY[10]="$1";
-			                  echo $1 >> tmp.txt;
                         shift;
                     fi
             ;;
