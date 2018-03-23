@@ -267,6 +267,7 @@ function create_mn_configuration() {
         if [ 1 -ne "$dup" ]; then
           echo "Inputted private key was duplicated. Please restart this script."
           rm -r /etc/masternodes
+          rm tmp.txt
           exit 1
         fi
         rm tmp.txt

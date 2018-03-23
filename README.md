@@ -5,7 +5,7 @@ This masternode installation script vastly simplifies the setup of a Phore maste
 * IPv6 Support
 * Installs 1-100 (or more!) Phore masternodes in parallel on one VPS, with individual phore.conf and data directories
 * It can install masternodes for other coins on the same VPS as Phore
-* 100% auto-compilation and 99% of configuration on the masternode side of things 
+* 100% auto-compilation and 99% of configuration on the masternode side of things
 * Automatically compiling from the latest Phore release tag, or another tag can be specified
 * Some security hardening is done, including firewalling and a separate user, increasing security
 * Automatic startup for all masternode daemons
@@ -118,6 +118,14 @@ Enter this command to copy the Masternode installation script and install a sing
 git clone https://github.com/phoreproject/vps.git && cd vps && ./install.sh -p phore
 ```
 
+If you have masternode private key, please use this(You can generate masternode private key on below Step 2).
+
+```bash
+git clone https://github.com/phoreproject/vps.git && cd vps && ./install.sh -p phore -k **PRIVATE KEY**
+```
+You can skip below "Configure masternode configuration files". Because above command inputs masternode private key to masternode configuration files.
+
+
 This prepares the system and installs the Phore Masternode daemon. This includes downloading the latest Phore masternode release, creating a swap file, configuring the firewall, and compiling the Phore Masternode from source code. This process takes about 10-15 minutes.
 
 <img src="docs/images/masternode_vps/install-the-desired-masternode-and-amount.png" alt="VPS configuration" class="inline"/>
@@ -132,6 +140,15 @@ If you wish to install more than one masternode on the same VPS, you can add a -
 git clone https://github.com/phoreproject/vps.git && cd vps
 ./install.sh -p phore -c 3
 ```
+
+If you have masternode private key,
+
+```bash
+git clone https://github.com/phoreproject/vps.git && cd vps
+./install.sh -p phore -c 3 --key **PRIVATE KEY 01** --key2 **PRIVATE KEY 02** --key3 **PRIVATE KEY 03**
+```
+You can skip below "Configure masternode configuration files". Because above command inputs masternode private key to masternode configuration files.
+
 
 If you are upgrading your masternode(s) to a new release, you can add a -u parameter:
 
@@ -164,7 +181,7 @@ This will produce a masternode private key:
 
 <img src="docs/images/masternode_vps/step2-masternodegenkey.png" alt="generating masternode private key" class="inline"/>
 
-Copy this value to a text file.t will be needed for both the phore configuration file on the masternode VPS, and the masternode configuration file on the wallet computer. 
+Copy this value to a text file.t will be needed for both the phore configuration file on the masternode VPS, and the masternode configuration file on the wallet computer.
 
 If you are setting up multiple masternodes, repeat this step for each one. Each time you run the masternode genkey command it will give you a new private key--it doesn't matter which one you use, but it is important that it is unique for each masternode and that the VPS phore configuration file and wallet masternode configuration file match (see below).
 
