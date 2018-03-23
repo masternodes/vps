@@ -315,9 +315,10 @@ function create_control_configuration() {
     rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
 	# create one line per masternode with the data we have
 	for NUM in $(seq 1 ${count}); do
-		cat >> /tmp/${CODENAME}_masternode.conf <<-EOF
-			${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}
-		EOF
+    if [ -n "${PRIVKEY[${NUM}]}" ]; then
+      echo ${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} ${PRIVKEY[${NUM}]} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM} >> /tmp/${CODENAME}_masternode.conf
+    fi
+		echo ${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM} >> /tmp/${CODENAME}_masternode.conf
 	done
 
 }
@@ -384,6 +385,24 @@ function wipe_all() {
 	echo "DONE!"
 	exit 0
 
+}
+
+#
+#Generate masternode private key
+#
+function generate_privkey() {
+  echo -e "rpcuser=test\nrpcpassword=passtest" >> ${MNODE_CONF_BASE}/${CODENAME}_test.conf
+  mkdir -p ${MNODE_DATA_BASE}/${CODENAME}_test
+  phored -daemon -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test
+  sleep 5
+	for NUM in $(seq 1 ${count}); do
+    if [ -z "${PRIVKEY[${NUM}]}" ]; then
+      PRIVKEY[${NUM}]=$(phore-cli -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test masternode genkey)
+    fi
+  done
+  phore-cli -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test stop
+  sleep 5
+  rm -r ${MNODE_CONF_BASE}/${CODENAME}_test.conf ${MNODE_DATA_BASE}/${CODENAME}_test
 }
 
 #
@@ -499,6 +518,10 @@ function source_config() {
 		build_mn_from_source
 		create_mn_user
 		create_mn_dirs
+    # private key initialize
+    if ["$generate" -eq 1 ]; then
+      echo "Generating masternode private key" &>> ${SCRIPT_LOGFILE}
+      generate_privkey
 		# sentinel setup
 		if [ "$sentinel" -eq 1 ]; then
 			echo "* Sentinel setup chosen" &>> ${SCRIPT_LOGFILE}
@@ -640,7 +663,7 @@ update=0;
 sentinel=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wsud:k:k2:k3:k4:k5:k6:k7:k8:k9:k10:" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug:,key:,key2:,key3:,key4:,key5:,key6:,key7:,key8:,key9:,key10:" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wsudgk:k2:k3:k4:k5:k6:k7:k8:k9:k10:" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug,generate,key:,key2:,key3:,key4:,key5:,key6:,key7:,key8:,key9:,key10:" -n "install.sh" -- "$@");
 
 #Bad arguments
 if [ $? -ne 0 ];
@@ -703,6 +726,10 @@ while true; do
         -d |--debug)
             shift;
                     debug="1";
+            ;;
+        -g | --generate)
+            shift;
+                    generate="1";
             ;;
         -k |--key)
             shift;
