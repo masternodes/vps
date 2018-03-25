@@ -1,0 +1,9 @@
+#!/bin/bash    
+# this file contains all commands to compile and install the daemon
+
+
+
+./autogen.sh
+./configure
+make
+make install
