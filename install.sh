@@ -470,7 +470,7 @@ function source_config() {
 		fi
 		# start nodes after setup
 		if [ "$startnodes" -eq 1 ]; then
-			echo "I will start your masternodes after the installtion."
+			echo "I will start your masternodes after the installation."
 		fi
 		echo ""
 		echo "A logfile for this run can be found at the following location:"
