@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	v0.9.2
-# date    	2018-03-12
+# version 	v0.9.3
+# date    	2018-03-28
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
