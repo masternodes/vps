@@ -640,7 +640,7 @@ function prepare_mn_interfaces() {
 			  echo "Creating new IP address for ${CODENAME} masternode nr ${NUM}" &>> ${SCRIPT_LOGFILE}
 			  if [ "${NETWORK_CONFIG}" = "/etc/rc.local" ]; then
 			    # need to put network config in front of "exit 0" in rc.local
-				sed -i -e '$i ip -6 addr add '"${IPV6_INT_BASE}"':'"${NETWORK_BASE_TAG}"'::'"${NUM}"'/64 dev '"${ETH_INTERFACE}"'\n' ${NETWORK_CONFIG}
+				sed -e '$i ip -6 addr add '"${IPV6_INT_BASE}"':'"${NETWORK_BASE_TAG}"'::'"${NUM}"'/64 dev '"${ETH_INTERFACE}"'\n' -i ${NETWORK_CONFIG}
 			  else
 			    # if not using rc.local, append normally
 			  	echo "ip -6 addr add ${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}/64 dev ${ETH_INTERFACE}" >> ${NETWORK_CONFIG}
