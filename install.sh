@@ -1,21 +1,21 @@
 #!/bin/bash
-#  ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
+#  ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗
 #  ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
 #  ██╔██╗ ██║██║   ██║██║  ██║█████╗  ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
 #  ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
 #  ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-#                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
-#                   
+#                                                              ╚╗ @marsmensch 2016-2017 ╔╝
+#
 # version 	v0.9.2
 # date    	2018-03-12
 #
 # function:	part of the masternode scripts, source the proper config file
-#                                                                      
+#
 # 	Instructions:
 #               Run this script w/ the desired parameters. Leave blank or use -h for help.
 #
-#	Platforms: 	
+#	Platforms:
 #               - Linux Ubuntu 16.04 LTS ONLY on a Vultr, Hetzner or DigitalOcean VPS
 #               - Generic Ubuntu support will be added at a later point in time
 #
@@ -33,13 +33,13 @@ declare -r DO_NET_CONF="/etc/network/interfaces.d/50-cloud-init.cfg"
 
 function showbanner() {
 cat << "EOF"
- ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
+ ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗
  ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
  ██╔██╗ ██║██║   ██║██║  ██║█████╗  ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
  ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
  ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-                                                             ╚╗ @marsmensch 2016-2018 ╔╝                   				
+                                                             ╚╗ @marsmensch 2016-2018 ╔╝
 EOF
 }
 
@@ -47,12 +47,12 @@ EOF
 # confirmation message as optional parameter, asks for confirmation
 # get_confirmation && COMMAND_TO_RUN or prepend a message
 # */
-# 
+#
 function get_confirmation() {
     # call with a prompt string or use a default
     read -r -p "${1:-Are you sure? [y/N]} " response
     case "$response" in
-        [yY][eE][sS]|[yY]) 
+        [yY][eE][sS]|[yY])
             true
             ;;
         *)
@@ -76,10 +76,10 @@ function show_help(){
     echo "-n or --net: IP address type t be used (4 vs. 6).";
     echo "-c or --count: Number of masternodes to be installed.";
     echo "-r or --release: Release version to be installed.";
-    echo "-s or --sentinel: Add sentinel monitoring for a node type. Combine with the -p option";    
+    echo "-s or --sentinel: Add sentinel monitoring for a node type. Combine with the -p option";
     echo "-w or --wipe: Wipe ALL local data for a node type. Combine with the -p option";
     echo "-u or --update: Update a specific masternode daemon. Combine with the -p option";
-    echo "-r or --release: Release version to be installed.";    
+    echo "-r or --release: Release version to be installed.";
     exit 1;
 }
 
@@ -96,7 +96,7 @@ function check_distro() {
 		fi
 	else
 		# no, thats not ok!
-		echo "This script only supports ubuntu 16.04 LTS, exiting."	
+		echo "This script only supports ubuntu 16.04 LTS, exiting."
 		exit 1
 	fi
 }
@@ -120,21 +120,21 @@ function install_packages() {
 #
 # /* no parameters, creates and activates a swapfile since VPS servers often do not have enough RAM for compilation */
 #
-function swaphack() { 
+function swaphack() {
 #check if swap is available
 if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];then
-	echo "* No proper swap, creating it" 
+	echo "* No proper swap, creating it"
 	# needed because ant servers are ants
 	rm -f /var/mnode_swap.img
 	dd if=/dev/zero of=/var/mnode_swap.img bs=1024k count=${MNODE_SWAPSIZE} &>> ${SCRIPT_LOGFILE}
-	chmod 0600 /var/mnode_swap.img 
+	chmod 0600 /var/mnode_swap.img
 	mkswap /var/mnode_swap.img &>> ${SCRIPT_LOGFILE}
-	swapon /var/mnode_swap.img &>> ${SCRIPT_LOGFILE} 
+	swapon /var/mnode_swap.img &>> ${SCRIPT_LOGFILE}
 	echo '/var/mnode_swap.img none swap sw 0 0' | tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
 	echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf               &>> ${SCRIPT_LOGFILE}
 	echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		&>> ${SCRIPT_LOGFILE}
 else
-	echo "* All good, we have a swap"	
+	echo "* All good, we have a swap"
 fi
 }
 
@@ -143,14 +143,14 @@ fi
 #
 function create_mn_user() {
 
-    # our new mnode unpriv user acc is added 
+    # our new mnode unpriv user acc is added
     if id "${MNODE_USER}" >/dev/null 2>&1; then
         echo "user exists already, do nothing" &>> ${SCRIPT_LOGFILE}
     else
         echo "Adding new system user ${MNODE_USER}"
         adduser --disabled-password --gecos "" ${MNODE_USER} &>> ${SCRIPT_LOGFILE}
     fi
-    
+
 }
 
 #
@@ -166,8 +166,8 @@ function create_mn_dirs() {
 	         echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}" &>> ${SCRIPT_LOGFILE}
              mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM} &>> ${SCRIPT_LOGFILE}
         fi
-	done    
-	
+	done
+
 }
 
 #
@@ -187,7 +187,7 @@ function create_sentinel_setup() {
 		git pull                      &>> ${SCRIPT_LOGFILE}
 		rm -f rm sentinel.conf        &>> ${SCRIPT_LOGFILE}
 	fi
-	
+
 	# create a globally accessible venv and install sentinel requirements
 	virtualenv --system-site-packages /usr/share/sentinelvenv      &>> ${SCRIPT_LOGFILE}
 	/usr/share/sentinelvenv/bin/pip install -r requirements.txt    &>> ${SCRIPT_LOGFILE}
@@ -195,20 +195,20 @@ function create_sentinel_setup() {
     # create one sentinel config file per masternode
 	for NUM in $(seq 1 ${count}); do
 	    if [ ! -f "/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf" ]; then
-	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}    
+	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}
 		     echo "dash_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"   > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
              echo "network=mainnet"                                         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
              echo "db_name=database/${CODENAME}_${NUM}_sentinel.db"         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "db_driver=sqlite"                                        >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf     
+             echo "db_driver=sqlite"                                        >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
         fi
-	done 
+	done
 
     echo "Generated a Sentinel config for you. To activate Sentinel run"
     echo "export SENTINEL_CONFIG=${MNODE_CONF_BASE}/${CODENAME}${NUM}_sentinel.conf; /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
     echo ""
     echo "If it works, add the command as cronjob:  "
     echo "* * * * * export SENTINEL_CONFIG=${MNODE_CONF_BASE}/${CODENAME}${NUM}_sentinel.conf; /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py 2>&1 >> /var/log/sentinel/sentinel-cron.log"
-    	
+
 }
 
 #
@@ -235,32 +235,32 @@ function configure_firewall() {
 #
 function validate_netchoice() {
 
-    echo "* Validating network rules"		
+    echo "* Validating network rules"
 
-	# break here of net isn't 4 or 6 
+	# break here of net isn't 4 or 6
 	if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
 		echo "invalid NETWORK setting, can only be 4 or 6!"
 		exit 1;
-	fi 
+	fi
 
 	# generate the required ipv6 config
 	if [ "${net}" -eq 4 ]; then
 	    IPV6_INT_BASE="#NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER"
 	    NETWORK_BASE_TAG=""
         echo "IPv4 address generation needs to be done manually atm!"  &>> ${SCRIPT_LOGFILE}
-	fi	# end ifneteq4		    
+	fi	# end ifneteq4
 
 }
 
 #
 # /* no parameters, generates one masternode configuration file per masternode in the default
 #    directory (eg. /etc/masternodes/${CODENAME} and replaces the existing placeholders if possible */
-# 
+#
 function create_mn_configuration() {
-    
+
         # always return to the script root
         cd ${SCRIPTPATH}
-        
+
         # create one config file per masternode
         for NUM in $(seq 1 ${count}); do
         PASS=$(date | md5sum | cut -c1-24)
@@ -468,6 +468,7 @@ function source_config() {
 		if [ "$sentinel" -eq 1 ]; then
 			echo "I will also generate a Sentinel configuration for you."
 		fi
+		# start nodes after setup
 		if [ "$startnodes" -eq 1 ]; then
 			echo "I will start your masternodes after the installtion."
 		fi
@@ -672,9 +673,10 @@ wipe=0;
 debug=0;
 update=0;
 sentinel=0;
+startnodes=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wsud" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wsudsn" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug,startnodes" -n "install.sh" -- "$@");
 
 #Bad arguments
 if [ $? -ne 0 ];
