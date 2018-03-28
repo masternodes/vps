@@ -108,7 +108,7 @@ The _install.sh_ script support the following parameters:
 | --sentinel   | -s           | --                  | install and configure sentinel for node monitoring                  |
 | --wipe       | -w           | --                  | uninstall & wipe all related master node data, combine with -p flag |
 | --help       | -h           | --                  | print help info                                                     |
-| --startnodes | -x           | --                  | Starts masternode(s) after installation                             |
+| --startnodes | -x           | --                  | starts masternode(s) after installation                             |
 
 ## Troubleshooting the masternode on the VPS
 
