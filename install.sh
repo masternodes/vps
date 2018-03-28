@@ -676,7 +676,7 @@ sentinel=0;
 startnodes=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wsudsn" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug,startnodes" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wsudx" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug,startnodes" -n "install.sh" -- "$@");
 
 #Bad arguments
 if [ $? -ne 0 ];
@@ -741,7 +741,7 @@ while true; do
             shift;
                     debug="1";
             ;;
-        -sn|--startnodes)
+        -x|--startnodes)
             shift;
                     startnodes="1";
             ;;
