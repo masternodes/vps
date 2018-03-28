@@ -352,6 +352,8 @@ function set_permissions() {
 
 	# maybe add a sudoers entry later
 	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel &>> ${SCRIPT_LOGFILE}
+	# make group permissions same as user, so vps-user can be added to masternode group
+	chmod -R g=u ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel &>> ${SCRIPT_LOGFILE}
 
 }
 
