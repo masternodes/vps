@@ -438,6 +438,8 @@ function source_config() {
 		if [ "$update" -eq 1 ]; then
 			echo "update given, deleting the old daemon NOW!" &>> ${SCRIPT_LOGFILE}
 			rm -f ${MNODE_DAEMON}  	 
+			# remove existing code
+			rm -rf ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}
 		fi
 
 		echo "************************* Installation Plan *****************************************"
