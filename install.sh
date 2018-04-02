@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2017 ╔╝                   				
 #                   
-# version 	v0.9.2
-# date    	2018-03-12
+# version 	v0.9.3
+# date    	2018-03-28
 #
 # function:	part of the masternode scripts, source the proper config file
 #                                                                      
@@ -443,7 +443,7 @@ function source_config() {
 		echo "************************* Installation Plan *****************************************"
 		echo ""
 		echo "I am going to install and configure "
-        echo "=> ${count} ${project} masternode(s) in version ${SCVERSION} "
+        echo "=> ${count} ${project} masternode(s) in version ${release}"	        
         echo "for you now."
         echo ""
 		echo "You have to add your masternode private key to the individual config files afterwards"
@@ -701,6 +701,7 @@ while true; do
                     if [ -n "$1" ]; 
                     then
                         release="$1";
+                        SCVERSION="$1"
                         shift;
                     fi
             ;;
@@ -766,6 +767,8 @@ main() {
 		echo "MNODE_HELPER:         ${MNODE_HELPER}"
 		echo "MNODE_SWAPSIZE:       ${MNODE_SWAPSIZE}"
 		echo "CODE_DIR:             ${CODE_DIR}"
+		echo "SCVERSION:            ${SCVERSION}"
+		echo "RELEASE:              ${release}"			
 		echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"	
 		echo "END DEFAULTS => "
 	fi
@@ -782,6 +785,7 @@ main() {
 		echo "MNODE_INBOUND_PORT:   ${MNODE_INBOUND_PORT}"
 		echo "GIT_URL:              ${GIT_URL}"
 		echo "SCVERSION:            ${SCVERSION}"
+		echo "RELEASE:              ${release}"		
 		echo "NETWORK_BASE_TAG:     ${NETWORK_BASE_TAG}"	
 		echo "END PROJECT => "   	
 		 
