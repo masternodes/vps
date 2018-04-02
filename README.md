@@ -206,11 +206,12 @@ The management script release will follow within the next couple of days.
 | MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
 | CROWD | ![CROWD](/assets/crowd.jpg) | http://crowdcoin.site/ |
 | NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
+| COSMOS | ![COSMOS](/assets/cosmos.jpg) | https://cosmoscoin.co/ |
 | NODE | ![NODE](/assets/node.jpg) | https://bitnodes.co/ |
 | SUB1X | ![SUB1X](/assets/sub1x.jpg) | https://bitcointalk.org/index.php?topic=2282282.0 |
 | SEND | ![SEND](/assets/send.jpg) | https://socialsend.io/ |
 | CREAM | ![CREAM](/assets/cream.jpg) | http://cream.technology/ |
-
+| LASVEGASCOIN | ![LASVEGASCOIN](/assets/lasvegascoin.jpg) | https://bitcointalk.org/index.php?topic=1945937 |
 
 # Todo
 * provide my Dockerfile & Vagrantfile

@@ -1,0 +1,14 @@
+#!/bin/bash
+
+cd src/secp256k1
+chmod +x autogen.sh
+./autogen.sh
+./configure
+make && make install
+ldconfig
+cd ../leveldb
+chmod +x ./build_detect_platform
+sh build_detect_platform build_config.mk .
+cd ..
+make -f makefile.unix USE_UPNP=-
+cp simplicityd ${MNODE_DAEMON}
