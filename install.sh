@@ -5,10 +5,10 @@
 #  ██║╚██╗██║██║   ██║██║  ██║██╔══╝  ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
 #  ██║ ╚████║╚██████╔╝██████╔╝███████╗██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
-#                                                              ╚╗ @marsmensch 2016-2017 ╔╝
-#
-# version 	v0.9.2
-# date    	2018-03-12
+#                                                              ╚╗ @marsmensch 2016-2018 ╔╝                   				
+#                   
+# version 	v0.9.4
+# date    	2018-04-04
 #
 # function:	part of the masternode scripts, source the proper config file
 #
@@ -26,7 +26,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.9.2"
+declare -r SCRIPT_VERSION="v0.9.4"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 declare -r DO_NET_CONF="/etc/network/interfaces.d/50-cloud-init.cfg"
@@ -483,6 +483,7 @@ function source_config() {
 		sleep 5
 
 		# main routine
+		print_logo
         prepare_mn_interfaces
         swaphack
         install_packages
@@ -509,6 +510,18 @@ function source_config() {
 
 }
 
+function print_logo() {
+
+	# print ascii banner if a logo exists
+	echo -e "* Starting the compilation process for ${CODENAME}, stay tuned"
+	if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
+			jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/${CODENAME}.jpg
+	else
+			jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/default.jpg          
+	fi  
+
+}
+
 #
 # /* no parameters, builds the required masternode binary from sources. Exits if already exists and "update" not given  */
 #
@@ -531,13 +544,6 @@ function build_mn_from_source() {
                         git checkout ${release}                   &>> ${SCRIPT_LOGFILE}
                 fi
 
-                # print ascii banner if a logo exists
-                echo -e "* Starting the compilation process for ${CODENAME}, stay tuned"
-                if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
-                        jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/${CODENAME}.jpg
-                else
-                        jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/default.jpg
-                fi
                 # compilation starts here
                 source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile | pv -t -i0.1
         else
