@@ -26,17 +26,15 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 
 # Install guide on vultr
 
----
+## How to get VPS server
 
-**NOTE on the VPS choice for starters**
-
-**Vultr** is highly recommended for this kind of setup. I created an [easy step-by-step guide for the VPS provider vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
+For new masternode owners, **Vultr** is recommended as a VPS hosting provider, but other providers that allow direct root SSH login access and offer Ubunto 16.04 may work.
 
 You can use the following referral link to sign up with Vultr for VPS hosting:
 
 <a href="https://www.vultr.com/?ref=7316561"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
-Many masternode crypto currencies only have incomplete or even non-existing instructions available how to setup a masternode from source.
+## Deploy a new system
 
 First, create a new VPS by clicking that small "+" button.
 
@@ -48,16 +46,11 @@ You can choose any location. You may wish to have it hosted in a city/country ne
 
 <img src="docs/images/masternode_vps/location-choice.png" alt="VPS location choice" class="inline"/>
 
-* 100% auto-compilation and 99% of configuration on the masternode side of things. It is currently only tested on a vultr VPS but should work almost anywhere where IPv6 addresses are available
-* Developed with recent Ubuntu versions in mind, currently only 16.04 is supported
-* Installs 1-100 (or more!) masternodes in parallel on one machine, with individual config and data
-* Compilation is currently from source for the desired git repo tag (configurable via config files)
-  Some security hardening is done, including firewalling and a separate user
-* Automatic startup for all masternode daemons
-* This script needs to run as root, the masternodes will and should not!
-* It's ipv6 enabled, tor/onion will follow
+## Linux distribution (Ubuntu 16.04 LTS)
 
-## Installation
+Select Ubuntu 16.04.
+
+<img src="docs/images/masternode_vps/linux-distribution--ubuntu-1604-lts-.png" alt="VPS location choice" class="inline"/>
 
 ## VPS size
 
@@ -138,7 +131,7 @@ This prepares the system and installs the Phore Masternode daemon. This includes
 
 While that is underway, go back to your local desktop and open phore-qt.
 
-These are only a couple of examples for typical setups. Check my [easy step-by-step guide for [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
+### More complex situations (ignore if you are installing a single masternode on a new VPS)
 
 If you wish to install more than one masternode on the same VPS, you can add a -c parameter to tell the script how many to configure, so for example this would install three Phore masternodes:
 
