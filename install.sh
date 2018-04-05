@@ -645,7 +645,11 @@ function final_call() {
 	chmod u+x ${MNODE_HELPER}_${CODENAME}
 	if [ "$startnodes" -eq 1 ]; then
 		echo ""
-		echo "** Your nodes are starting up. Don't forget to change the masternodeprivkey later."
+		if [ "${CODENAME}" = "phore" ]; then
+			echo "** Your nodes are starting up.**"
+		else
+			echo "** Your nodes are starting up. Don't forget to change the masternodeprivkey later."
+		fi
 		${MNODE_HELPER}_${CODENAME}
 	fi
 	tput sgr0
