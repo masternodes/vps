@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2018 ╔╝                   				
 #                   
-# version 	v0.9.4
-# date    	2018-04-04
+# version 	v0.9.5
+# date    	2018-04-05
 #
 # function:	part of the masternode scripts, source the proper config file
 #
@@ -26,7 +26,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.9.4"
+declare -r SCRIPT_VERSION="v0.9.5"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 declare -r DO_NET_CONF="/etc/network/interfaces.d/50-cloud-init.cfg"
@@ -450,7 +450,7 @@ function source_config() {
 		echo "************************* Installation Plan *****************************************"
 		echo ""
 		echo "I am going to install and configure "
-        echo "=> ${count} ${project} masternode(s) in version ${release}"
+		echo "$(tput bold)$(tput setaf 2) => ${count} ${project} masternode(s) in version ${release} $(tput sgr0)"
         echo "for you now."
         echo ""
 		echo "You have to add your masternode private key to the individual config files afterwards"
@@ -483,10 +483,10 @@ function source_config() {
 		sleep 5
 
 		# main routine
-		print_logo
         prepare_mn_interfaces
         swaphack
         install_packages
+        print_logo
 		build_mn_from_source
 		create_mn_user
 		create_mn_dirs
