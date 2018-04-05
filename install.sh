@@ -626,8 +626,8 @@ function prepare_mn_interfaces() {
         # found the DO config
 		if ! grep -q "::8888" ${DO_NET_CONF}; then
 			echo "ipv6 fix not found, applying!"
-			sed -i '/iface eth0 inet6 static/a dns-nameservers 2001:4860:4860::8844 2001:4860:4860::8888 8.8.8.8 127.0.0.1' ${DO_NET_CONF}
-			ifdown ${ETH_INTERFACE}; ifup ${ETH_INTERFACE};
+			sed -i '/iface eth0 inet6 static/a dns-nameservers 2001:4860:4860::8844 2001:4860:4860::8888 8.8.8.8 127.0.0.1' ${DO_NET_CONF} &>> ${SCRIPT_LOGFILE}
+			ifdown ${ETH_INTERFACE}; ifup ${ETH_INTERFACE}; &>> ${SCRIPT_LOGFILE}
 		fi
     fi
 
