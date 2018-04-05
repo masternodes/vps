@@ -307,7 +307,7 @@ function create_mn_configuration() {
         else :
         fi
         sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXY/${NUM}]/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
-	if [ "${CODENAME}" != "phore" ]; then
+	if [ -z "${PRIVKEY[${NUM}]}" ]; then
 		if [ "$startnodes" -eq 1 ]; then
 			#uncomment masternode= and masternodeprivkey= so the node can autostart and sync
 			sed 's/\(^.*masternode\(\|privkey\)=.*$\)/#\1/' -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
@@ -645,11 +645,7 @@ function final_call() {
 	chmod u+x ${MNODE_HELPER}_${CODENAME}
 	if [ "$startnodes" -eq 1 ]; then
 		echo ""
-		if [ "${CODENAME}" = "phore" ]; then
-			echo "** Your nodes are starting up.**"
-		else
-			echo "** Your nodes are starting up. Don't forget to change the masternodeprivkey later."
-		fi
+		echo "** Your nodes are starting up. If you haven't set masternode private key, Don't forget to change the masternodeprivkey later."
 		${MNODE_HELPER}_${CODENAME}
 	fi
 	tput sgr0
