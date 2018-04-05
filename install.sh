@@ -266,14 +266,16 @@ function create_mn_configuration() {
             echo ${PRIVKEY[${NUM}]} >> tmp.txt
           fi
         done
-        dup=$(sort -t 8 tmp.txt | uniq -c | sort -nr | head -1 | awk '{print substr($0, 7, 1)}')
-        if [ 1 -ne "$dup" ]; then
-          echo "Inputted private key was duplicated. Please restart this script."
-          rm -r /etc/masternodes
-          rm tmp.txt
-          exit 1
+        if [ -f tmp.txt ]; then
+            dup=$(sort -t 8 tmp.txt | uniq -c | sort -nr | head -1 | awk '{print substr($0, 7, 1)}')
+            if [ 1 -ne "$dup" ]; then
+                echo "Private key was duplicated. Please restart this script."
+                rm -r /etc/masternodes
+                rm tmp.txt
+                exit 1
+            fi
+            rm tmp.txt
         fi
-        rm tmp.txt
 
         # create one config file per masternode
         for NUM in $(seq 1 ${count}); do
@@ -538,7 +540,7 @@ function source_config() {
 		create_mn_user
 		create_mn_dirs
     	# private key initialize
-    	if ["$generate" -eq 1 ]; then
+    	if [ "$generate" -eq 1 ]; then
       		echo "Generating masternode private key" &>> ${SCRIPT_LOGFILE}
       		generate_privkey
 		fi
@@ -741,6 +743,7 @@ wipe=0;
 debug=0;
 update=0;
 sentinel=0;
+generate=0;
 startnodes=0;
 
 # Execute getopt
