@@ -140,13 +140,13 @@ git clone https://github.com/phoreproject/vps.git && cd vps
 ./install.sh -p phore -c 3
 ```
 
-If you have masternode private key,
+If you already have your masternode private keys, you can add them as shown below:
 
 ```bash
 git clone https://github.com/phoreproject/vps.git && cd vps
 ./install.sh -p phore -c 3 --key **PRIVATE KEY 01** --key2 **PRIVATE KEY 02** --key3 **PRIVATE KEY 03**
 ```
-You can skip below "Configure masternode configuration files". Because above command inputs masternode private key to masternode configuration files.
+Using this command, you can skip the step for "Configure masternode configuration files", because the command above adds the masternode private keys to the masternode configuration files.
 
 
 If you are upgrading your masternode(s) to a new release, you can add a -u parameter:
@@ -180,7 +180,7 @@ This will produce a masternode private key:
 
 <img src="docs/images/masternode_vps/step2-masternodegenkey.png" alt="generating masternode private key" class="inline"/>
 
-Copy this value to a text file.t will be needed for both the phore configuration file on the masternode VPS, and the masternode configuration file on the wallet computer.
+Copy this value to a text file. It will be needed for both the phore configuration file on the masternode VPS, and the masternode configuration file on the computer with the controlling Phore wallet.
 
 If you are setting up multiple masternodes, repeat this step for each one. Each time you run the masternode genkey command it will give you a new private key--it doesn't matter which one you use, but it is important that it is unique for each masternode and that the VPS phore configuration file and wallet masternode configuration file match (see below).
 
