@@ -281,60 +281,55 @@ function create_mn_configuration() {
         for NUM in $(seq 1 ${count}); do
         PASS=$(date | md5sum | cut -c1-24)
 
-			# we dont want to overwrite an existing config file
-			if [ ! -f ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ]; then
-                echo "individual masternode config doesn't exist, generate it!"                  &>> ${SCRIPT_LOGFILE}
-
-				# if a template exists, use this instead of the default
-				if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
-					echo "custom configuration template for ${CODENAME} found, use this instead"                      &>> ${SCRIPT_LOGFILE}
-					cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf  &>> ${SCRIPT_LOGFILE}
-				else
-					echo "No ${CODENAME} template found, using the default configuration template"			          &>> ${SCRIPT_LOGFILE}
-					cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf                  &>> ${SCRIPT_LOGFILE}
-				fi
-				# replace placeholders
-				echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"                                &>> ${SCRIPT_LOGFILE}
-				sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXY/${NUM}]/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
-				if [ "$startnodes" -eq 1 ]; then
-					#uncomment masternode= and masternodeprivkey= so the node can autostart and sync
-					sed 's/\(^.*masternode\(\|privkey\)=.*$\)/#\1/' -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
-				fi
-			fi
+	# we dont want to overwrite an existing config file
+	if [ ! -f ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ]; then
+        	echo "individual masternode config doesn't exist, generate it!"                  &>> ${SCRIPT_LOGFILE}
+		# if a template exists, use this instead of the default
+		if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
+			echo "custom configuration template for ${CODENAME} found, use this instead"                      &>> ${SCRIPT_LOGFILE}
+			cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf  &>> ${SCRIPT_LOGFILE}
+		else
+			echo "No ${CODENAME} template found, using the default configuration template"			          &>> ${SCRIPT_LOGFILE}
+			cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf                  &>> ${SCRIPT_LOGFILE}
+		fi
+		# replace placeholders
+		echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"                                &>> ${SCRIPT_LOGFILE}
+	fi
+	
         if [ -n "${PRIVKEY[${NUM}]}" ]; then
-          if [ ${#PRIVKEY[${NUM}]} -eq 51 ]; then
-            sed -e "s/HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_XXX_GIT_PROJECT_XXX_XXX_NUM_XXX/${PRIVKEY[${NUM}]}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
-          else
-            echo "input private key ${PRIVKEY[${NUM}]} was invalid. Please check the key, and restart this script."
-            rm -r /etc/masternodes
-            exit 1
-          fi
+        	if [ ${#PRIVKEY[${NUM}]} -eq 51 ]; then
+        		sed -e "s/HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_XXX_GIT_PROJECT_XXX_XXX_NUM_XXX/${PRIVKEY[${NUM}]}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
+          	else
+            		echo "input private key ${PRIVKEY[${NUM}]} was invalid. Please check the key, and restart this script."
+            		rm -r /etc/masternodes
+            		exit 1
+          	fi
         else :
         fi
         sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXY/${NUM}]/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
+	if [ "${CODENAME}" != "phore" ]; then
+		if [ "$startnodes" -eq 1 ]; then
+			#uncomment masternode= and masternodeprivkey= so the node can autostart and sync
+			sed 's/\(^.*masternode\(\|privkey\)=.*$\)/#\1/' -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
+		fi
+	fi
         done
-
 }
 
 #
 # /* no parameters, generates a masternode configuration file per masternode in the default */
 #
 function create_control_configuration() {
-
-    # delete any old stuff that's still around
-    rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
+    	# delete any old stuff that's still around
+    	rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
 	# create one line per masternode with the data we have
 	for NUM in $(seq 1 ${count}); do
-		cat >> /tmp/${CODENAME}_masternode.conf <<-EOF
-			${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}
-		EOF
-    if [ -n "${PRIVKEY[${NUM}]}" ]; then
-    	echo ${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} ${PRIVKEY[${NUM}]} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM} >> /tmp/${CODENAME}_masternode.conf
-    else
-		echo ${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM} >> /tmp/${CODENAME}_masternode.conf
-	fi
+		if [ -n "${PRIVKEY[${NUM}]}" ]; then
+    			echo ${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} ${PRIVKEY[${NUM}]} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM} >> /tmp/${CODENAME}_masternode.conf
+    		else
+			echo ${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM} >> /tmp/${CODENAME}_masternode.conf
+		fi
 	done
-
 }
 
 #
@@ -393,7 +388,7 @@ function set_permissions() {
 #
 function wipe_all() {
 
-    echo "Deleting all ${project} related data!"
+    	echo "Deleting all ${project} related data!"
 	rm -f /etc/masternodes/${project}_n*.conf
 	rmdir --ignore-fail-on-non-empty -p /var/lib/masternodes/${project}*
 	rm -f /etc/systemd/system/${project}_n*.service
@@ -407,18 +402,19 @@ function wipe_all() {
 #Generate masternode private key
 #
 function generate_privkey() {
-  echo -e "rpcuser=test\nrpcpassword=passtest" >> ${MNODE_CONF_BASE}/${CODENAME}_test.conf
-  mkdir -p ${MNODE_DATA_BASE}/${CODENAME}_test
-  phored -daemon -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test
-  sleep 5
+	echo -e "rpcuser=test\nrpcpassword=passtest" >> ${MNODE_CONF_BASE}/${CODENAME}_test.conf
+  	mkdir -p ${MNODE_DATA_BASE}/${CODENAME}_test
+  	phored -daemon -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test
+  	sleep 5
+  	
 	for NUM in $(seq 1 ${count}); do
-    if [ -z "${PRIVKEY[${NUM}]}" ]; then
-      PRIVKEY[${NUM}]=$(phore-cli -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test masternode genkey)
-    fi
-  done
-  phore-cli -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test stop
-  sleep 5
-  rm -r ${MNODE_CONF_BASE}/${CODENAME}_test.conf ${MNODE_DATA_BASE}/${CODENAME}_test
+    		if [ -z "${PRIVKEY[${NUM}]}" ]; then
+    			PRIVKEY[${NUM}]=$(phore-cli -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test masternode genkey)
+    		fi
+  	done
+  	phore-cli -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test stop
+  	sleep 5
+  	rm -r ${MNODE_CONF_BASE}/${CODENAME}_test.conf ${MNODE_DATA_BASE}/${CODENAME}_test
 }
 
 #
@@ -490,7 +486,7 @@ function source_config() {
 		fi
 
 		# main block of function logic starts here
-	    # if update flag was given, delete the old daemon binary first & proceed
+	    	# if update flag was given, delete the old daemon binary first & proceed
 		if [ "$update" -eq 1 ]; then
 			echo "update given, deleting the old daemon NOW!" &>> ${SCRIPT_LOGFILE}
 			rm -f ${MNODE_DAEMON}
@@ -499,13 +495,13 @@ function source_config() {
 		echo "************************* Installation Plan *****************************************"
 		echo ""
 		echo "I am going to install and configure "
-        echo "=> ${count} ${project} masternode(s) in version ${release}"
-        echo "for you now."
-        echo ""
+       		echo "=> ${count} ${project} masternode(s) in version ${release}"
+        	echo "for you now."
+        	echo ""
 		echo "You have to add your masternode private key to the individual config files afterwards"
 		echo ""
 		echo "Stay tuned!"
-        echo ""
+        	echo ""
 		# show a hint for MANUAL IPv4 configuration
 		if [ "${net}" -eq 4 ]; then
 			NETWORK_TYPE=4
@@ -533,22 +529,25 @@ function source_config() {
 
 		# main routine
 		print_logo
-        prepare_mn_interfaces
-        swaphack
-        install_packages
+        	prepare_mn_interfaces
+        	swaphack
+        	install_packages
 		build_mn_from_source
 		create_mn_user
 		create_mn_dirs
-    	# private key initialize
-    	if [ "$generate" -eq 1 ]; then
-      		echo "Generating masternode private key" &>> ${SCRIPT_LOGFILE}
-      		generate_privkey
+	
+    		# private key initialize
+    		if [ "$generate" -eq 1 ]; then
+      			echo "Generating masternode private key" &>> ${SCRIPT_LOGFILE}
+      			generate_privkey
 		fi
+	
 		# sentinel setup
 		if [ "$sentinel" -eq 1 ]; then
 			echo "* Sentinel setup chosen" &>> ${SCRIPT_LOGFILE}
 			create_sentinel_setup
 		fi
+	
 		configure_firewall
 		create_mn_configuration
 		create_control_configuration
