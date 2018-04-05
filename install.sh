@@ -7,7 +7,7 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2018 ╔╝                   				
 #                   
-# version 	v0.9.5
+# version 	v0.9.6
 # date    	2018-04-05
 #
 # function:	part of the masternode scripts, source the proper config file
@@ -26,7 +26,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.9.5"
+declare -r SCRIPT_VERSION="v0.9.6"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 declare -r DO_NET_CONF="/etc/network/interfaces.d/50-cloud-init.cfg"
@@ -413,7 +413,7 @@ function source_config() {
     check_distro
 
 	if [ -f ${SETUP_CONF_FILE} ]; then
-		echo "Script version ${SCRIPT_VERSION}, you picked: ${project}"
+		echo "Script version ${SCRIPT_VERSION}, you picked: $(tput bold)$(tput setaf 2) ${project} $(tput sgr0)"
 		echo "apply config file for ${project}"	&>> ${SCRIPT_LOGFILE}
 		source "${SETUP_CONF_FILE}"
 
@@ -568,10 +568,10 @@ function final_call() {
 	echo "Add your masternode private keys now."
 	echo "eg in /etc/masternodes/${CODENAME}_n1.conf"
 	echo ""
-    echo "=> All configuration files are in: ${MNODE_CONF_BASE}"
-    echo "=> All Data directories are in: ${MNODE_DATA_BASE}"
+    echo "=> $(tput bold)$(tput setaf 2) All configuration files are in: ${MNODE_CONF_BASE} $(tput sgr0)"
+    echo "=> $(tput bold)$(tput setaf 2) All Data directories are in: ${MNODE_DATA_BASE} $(tput sgr0)"
 	echo ""
-	echo "last but not least, run /usr/local/bin/activate_masternodes_${CODENAME} as root to activate your nodes."
+	echo "last but not least, run $(tput bold)$(tput setaf 2) /usr/local/bin/activate_masternodes_${CODENAME} $(tput sgr0) as root to activate your nodes."
 
     # place future helper script accordingly
     cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
