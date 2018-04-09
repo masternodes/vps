@@ -539,9 +539,9 @@ function build_mn_from_source() {
                 else
                         echo "* Updating the existing GIT repo"
                         cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}  &>> ${SCRIPT_LOGFILE}
-                        git pull                                  &>> ${SCRIPT_LOGFILE}
-                        echo "* Checking out desired GIT tag: ${release}"
-                        git checkout ${release}                   &>> ${SCRIPT_LOGFILE}
+			git fetch --all                           &>> ${SCRIPT_LOGFILE}
+                        echo "* Resetting HEAD to GIT tag: ${release}"
+			git reset --hard origin/${release}        &>> ${SCRIPT_LOGFILE}
                 fi
 
                 # compilation starts here
