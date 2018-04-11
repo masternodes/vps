@@ -559,7 +559,7 @@ function build_mn_from_source() {
         # daemon not found compile it
         if [ ! -f ${MNODE_DAEMON} ] || [ "$update" -eq 1 ]; then
                 # create code directory if it doesn't exist
-                if [ -d ${SCRIPTPATH}/${CODE_DIR} ]; then
+                if [ ! -d ${SCRIPTPATH}/${CODE_DIR} ]; then
                     mkdir -p ${SCRIPTPATH}/${CODE_DIR}              &>> ${SCRIPT_LOGFILE}
                 fi
                 # if coin directory (CODENAME) exists, we remove it, to make a clean git clone
