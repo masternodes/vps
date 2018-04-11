@@ -70,10 +70,10 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 ./install.sh -p pivx -c 4
 ```
 
-**Install 4 PIVX masternodes, update daemon:**
+**Update daemon of previously installed PIVX masternodes:**
 
 ```bash
-./install.sh -p pivx -c 4 -u
+./install.sh -p pivx -u
 ```
 
 **Install 6 PIVX masternodes with the git release tag "tags/v3.0.5.1"**
