@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2018 ╔╝                   				
 #                   
-# version 	v0.9.4
-# date    	2018-04-04
+# version 	v0.9.6
+# date    	2018-04-05
 #
 # function:	part of the masternode scripts, source the proper config file
 #
@@ -26,12 +26,13 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.9.4"
+declare -r SCRIPT_VERSION="v0.9.6"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 declare -r DO_NET_CONF="/etc/network/interfaces.d/50-cloud-init.cfg"
 
 function showbanner() {
+echo $(tput bold)$(tput setaf 2)
 cat << "EOF"
  ███╗   ██╗ ██████╗ ██████╗ ███████╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗
  ████╗  ██║██╔═══██╗██╔══██╗██╔════╝████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
@@ -41,6 +42,9 @@ cat << "EOF"
  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
                                                              ╚╗ @marsmensch 2016-2018 ╔╝
 EOF
+echo "$(tput sgr0)$(tput setaf 3)Have fun, this is crypto after all!$(tput sgr0)"
+echo "$(tput setaf 6)Donations (BTC): 33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3"
+echo "Questions: marsmensch@protonmail.com$(tput sgr0)"
 }
 
 # /*
@@ -413,7 +417,7 @@ function source_config() {
     check_distro
 
 	if [ -f ${SETUP_CONF_FILE} ]; then
-		echo "Script version ${SCRIPT_VERSION}, you picked: ${project}"
+		echo "Script version ${SCRIPT_VERSION}, you picked: $(tput bold)$(tput setaf 2) ${project} $(tput sgr0)"
 		echo "apply config file for ${project}"	&>> ${SCRIPT_LOGFILE}
 		source "${SETUP_CONF_FILE}"
 
@@ -450,7 +454,7 @@ function source_config() {
 		echo "************************* Installation Plan *****************************************"
 		echo ""
 		echo "I am going to install and configure "
-        echo "=> ${count} ${project} masternode(s) in version ${release}"
+		echo "$(tput bold)$(tput setaf 2) => ${count} ${project} masternode(s) in version ${release} $(tput sgr0)"
         echo "for you now."
         echo ""
 		echo "You have to add your masternode private key to the individual config files afterwards"
@@ -483,10 +487,10 @@ function source_config() {
 		sleep 5
 
 		# main routine
-		print_logo
         prepare_mn_interfaces
         swaphack
         install_packages
+        print_logo
 		build_mn_from_source
 		create_mn_user
 		create_mn_dirs
@@ -568,10 +572,10 @@ function final_call() {
 	echo "Add your masternode private keys now."
 	echo "eg in /etc/masternodes/${CODENAME}_n1.conf"
 	echo ""
-    echo "=> All configuration files are in: ${MNODE_CONF_BASE}"
-    echo "=> All Data directories are in: ${MNODE_DATA_BASE}"
+    echo "=> $(tput bold)$(tput setaf 2) All configuration files are in: ${MNODE_CONF_BASE} $(tput sgr0)"
+    echo "=> $(tput bold)$(tput setaf 2) All Data directories are in: ${MNODE_DATA_BASE} $(tput sgr0)"
 	echo ""
-	echo "last but not least, run /usr/local/bin/activate_masternodes_${CODENAME} as root to activate your nodes."
+	echo "last but not least, run $(tput bold)$(tput setaf 2) /usr/local/bin/activate_masternodes_${CODENAME} $(tput sgr0) as root to activate your nodes."
 
     # place future helper script accordingly
     cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
@@ -622,8 +626,8 @@ function prepare_mn_interfaces() {
         # found the DO config
 		if ! grep -q "::8888" ${DO_NET_CONF}; then
 			echo "ipv6 fix not found, applying!"
-			sed -i '/iface eth0 inet6 static/a dns-nameservers 2001:4860:4860::8844 2001:4860:4860::8888 8.8.8.8 127.0.0.1' ${DO_NET_CONF}
-			ifdown ${ETH_INTERFACE}; ifup ${ETH_INTERFACE};
+			sed -i '/iface eth0 inet6 static/a dns-nameservers 2001:4860:4860::8844 2001:4860:4860::8888 8.8.8.8 127.0.0.1' ${DO_NET_CONF} &>> ${SCRIPT_LOGFILE}
+			ifdown ${ETH_INTERFACE}; ifup ${ETH_INTERFACE}; &>> ${SCRIPT_LOGFILE}
 		fi
     fi
 
