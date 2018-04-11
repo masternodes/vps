@@ -565,14 +565,14 @@ function print_logo() {
 function build_mn_from_source() {
         # daemon not found compile it
         if [ ! -f ${MNODE_DAEMON} ]; then
+                # create code directory if it doesn't exist
+                if [ -d ${SCRIPTPATH}/${CODE_DIR} ]; then
+                    mkdir -p ${SCRIPTPATH}/${CODE_DIR}              &>> ${SCRIPT_LOGFILE}
+                fi
                 # if coin directory (CODENAME) exists, we remove it, to make a clean git clone
                 if [ -d ${SCRIPTPATH}/${CODE_DIR}/${CODENAME} ]; then
                     echo "deleting ${SCRIPTPATH}/${CODE_DIR}/${CODENAME} for clean cloning" &>> ${SCRIPT_LOGFILE}
                     rm -rf ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}    &>> ${SCRIPT_LOGFILE}
-                fi
-                # create code directory if it doesn't exist
-                if [ -d ${SCRIPTPATH}/${CODE_DIR} ]; then
-                    mkdir -p ${SCRIPTPATH}/${CODE_DIR}              &>> ${SCRIPT_LOGFILE}
                 fi
                 cd ${SCRIPTPATH}/${CODE_DIR}                        &>> ${SCRIPT_LOGFILE}
                 git clone ${GIT_URL} ${CODENAME}                    &>> ${SCRIPT_LOGFILE}
