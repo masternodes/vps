@@ -445,7 +445,7 @@ function source_config() {
         fi
 
         # main block of function logic starts here
-        # if update flag was given, delete the old daemon binary first & proceed
+        # if update flag was given, check if all required mn-helper files exist
         if [ "$update" -eq 1 ]; then
             if [ ! -f ${MNODE_DAEMON} ]; then
                 echo "UPDATE FAILED! Daemon hasn't been found. Please try the normal installation process by omitting the upgrade parameter."
@@ -458,13 +458,6 @@ function source_config() {
             if [ ! -d ${MNODE_DATA_BASE} ]; then
                 echo "UPDATE FAILED! ${MNODE_DATA_BASE} hasn't been found. Please try the normal installation process by omitting the upgrade parameter."
                 exit 1
-            fi
-            echo "update given, deleting the old daemon NOW!" &>> ${SCRIPT_LOGFILE}
-            rm -f ${MNODE_DAEMON}
-            # old daemon must be removed
-            if [ -f ${MNODE_DAEMON} ]; then
-                    echo "UPDATE FAILED! Daemon ${MNODE_DAEMON} couldn't be removed. Please open an issue at https://github.com/masternodes/vps/issues. Thank you!"
-                    exit 1
             fi
         fi
 
@@ -564,7 +557,7 @@ function print_logo() {
 #
 function build_mn_from_source() {
         # daemon not found compile it
-        if [ ! -f ${MNODE_DAEMON} ]; then
+        if [ ! -f ${MNODE_DAEMON} ] || [ "$update" -eq 1 ]; then
                 # create code directory if it doesn't exist
                 if [ -d ${SCRIPTPATH}/${CODE_DIR} ]; then
                     mkdir -p ${SCRIPTPATH}/${CODE_DIR}              &>> ${SCRIPT_LOGFILE}
@@ -579,6 +572,16 @@ function build_mn_from_source() {
                 cd ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}            &>> ${SCRIPT_LOGFILE}
                 echo "* Checking out desired GIT tag: ${release}"
                 git checkout ${release}                             &>> ${SCRIPT_LOGFILE}
+
+                if [ "$update" -eq 1 ]; then
+                    echo "update given, deleting the old daemon NOW!" &>> ${SCRIPT_LOGFILE}
+                    rm -f ${MNODE_DAEMON}
+                    # old daemon must be removed before compilation. Would be better to remove it afterwards, however not possible with current structure
+                    if [ -f ${MNODE_DAEMON} ]; then
+                            echo "UPDATE FAILED! Daemon ${MNODE_DAEMON} couldn't be removed. Please open an issue at https://github.com/masternodes/vps/issues. Thank you!"
+                            exit 1
+                    fi
+                fi
 
                 # compilation starts here
                 source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile | pv -t -i0.1
