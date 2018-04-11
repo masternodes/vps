@@ -536,6 +536,10 @@ function source_config() {
         cleanup_after
         showbanner
         final_call
+        #if [ "$update" -eq 1 ]; then
+            # need to update the systemctl daemon, else an error will occur when running `systemctl enable` on a changed systemd process
+        #    systemctl daemon-reload
+        #fi
     else
         echo "required file ${SETUP_CONF_FILE} does not exist, abort!"
         exit 1
@@ -609,16 +613,19 @@ function final_call() {
     echo ""
     echo "$(tput bold)$(tput setaf 1)Important:$(tput sgr0) run $(tput setaf 2) /usr/local/bin/activate_masternodes_${CODENAME} $(tput sgr0) as root to activate your nodes."
 
-    # place future helper script accordingly
-    cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
-    echo "">> ${MNODE_HELPER}_${CODENAME}
+    # place future helper script accordingly on fresh install
+    if [ "$update" -eq 0 ]; then
+        cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
+        echo "">> ${MNODE_HELPER}_${CODENAME}
 
-    for NUM in $(seq 1 ${count}); do
-        echo "systemctl enable ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
-        echo "systemctl restart ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
-    done
+        for NUM in $(seq 1 ${count}); do
+            echo "systemctl enable ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
+            echo "systemctl restart ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
+        done
 
-    chmod u+x ${MNODE_HELPER}_${CODENAME}
+        chmod u+x ${MNODE_HELPER}_${CODENAME}
+    fi
+
     if [ "$startnodes" -eq 1 ]; then
         echo ""
         echo "** Your nodes are starting up. Don't forget to change the masternodeprivkey later."
