@@ -447,6 +447,18 @@ function source_config() {
         # main block of function logic starts here
         # if update flag was given, delete the old daemon binary first & proceed
         if [ "$update" -eq 1 ]; then
+            if [ ! -f ${MNODE_DAEMON} ]; then
+                echo "UPDATE FAILED! Daemon hasn't been found. Please try the normal installation process by omitting the upgrade parameter."
+                exit 1
+            fi
+            if [ ! -f ${MNODE_HELPER}_${CODENAME} ]; then
+                echo "UPDATE FAILED! Masternode activation file ${MNODE_HELPER}_${CODENAME} hasn't been found. Please try the normal installation process by omitting the upgrade parameter."
+                exit 1
+            fi
+            if [ ! -d ${MNODE_DATA_BASE} ]; then
+                echo "UPDATE FAILED! ${MNODE_DATA_BASE} hasn't been found. Please try the normal installation process by omitting the upgrade parameter."
+                exit 1
+            fi
             echo "update given, deleting the old daemon NOW!" &>> ${SCRIPT_LOGFILE}
             rm -f ${MNODE_DAEMON}
             # old daemon must be removed
@@ -459,11 +471,12 @@ function source_config() {
         echo "************************* Installation Plan *****************************************"
         echo ""
         if [ "$update" -eq 1 ]; then
-            echo "I am updating "
+            echo "I am going to update your existing "
+            echo "$(tput bold)$(tput setaf 2) => ${project} masternode(s) in version ${release} $(tput sgr0)"
         else
             echo "I am going to install and configure "
+            echo "$(tput bold)$(tput setaf 2) => ${count} ${project} masternode(s) in version ${release} $(tput sgr0)"
         fi
-        echo "$(tput bold)$(tput setaf 2) => ${count} ${project} masternode(s) in version ${release} $(tput sgr0)"
         echo "for you now."
         echo ""
         if [ "$update" -eq 0 ]; then
@@ -499,22 +512,26 @@ function source_config() {
         sleep 5
 
         # main routine
-        prepare_mn_interfaces
-        swaphack
+        if [ "$update" -eq 0 ]; then
+            prepare_mn_interfaces
+            swaphack
+        fi
         install_packages
         print_logo
         build_mn_from_source
-        create_mn_user
-        create_mn_dirs
-        # sentinel setup
-        if [ "$sentinel" -eq 1 ]; then
-            echo "* Sentinel setup chosen" &>> ${SCRIPT_LOGFILE}
-            create_sentinel_setup
+        if [ "$update" -eq 0 ]; then
+            create_mn_user
+            create_mn_dirs
+            # sentinel setup
+            if [ "$sentinel" -eq 1 ]; then
+                echo "* Sentinel setup chosen" &>> ${SCRIPT_LOGFILE}
+                create_sentinel_setup
+            fi
+            configure_firewall
+            create_mn_configuration
+            create_control_configuration
+            create_systemd_configuration
         fi
-        configure_firewall
-        create_mn_configuration
-        create_control_configuration
-        create_systemd_configuration
         set_permissions
         cleanup_after
         showbanner
@@ -546,6 +563,7 @@ function build_mn_from_source() {
         if [ ! -f ${MNODE_DAEMON} ]; then
                 # if coin directory (CODENAME) exists, we remove it, to make a clean git clone
                 if [ -d ${SCRIPTPATH}/${CODE_DIR}/${CODENAME} ]; then
+                    echo "deleting ${SCRIPTPATH}/${CODE_DIR}/${CODENAME} for clean cloning" &>> ${SCRIPT_LOGFILE}
                     rm -rf ${SCRIPTPATH}/${CODE_DIR}/${CODENAME}    &>> ${SCRIPT_LOGFILE}
                 fi
                 # create code directory if it doesn't exist
@@ -577,15 +595,19 @@ function build_mn_from_source() {
 function final_call() {
     # note outstanding tasks that need manual work
     echo "************! ALMOST DONE !******************************"
-    echo "There is still work to do in the configuration templates."
-    echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
-    echo "Add your masternode private keys now."
-    echo "eg in /etc/masternodes/${CODENAME}_n1.conf"
+    if [ "$update" -eq 0 ]; then
+        echo "There is still work to do in the configuration templates."
+        echo "These are located at ${MNODE_CONF_BASE}, one per masternode."
+        echo "Add your masternode private keys now."
+        echo "eg in /etc/masternodes/${CODENAME}_n1.conf"
+    else
+        echo "Your ${CODENAME} masternode daemon has been updated! (but not yet activated)"
+    fi
     echo ""
     echo "=> $(tput bold)$(tput setaf 2) All configuration files are in: ${MNODE_CONF_BASE} $(tput sgr0)"
     echo "=> $(tput bold)$(tput setaf 2) All Data directories are in: ${MNODE_DATA_BASE} $(tput sgr0)"
     echo ""
-    echo "last but not least, run $(tput bold)$(tput setaf 2) /usr/local/bin/activate_masternodes_${CODENAME} $(tput sgr0) as root to activate your nodes."
+    echo "$(tput bold)$(tput setaf 1)Important:$(tput sgr0) run $(tput setaf 2) /usr/local/bin/activate_masternodes_${CODENAME} $(tput sgr0) as root to activate your nodes."
 
     # place future helper script accordingly
     cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
