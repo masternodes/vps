@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# compile fix
-cd src
-wget https://raw.githubusercontent.com/SyndicateLtd/SyndicateQT/master/src/bignum.h
-cd ..
-#
-
-chmod u+x ./autogen.sh share/genbuild.sh
-
 ./autogen.sh
 ./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
 make
