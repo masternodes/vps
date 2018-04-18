@@ -1,0 +1,8 @@
+#!/bin/bash   
+
+cd src/secp256k1 && chmod u+x ./autogen.sh && ./autogen.sh && ./configure --enable-module-recovery && make && make install && cd ../..
+chmod u+x ./autogen.sh share/genbuild.sh && ./autogen.sh
+./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+make
+make install
+ldconfig
