@@ -1,0 +1,10 @@
+#!/bin/bash    
+
+# monkey patching b/c ...
+cp ../../config/achilles/rpcrawtxbuild.patch src/
+patch -p0 < src/rpcrawtxbuild.patch
+# end monkey patching
+
+cd src 
+make -f makefile.unix USE_UPNP=-
+cp achillesd ${MNODE_DAEMON}
