@@ -210,6 +210,7 @@ The management script release will follow within the next couple of days.
 | NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
 | NODE | ![NODE](/assets/node.jpg) | https://bitnodes.co/ |
 | SUB1X | ![SUB1X](/assets/sub1x.jpg) | https://bitcointalk.org/index.php?topic=2282282.0 |
+| GALACTRUM | ![GALACTRUM](/assets/galactrum.jpg) | https://www.galactrum.org/ |
 | SEND | ![SEND](/assets/send.jpg) | https://socialsend.io/ |
 | CREAM | ![CREAM](/assets/cream.jpg) | http://cream.technology/ |
 | CURIUM | ![CURIUM](/assets/curium.jpg) | http://curiumofficial.com/ |
