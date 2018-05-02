@@ -214,6 +214,7 @@ The management script release will follow within the next couple of days.
 | SEND | ![SEND](/assets/send.jpg) | https://socialsend.io/ |
 | CREAM | ![CREAM](/assets/cream.jpg) | http://cream.technology/ |
 | CURIUM | ![CURIUM](/assets/curium.jpg) | http://curiumofficial.com/ |
+| NODIUM | ![NODIUM](/assets/nodium.jpg) | http://www.nodium.org/ |
 
 # Todo
 
