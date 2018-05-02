@@ -4,10 +4,10 @@
 cp ../../config/curium/secp256k1buildfix.patch src/
 patch -p0 < src/secp256k1buildfix.patch
 # end monkey patching
-
-chmod u+x ./autogen.sh
+  
 chmod u+x share/genbuild.sh
-./autogen.sh
-./configure --disable-dependency-tracking --enable-tests=no --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+chmod u+x src/leveldb/build_detect_platform
+chmod u+x ./autogen.sh && ./autogen.sh
+./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc
 make
 make install
