@@ -96,7 +96,6 @@ function check_distro() {
     if [[ -r /etc/os-release ]]; then
         . /etc/os-release
         if [[ "${VERSION_ID}" != "16.04" ]] && [[ "${VERSION_ID}" != "18.04" ]] ; then
-            echo "$VERSION_ID"
             echo "This script only supports Ubuntu 16.04 & 18.04 LTS, exiting."
             exit 1
         fi
@@ -121,6 +120,12 @@ function install_packages() {
     libboost-all-dev libssl-dev make autoconf libtool git apt-utils g++ \
     libprotobuf-dev pkg-config libcurl3-dev libudev-dev libqrencode-dev bsdmainutils \
     pkg-config libssl-dev libgmp3-dev libevent-dev jp2a pv virtualenv libdb4.8-dev libdb4.8++-dev  &>> ${SCRIPT_LOGFILE}
+    
+    # only for 18.04 // openssl
+    if [[ "${VERSION_ID}" == "18.04" ]] ; then
+       apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install libssl1.0-dev
+    fi    
+    
 }
 
 #
