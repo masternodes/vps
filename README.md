@@ -12,8 +12,13 @@ If this script helped you in any way, please contribute some feedback. BTC donat
 BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
 
+
 Feel free to use my reflink to signup and receive a bonus w/ vultr:
 <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
+
+## Supported masternode projects
+
+The ever growing list of supported projects is now maintained at [https://nodemaster-vps.com/supported-masternode-projects/](https://nodemaster-vps.com/supported-masternode-projects/). 
 
 ---
 
@@ -163,58 +168,6 @@ The management script release will follow within the next couple of days.
 | nodemaster cleanup pivx (all\|number) | delete chain data for all pivx masternodes   |
 | nodemaster status pivx (all\|number)  | systemd process status for a pivx masternode |
 | nodemaster tail pivx (all\|number)    | tail debug logs for a pivx masternode        |
-
-# Supported cryptos
-
-| CRYPTO  | Logo | Url |
-|--------|--------------|-----|
-| PIVX |  ![PIVX](/assets/pivx.jpg)  |  https://pivx.org/ |
-| DASH |  ![DASH](/assets/dash.jpg)  | https://www.dash.org/ |
-| InstaCash |  ![instacash](/assets/ich.png)  | https://www.instacash.cc/ |
-| DESIRE |  ![DESIRE](/assets/desire.jpg)  | https://github.com/lazyboozer/Desire  |
-| PURE |  ![PURE](/assets/pure.jpg)  | https://github.com/puredev321/pure    |
-| ENT  |  ![ENT](/assets/ent.jpg)  | http://ent.eternity-group.org/    |
-| SYNX |  ![SYNX](/assets/synx.jpg)  | http://syndicatelabs.io/  |
-| CHC |  ![CHAIN](/assets/chain.jpg)  | https://www.chaincoin.org/  |
-| ZEN |  ![ZEN](/assets/zen.jpg)  | https://zensystem.io/  |
-| DP |  ![DPRICE](/assets/dprice.jpg)  | http://digitalprice.org/  |
-| VIVO |  ![VIVO](/assets/vivo.jpg)  | https://www.vivocrypto.com/  |
-| ITZ |  ![ITZ](/assets/itz.jpg)  | https://interzone.space/  |
-| MEME |  ![MEME](/assets/meme.jpg)  | http://www.memetic.ai/  |
-| ARC |  ![ARC](/assets/arc.jpg)  | https://arcticcoin.org/  |
-| CRAVE |  ![CRAVE](/assets/crave.jpg)  | https://www.craveproject.com/  |
-| PIE |  ![PIE](/assets/pie.jpg)  | https://github.com/flintsoft/PIE  |
-| XCXT |  ![XCXT](/assets/xcxt.jpg)  | http://coinonatx.com/  |
-| SCORE |  ![SCORE](/assets/score.jpg)  | http://scorecoin.site/ |
-| BITSEND |  ![BITSEND](/assets/bitsend.jpg)  | https://bitsend.info/ |
-| XZC |  ![ZCOIN](/assets/zcoin.jpg)  | https://zcoin.io/ |
-| INSANE |  ![INSN](/assets/insane.jpg)  | https://insanecoin.com/ |
-| XIOS | ![XIOS](/assets/xios.jpg)  | https://bitcointalk.org/index.php?topic=2251159.0/ |
-| HAV | ![HAV](/assets/have.jpg)  | https://bitcointalk.org/index.php?topic=2336026.0 |
-| NTRN | ![NTRN](/assets/ntrn.jpg)  | https://www.neutroncoin.com/ |
-| RNS | ![RNS](/assets/rns.jpg)  | https://bitcointalk.org/index.php?topic=1809933.msg18029683#msg18029683/ |
-| SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
-| BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
-| INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
-| FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
-| BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
-| MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
-| ALQO | ![ALQO](/assets/alqo.jpg) | https://alqo.org |
-| YUP | ![YUP](/assets/yup.jpg) | http://yupcrypto.com/ |
-| MTNC | ![MTNC](/assets/mtnc.jpg) | http://www.masternodecoin.org/ |
-| CROWN | ![CROWN](/assets/crown.jpg) | https://crown.tech/ |
-| BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
-| DTMI | ![DTMI](/assets/dtmi.jpg) | https://bitcointalk.org/index.php?topic=2325196.0 |
-| MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
-| CROWD | ![CROWD](/assets/crowd.jpg) | http://crowdcoin.site/ |
-| NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
-| NODE | ![NODE](/assets/node.jpg) | https://bitnodes.co/ |
-| SUB1X | ![SUB1X](/assets/sub1x.jpg) | https://bitcointalk.org/index.php?topic=2282282.0 |
-| GALACTRUM | ![GALACTRUM](/assets/galactrum.jpg) | https://www.galactrum.org/ |
-| SEND | ![SEND](/assets/send.jpg) | https://socialsend.io/ |
-| CREAM | ![CREAM](/assets/cream.jpg) | http://cream.technology/ |
-| CURIUM | ![CURIUM](/assets/curium.jpg) | http://curiumofficial.com/ |
-| NODIUM | ![NODIUM](/assets/nodium.jpg) | http://www.nodium.org/ |
 
 # Todo
 

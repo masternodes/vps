@@ -1,5 +1,0 @@
-#!/bin/bash    
-
-cd src 
-make -f makefile.unix USE_UPNP=-
-cp XIOSd ${MNODE_DAEMON}
