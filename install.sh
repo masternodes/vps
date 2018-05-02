@@ -116,12 +116,11 @@ function install_packages() {
     echo "* Package installation!"
     add-apt-repository -yu ppa:bitcoin/bitcoin &>> ${SCRIPT_LOGFILE}
     apt-get -qq -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true update
-    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install build-essential g++ \
-    protobuf-compiler libboost-all-dev autotools-dev \
-    automake libcurl4-openssl-dev libboost-all-dev libssl-dev libdb++-dev \
-    make autoconf automake libtool git apt-utils libprotobuf-dev pkg-config \
-    libcurl3-dev libudev-dev libqrencode-dev bsdmainutils pkg-config libssl-dev \
-    libgmp3-dev libevent-dev jp2a pv virtualenv	libdb4.8-dev libdb4.8++-dev &>> ${SCRIPT_LOGFILE}
+    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install build-essential \
+    protobuf-compiler libboost-all-dev autotools-dev automake libcurl4-openssl-dev \
+    libboost-all-dev libssl-dev libdb++-dev make autoconf libtool git apt-utils g++ \
+    libprotobuf-dev pkg-config libcurl3-dev libudev-dev libqrencode-dev bsdmainutils \
+    pkg-config libssl-dev libgmp3-dev libevent-dev jp2a pv virtualenv libdb4.8-dev libdb4.8++-dev &>> ${SCRIPT_LOGFILE}
 }
 
 #
