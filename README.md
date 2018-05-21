@@ -7,14 +7,21 @@ I am quite confident this is the single best and almost effortless way to setup 
 If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
 
 **Have fun, this is crypto after all!**
+
 ```
 BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
 
+
 Feel free to use my reflink to signup and receive a bonus w/ vultr:
 <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
+## Supported masternode projects
+
+The ever growing list of supported projects is now maintained at [https://nodemaster-vps.com/supported-masternode-projects/](https://nodemaster-vps.com/supported-masternode-projects/).
+
 ---
+
 **NOTE on the VPS choice for starters**
 
 **Vultr** is highly recommended for this kind of setup. I created an [easy step-by-step guide for the VPS provider vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
@@ -39,11 +46,10 @@ Comparing with building from source manually, you will benefit from using this s
 * Developed with recent Ubuntu versions in mind, currently only 16.04 is supported
 * Installs 1-100 (or more!) masternodes in parallel on one machine, with individual config and data
 * Compilation is currently from source for the desired git repo tag (configurable via config files)
-Some security hardening is done, including firewalling and a separate user
+  Some security hardening is done, including firewalling and a separate user
 * Automatic startup for all masternode daemons
 * This script needs to run as root, the masternodes will and should not!
 * It's ipv6 enabled, tor/onion will follow
-
 
 ## Installation
 
@@ -59,7 +65,6 @@ Install & configure your desired master node with options:
 ./install.sh -p pivx
 ```
 
-
 ## Examples for typical script invocation
 
 These are only a couple of examples for typical setups. Check my [easy step-by-step guide for [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
@@ -70,10 +75,10 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 ./install.sh -p pivx -c 4
 ```
 
-**Install 4 PIVX masternodes, update daemon:**
+**Update daemon of previously installed PIVX masternodes:**
 
 ```bash
-./install.sh -p pivx -c 4 -u
+./install.sh -p pivx -u
 ```
 
 **Install 6 PIVX masternodes with the git release tag "tags/v3.0.5.1"**
@@ -96,18 +101,19 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 
 ## Options
 
-The *install.sh* script support the following parameters:
+The _install.sh_ script support the following parameters:
 
-| Long Option | Short Option | Values | description |
-| :--- | :--- | --- | --- |
-|  --project             | -p | project, e.g. "pix" | shortname for the project |
-| --net                | -n | "4" / "6"  | ip type for masternode. (ipv)6 is default |
-| --release                | -r | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested  |
-| --count              | -c | number | amount of masternodes to be configured |
-| --update               | -u    | --    | update specified masternode daemon, combine with -p flag |
-| --sentinel               | -s    | --    | install and configure sentinel for node monitoring |
-| --wipe               | -w    | --    | uninstall & wipe all related master node data, combine with -p flag |
-| --help               | -h    | --    | print help info |
+| Long Option  | Short Option | Values              | description                                                         |
+| :----------- | :----------- | ------------------- | ------------------------------------------------------------------- |
+| --project    | -p           | project, e.g. "pix" | shortname for the project                                           |
+| --net        | -n           | "4" / "6"           | ip type for masternode. (ipv)6 is default                           |
+| --release    | -r           | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested                |
+| --count      | -c           | number              | amount of masternodes to be configured                              |
+| --update     | -u           | --                  | update specified masternode daemon, combine with -p flag            |
+| --sentinel   | -s           | --                  | install and configure sentinel for node monitoring                  |
+| --wipe       | -w           | --                  | uninstall & wipe all related master node data, combine with -p flag |
+| --help       | -h           | --                  | print help info                                                     |
+| --startnodes | -x           | --                  | starts masternode(s) after installation                             |
 
 ## Troubleshooting the masternode on the VPS
 
@@ -154,77 +160,30 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 
 The management script release will follow within the next couple of days.
 
-| command | description |
-| :--- | --- |
-| nodemaster start pivx (all\|number) | start all or a specific pivx masternode(s) |
-| nodemaster restart pivx (all\|number) | stop all or a specific pivx masternode(s) |
-| nodemaster stop pivx (all\|number) | restart all or a specific pivx masternode(s) |
-| nodemaster cleanup pivx (all\|number) | delete chain data for all pivx masternodes |
-| nodemaster status pivx (all\|number) | systemd process status for a pivx masternode |
-| nodemaster tail pivx (all\|number) | tail debug logs for a pivx masternode |
-
-# Supported cryptos
-
-| CRYPTO  | Logo | Url |
-|--------|--------------|-----|
-| PIVX |  ![PIVX](/assets/pivx.jpg)  |  https://pivx.org/ |
-| DASH |  ![DASH](/assets/dash.jpg)  | https://www.dash.org/ |
-| DESIRE |  ![DESIRE](/assets/desire.jpg)  | https://github.com/lazyboozer/Desire  |
-| PURE |  ![PURE](/assets/pure.jpg)  | https://github.com/puredev321/pure    |
-| ENT  |  ![ENT](/assets/ent.jpg)  | http://ent.eternity-group.org/    |
-| SYNX |  ![SYNX](/assets/synx.jpg)  | http://syndicatelabs.io/  |
-| CHC |  ![CHAIN](/assets/chain.jpg)  | https://www.chaincoin.org/  |
-| ZEN |  ![ZEN](/assets/zen.jpg)  | https://zensystem.io/  |
-| DP |  ![DPRICE](/assets/dprice.jpg)  | http://digitalprice.org/  |
-| VIVO |  ![VIVO](/assets/vivo.jpg)  | https://www.vivocrypto.com/  |
-| ITZ |  ![ITZ](/assets/itz.jpg)  | https://interzone.space/  |
-| MEME |  ![MEME](/assets/meme.jpg)  | http://www.memetic.ai/  |
-| ARC |  ![ARC](/assets/arc.jpg)  | https://arcticcoin.org/  |
-| CRAVE |  ![CRAVE](/assets/crave.jpg)  | https://www.craveproject.com/  |
-| PIE |  ![PIE](/assets/pie.jpg)  | https://github.com/flintsoft/PIE  |
-| XCXT |  ![XCXT](/assets/xcxt.jpg)  | http://coinonatx.com/  |
-| SCORE |  ![SCORE](/assets/score.jpg)  | http://scorecoin.site/ |
-| BITSEND |  ![BITSEND](/assets/bitsend.jpg)  | https://bitsend.info/ |
-| XZC |  ![ZCOIN](/assets/zcoin.jpg)  | https://zcoin.io/ |
-| INSANE |  ![INSN](/assets/insane.jpg)  | https://insanecoin.com/ |
-| XIOS | ![XIOS](/assets/xios.jpg)  | https://bitcointalk.org/index.php?topic=2251159.0/ |
-| HAV | ![HAV](/assets/have.jpg)  | https://bitcointalk.org/index.php?topic=2336026.0 |
-| NTRN | ![NTRN](/assets/ntrn.jpg)  | https://www.neutroncoin.com/ |
-| RNS | ![RNS](/assets/rns.jpg)  | https://bitcointalk.org/index.php?topic=1809933.msg18029683#msg18029683/ |
-| SOLARIS | ![SOLARIS](/assets/solaris.jpg)  | http://www.solariscoin.com/ |
-| BTDX | ![BTDX](/assets/btdx.jpg)  | https://bit-cloud.info/ |
-| INNOVA | ![INNOVA](/assets/innova.jpg)  | http://innovacoin.info/ |
-| FORCE | ![FORCE](/assets/force.jpg)  | https://bitcointalk.org/index.php?topic=2359378 |
-| BITRADIO | ![BITRADIO](/assets/bitradio.jpg)  | https://bitrad.io/ |
-| MONA | ![MONA](/assets/mona.jpg) | https://monacocoin.net/ |
-| ALQO | ![ALQO](/assets/alqo.jpg) | https://alqo.org |
-| YUP | ![YUP](/assets/yup.jpg) | http://yupcrypto.com/ |
-| MTNC | ![MTNC](/assets/mtnc.jpg) | http://www.masternodecoin.org/ |
-| CROWN | ![CROWN](/assets/crown.jpg) | https://crown.tech/ |
-| BLOCKNET | ![BLOCK](/assets/block.jpg) | https://blocknet.co/ |
-| DTMI | ![DTMI](/assets/dtmi.jpg) | https://bitcointalk.org/index.php?topic=2325196.0 |
-| MAGNA | ![MAGNA](/assets/magna.jpg) | https://www.magnacoin.org/ |
-| CROWD | ![CROWD](/assets/crowd.jpg) | http://crowdcoin.site/ |
-| NUMUS | ![NUMUS](/assets/numus.jpg) | http://numus.cash/ |
-| NODE | ![NODE](/assets/node.jpg) | https://bitnodes.co/ |
-| SUB1X | ![SUB1X](/assets/sub1x.jpg) | https://bitcointalk.org/index.php?topic=2282282.0 |
-| SEND | ![SEND](/assets/send.jpg) | https://socialsend.io/ |
-| CREAM | ![CREAM](/assets/cream.jpg) | http://cream.technology/ |
-| AXE | ![AXE](/assets/axe.jpg) | https://axerunners.github.io |
-
+| command                               | description                                  |
+| :------------------------------------ | -------------------------------------------- |
+| nodemaster start pivx (all\|number)   | start all or a specific pivx masternode(s)   |
+| nodemaster restart pivx (all\|number) | stop all or a specific pivx masternode(s)    |
+| nodemaster stop pivx (all\|number)    | restart all or a specific pivx masternode(s) |
+| nodemaster cleanup pivx (all\|number) | delete chain data for all pivx masternodes   |
+| nodemaster status pivx (all\|number)  | systemd process status for a pivx masternode |
+| nodemaster tail pivx (all\|number)    | tail debug logs for a pivx masternode        |
 
 # Todo
+
 * provide my Dockerfile & Vagrantfile
 * write more test cases
 * implement a binary option (?)
 * output all supported cryptos as list within help
 
 # Errors
+
 * currently not fully idempotent
 
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
 **Have fun, this is crypto after all!**
+
 ```
 BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
