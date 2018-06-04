@@ -3,4 +3,4 @@
 cd src && mkdir -p obj/support obj/x11 obj/crypto
 chmod u+x leveldb/build_detect_platform 
 make -f makefile.unix USE_UPNP=-
-cp Scorecoind ${MNODE_DAEMON}
+cp Scored ${MNODE_DAEMON}
