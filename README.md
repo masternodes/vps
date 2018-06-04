@@ -18,7 +18,7 @@ Feel free to use my reflink to signup and receive a bonus w/ vultr:
 
 ## Supported masternode projects
 
-The ever growing list of supported projects is now maintained at [https://nodemaster-vps.com/supported-masternode-projects/](https://nodemaster-vps.com/supported-masternode-projects/). 
+The ever growing list of supported projects is now maintained at [https://nodemaster-vps.com/supported-masternode-projects/](https://nodemaster-vps.com/supported-masternode-projects/).
 
 ---
 
