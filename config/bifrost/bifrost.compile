@@ -1,7 +1,7 @@
 #!/bin/bash    
 # this file contains all commands to compile and install the daemon
 
-git checkout development
+# git checkout development
 ./autogen.sh
 ./configure --disable-dependency-tracking --enable-tests=no --without-gui
 cd src
