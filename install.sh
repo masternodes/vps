@@ -390,7 +390,7 @@ function wipe_all() {
 #
 function cleanup_after() {
 
-    apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoremove
+    #apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoremove
     apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoclean
 
     echo "kernel.randomize_va_space=1" > /etc/sysctl.conf  &>> ${SCRIPT_LOGFILE}
