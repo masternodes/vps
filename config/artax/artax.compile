@@ -1,0 +1,6 @@
+#!/bin/bash   
+chmod u+x share/genbuild.sh
+chmod u+x ./autogen.sh && ./autogen.sh
+./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc
+make
+make install
