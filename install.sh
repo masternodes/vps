@@ -7,8 +7,8 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2018 ╔╝
 #
-# version 	v0.9.6
-# date    	2018-04-05
+# version 	v0.9.9
+# date    	2018-06-09
 #
 # function:	part of the masternode scripts, source the proper config file
 #
@@ -26,7 +26,7 @@ declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH=$( cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P )
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.9.7"
+declare -r SCRIPT_VERSION="v0.9.9"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 declare -r DO_NET_CONF="/etc/network/interfaces.d/50-cloud-init.cfg"
@@ -186,39 +186,42 @@ function create_mn_dirs() {
 #
 function create_sentinel_setup() {
 
-    # if code directory does not exists, we create it clone the src
-    if [ ! -d /usr/share/sentinel ]; then
-        cd /usr/share                                               &>> ${SCRIPT_LOGFILE}
-        git clone https://github.com/dashpay/sentinel.git sentinel  &>> ${SCRIPT_LOGFILE}
-        cd sentinel                                                 &>> ${SCRIPT_LOGFILE}
-        rm -f rm sentinel.conf                                      &>> ${SCRIPT_LOGFILE}
-    else
-        echo "* Updating the existing sentinel GIT repo"
-        cd /usr/share/sentinel        &>> ${SCRIPT_LOGFILE}
-        git pull                      &>> ${SCRIPT_LOGFILE}
-        rm -f rm sentinel.conf        &>> ${SCRIPT_LOGFILE}
-    fi
+	SENTINEL_BASE=/usr/share/sentinel
+	SENTINEL_ENV=/usr/share/sentinelenv
 
-    # create a globally accessible venv and install sentinel requirements
-    virtualenv --system-site-packages /usr/share/sentinelvenv      &>> ${SCRIPT_LOGFILE}
-    /usr/share/sentinelvenv/bin/pip install -r requirements.txt    &>> ${SCRIPT_LOGFILE}
+	# if code directory does not exists, we create it clone the src
+	if [ ! -d ${SENTINEL_BASE} ]; then
+		cd /usr/share                                               &>> ${SCRIPT_LOGFILE}
+		git clone https://github.com/dashpay/sentinel.git sentinel  &>> ${SCRIPT_LOGFILE}
+		cd sentinel                                                 &>> ${SCRIPT_LOGFILE}
+		rm -f rm sentinel.conf                                      &>> ${SCRIPT_LOGFILE}
+	else
+		echo "* Updating the existing sentinel GIT repo"
+		cd ${SENTINEL_BASE}           &>> ${SCRIPT_LOGFILE}
+		git pull                      &>> ${SCRIPT_LOGFILE}
+		rm -f rm sentinel.conf        &>> ${SCRIPT_LOGFILE}
+	fi
+	
+	# create a globally accessible venv and install sentinel requirements
+	virtualenv --system-site-packages ${SENTINEL_ENV}      &>> ${SCRIPT_LOGFILE}
+	${SENTINEL_ENV}/bin/pip install -r requirements.txt    &>> ${SCRIPT_LOGFILE}
 
     # create one sentinel config file per masternode
-    for NUM in $(seq 1 ${count}); do
-        if [ ! -f "/usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf" ]; then
-             echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}
-             echo "dash_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"   > /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "network=mainnet"                                         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "db_name=database/${CODENAME}_${NUM}_sentinel.db"         >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
-             echo "db_driver=sqlite"                                        >> /usr/share/sentinel/${CODENAME}${NUM}_sentinel.conf
+	for NUM in $(seq 1 ${count}); do
+	    if [ ! -f "${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf" ]; then
+	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}    
+		     echo "dash_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"                > ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
+             echo "network=mainnet"                                                  >> ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
+             echo "db_name=${SENTINEL_BASE}/database/${CODENAME}_${NUM}_sentinel.db" >> ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
+             echo "db_driver=sqlite"                                                 >> ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
         fi
     done
 
     echo "Generated a Sentinel config for you. To activate Sentinel run"
-    echo "export SENTINEL_CONFIG=${MNODE_CONF_BASE}/${CODENAME}${NUM}_sentinel.conf; /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py"
+    echo "export SENTINEL_CONFIG=${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf; ${SENTINEL_ENV}/bin/python ${SENTINEL_BASE}/bin/sentinel.py"
     echo ""
     echo "If it works, add the command as cronjob:  "
-    echo "* * * * * export SENTINEL_CONFIG=${MNODE_CONF_BASE}/${CODENAME}${NUM}_sentinel.conf; /usr/share/sentinelvenv/bin/python /usr/share/sentinel/bin/sentinel.py 2>&1 >> /var/log/sentinel/sentinel-cron.log"
+    echo "* * * * * export SENTINEL_CONFIG=${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf; ${SENTINEL_ENV}/bin/python ${SENTINEL_BASE}/bin/sentinel.py 2>&1 >> /var/log/sentinel/sentinel-cron.log"
 
 }
 
@@ -360,10 +363,11 @@ function create_systemd_configuration() {
 #
 function set_permissions() {
 
-    # maybe add a sudoers entry later
-    chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel &>> ${SCRIPT_LOGFILE}
-    # make group permissions same as user, so vps-user can be added to masternode group
-    chmod -R g=u ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel &>> ${SCRIPT_LOGFILE}
+	# maybe add a sudoers entry later
+	mkdir -p /var/log/sentinel
+	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel /usr/share/sentinel/database &>> ${SCRIPT_LOGFILE}
+  # make group permissions same as user, so vps-user can be added to masternode group
+  chmod -R g=u ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel &>> ${SCRIPT_LOGFILE}
 
 }
 
