@@ -8,20 +8,12 @@ Please also see the [README for this project](../README.md) that will give you a
 
 ---
 
-## Intro
-
-This project started as handy bash script to setup my $PIVX masternodes in 2016 when there was almost zero documentation and anything that existed was either $DASH specific, sucked and in most cases both. For that reason, i started to work on a not-so-sucking way to install a lot of different masternodes with next to none manual intervention.
-
-If you are not already aware, visit the project site and join the slack. The website at [https://pivx.org/](https://pivx.org/) is also well worth a visit. 
-
-<img src="images/masternode_vps/intro.png" alt="introduction" class="inline"/>
-
 ## Get a VPS system for your masternode(s)
 
 I will use vultr for my instructions, but in practice and with a bit of tuning any hoster that gives you multiple free IPv6 addresses. Register / login with vultr.
 
 Feel free to use my reflink to signup and receive a bonus w/ vultr:
-<a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
+<a href="https://www.vultr.com/?ref=7434970"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
 It's also great that you can use Bitcoin to pay!
 
@@ -81,19 +73,19 @@ Login to your newly installed node as "root".
 Clone this git repository first:
 
 ```
-git clone https://github.com/masternodes/vps.git && cd vps
+git clone https://github.com/DRIP-Project/vps.git && cd vps
 ```
 
 
 ## Install the desired masternode and amount
 
-Use the *./install.sh* script with the desired crypto and masternode count as parameters, e.g. to install 4 PIVX masternodes:
+Use the *./install.sh* script with the desired crypto and masternode count as parameters, e.g. to install 4 DRIP masternodes:
 
 ```
-./install.sh -p pivx -c 4
+./install.sh -p drip -c 4
 ```
 
-The script downloads, compiles and configures the system now. This will usually take between 5-15 minutes.
+The script downloads, compiles and configures the system now. This will usually take between 10-15 minutes.
 
 <img src="images/masternode_vps/install-the-desired-masternode-and-amount.png" alt="VPS sizing" class="inline"/>
 
@@ -124,10 +116,10 @@ In 99% you can use the generated settings as is. The only value you MUST change 
 
 A script to enable masternode start at boot has been created at */usr/local/bin/activate_masternodes_${CODENAME}.sh* for your convenience. There is exactly one script per installed masternode crypto.
 
-Run it after you finished configuration, e.g. after a PIVX installation do.
+Run it after you finished configuration, e.g. after a DRIP installation do.
 
 ```
-/usr/local/bin/activate_masternodes_pivx
+/usr/local/bin/activate_masternodes_drip
 ```     
 
 ## Last step, the controller
@@ -138,7 +130,7 @@ To activate the new nodes in your _local_ (not the VPS) controller wallet, add t
      MN2 [2003:470:1111:1a4:52]:51472 KEY TX OUTPUT
      MN3 [2003:470:1111:1a4:53]:51472 KEY TX OUTPUT
 
-To make this a bit easier for large installations, i implemented a small gimmick in the newest version. Now after the script has run, a partial of the "masternode.conf" file is generated and placed on the VPS eg for XIOS at "/tmp/pivx_masternode.conf"
+To make this a bit easier for large installations, i implemented a small gimmick in the newest version. Now after the script has run, a partial of the "masternode.conf" file is generated and placed on the VPS eg for DRIP at "/tmp/drip_masternode.conf"
 
 So you can take the contents from there and paste it into your local controller-wallets masternode.conf all that you need to add is the relevant pieces from "masternode outputs"
 
@@ -176,20 +168,6 @@ If you want to check the status of your masternode, the best way is currently ru
 
 # Issues and Questions
 
-Please open github issue in case of questions or issues. I might not be able to reply immediately, but i do usually within a couple of days at worst.
-
-If my scripts work for you, please send some crypto my way here:
+Join our Discord and post issues or questions to the masternodes channel: [https://discord.gg/n93p2BW](https://discord.gg/n93p2BW)
 
 **Have fun, this is crypto after all!**
-
-    onate here:
-
-<a href="https://gitcoin.co/tip/send/2/">
-    <img src='https://gitcoin.co/static/v2/images/promo_buttons/slice_01.png' width=267px height=52px />
-</a>
-
-or send BTC to:
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
