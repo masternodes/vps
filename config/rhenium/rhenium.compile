@@ -1,0 +1,11 @@
+#!/bin/bash    
+# this file contains all commands to compile and install the daemon
+
+# Install dependencies, then extract and deploy rhenium zerocoin wallet (only available as a binary for now)
+apt install -y unzip libzmq3-dev libminiupnpc-dev
+unzip Linux16.04.zip && cd Linux16.04
+rename -v s/Rhenium/rhenium/ Rhenium*
+chmod +x rhenium*
+cp rhenium* /usr/local/bin/
+
+
