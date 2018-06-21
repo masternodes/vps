@@ -669,6 +669,11 @@ function prepare_mn_interfaces() {
         export ETH_INTERFACE="eth0"
     fi
 
+    # check for the nuse case <3
+    if [ -f /sys/class/net/ens160/operstate ]; then
+        export ETH_INTERFACE="ens160"
+    fi
+
     # get the current interface state
     ETH_STATUS=$(cat /sys/class/net/${ETH_INTERFACE}/operstate)
 
