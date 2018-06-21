@@ -188,11 +188,12 @@ function create_sentinel_setup() {
 
 	SENTINEL_BASE=/usr/share/sentinel
 	SENTINEL_ENV=/usr/share/sentinelenv
+	SENTINEL_REPO="https://github.com/dashpay/sentinel.git"
 
 	# if code directory does not exists, we create it clone the src
 	if [ ! -d ${SENTINEL_BASE} ]; then
 		cd /usr/share                                               &>> ${SCRIPT_LOGFILE}
-		git clone https://github.com/dashpay/sentinel.git sentinel  &>> ${SCRIPT_LOGFILE}
+		git clone ${SENTINEL_REPO} sentinel                         &>> ${SCRIPT_LOGFILE}
 		cd sentinel                                                 &>> ${SCRIPT_LOGFILE}
 		rm -f rm sentinel.conf                                      &>> ${SCRIPT_LOGFILE}
 	else
@@ -591,7 +592,8 @@ function build_mn_from_source() {
                     rm -f ${MNODE_DAEMON}
                     # old daemon must be removed before compilation. Would be better to remove it afterwards, however not possible with current structure
                     if [ -f ${MNODE_DAEMON} ]; then
-                            echo "UPDATE FAILED! Daemon ${MNODE_DAEMON} couldn't be removed. Please open an issue at https://github.com/masternodes/vps/issues. Thank you!"
+                            echo "UPDATE FAILED! Daemon ${MNODE_DAEMON} couldn't be removed. Please open an issue at https://github.com/masternodes/vps/issues.
+                            echo "Include all details of your setup and the logfile ${SCRIPT_LOGFILE}. Thank you!"
                             exit 1
                     fi
                 fi
@@ -604,7 +606,8 @@ function build_mn_from_source() {
 
         # if it's not available after compilation, theres something wrong
         if [ ! -f ${MNODE_DAEMON} ]; then
-                echo "COMPILATION FAILED! Please open an issue at https://github.com/masternodes/vps/issues. Thank you!"
+                echo "COMPILATION FAILED! Please open an issue at https://github.com/masternodes/vps/issues."
+                echo "Include all details of your setup and the logfile ${SCRIPT_LOGFILE}. Thank you!"                
                 exit 1
         fi
 }
