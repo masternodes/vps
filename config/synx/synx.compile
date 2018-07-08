@@ -5,10 +5,10 @@ cd src
 wget https://raw.githubusercontent.com/SyndicateLtd/SyndicateQT/master/src/bignum.h
 cd ..
 #
-
-chmod u+x ./autogen.sh share/genbuild.sh
-
-./autogen.sh
-./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+ 
+chmod u+x share/genbuild.sh
+chmod u+x src/leveldb/build_detect_platform
+chmod u+x ./autogen.sh && ./autogen.sh
+./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc
 make
 make install
