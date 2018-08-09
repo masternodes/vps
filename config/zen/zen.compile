@@ -1,4 +1,0 @@
-#!/bin/bash    
-
-./zcutil/fetch-params.sh && ./zcutil/build.sh -j$(nproc) && cd src
-/usr/bin/install -c zend zen-cli -t /usr/local/bin/

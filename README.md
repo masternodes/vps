@@ -1,30 +1,18 @@
+
 # Nodemaster
+
+This is a fork of Nodemaster. You can find the original code at [https://github.com/masternodes/vps.git](https://github.com/masternodes/vps.git) for other masternodes
 
 The **Nodemaster** scripts is a collection of utilities to manage, setup and update masternode instances.
 
-I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part.
-
-If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
-
-**Have fun, this is crypto after all!**
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
-
-
-Feel free to use my reflink to signup and receive a bonus w/ vultr:
-<a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
-
-## Supported masternode projects
-
-The ever growing list of supported projects is now maintained at [https://nodemaster-vps.com/supported-masternode-projects/](https://nodemaster-vps.com/supported-masternode-projects/).
+Feel free to use this reflink to signup and receive a bonus w/ vultr:
+<a href="https://www.vultr.com/?ref=7498135"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
 ---
 
 **NOTE on the VPS choice for starters**
 
-**Vultr** is highly recommended for this kind of setup. I created an [easy step-by-step guide for the VPS provider vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
+**Vultr** is highly recommended for this kind of setup. There is an [easy step-by-step guide for the VPS provider vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
 
 ---
 
@@ -56,47 +44,47 @@ Comparing with building from source manually, you will benefit from using this s
 SSH to your VPS and clone the Github repository:
 
 ```bash
-git clone https://github.com/masternodes/vps.git && cd vps
+git clone https://github.com/pioncoin/masternode-vps.git && cd vps
 ```
 
 Install & configure your desired master node with options:
 
 ```bash
-./install.sh -p pivx
+./install.sh -p pion
 ```
 
 ## Examples for typical script invocation
 
 These are only a couple of examples for typical setups. Check my [easy step-by-step guide for [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
 
-**Install & configure 4 PIVX masternodes:**
+**Install & configure 4 PION masternodes:**
 
 ```bash
-./install.sh -p pivx -c 4
+./install.sh -p pion -c 4
 ```
 
-**Update daemon of previously installed PIVX masternodes:**
+**Update daemon of previously installed PION masternodes:**
 
 ```bash
-./install.sh -p pivx -u
+./install.sh -p pion -u
 ```
 
-**Install 6 PIVX masternodes with the git release tag "tags/v3.0.5.1"**
+**Install 6 PION masternodes with the git release tag "tags/v0.12.3.2"**
 
 ```bash
-./install.sh -p pivx -c 6 -r "tags/v3.0.5.1"
+./install.sh -p pion -c 6 -r "tags/v0.12.3.2"
 ```
 
-**Wipe all PIVX masternode data:**
+**Wipe all PION masternode data:**
 
 ```bash
-./install.sh -p pivx -w
+./install.sh -p pion -w
 ```
 
-**Install 2 PIVX masternodes and configure sentinel monitoring:**
+**Install 2 PION masternodes and configure sentinel monitoring:**
 
 ```bash
-./install.sh -p pivx -c 2 -s
+./install.sh -p pion -c 2 -s
 ```
 
 ## Options
@@ -105,9 +93,9 @@ The _install.sh_ script support the following parameters:
 
 | Long Option  | Short Option | Values              | description                                                         |
 | :----------- | :----------- | ------------------- | ------------------------------------------------------------------- |
-| --project    | -p           | project, e.g. "pix" | shortname for the project                                           |
+| --project    | -p           | project, e.g. "pion"| shortname for the project                                           |
 | --net        | -n           | "4" / "6"           | ip type for masternode. (ipv)6 is default                           |
-| --release    | -r           | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested                |
+| --release    | -r           | e.g. "tags/v0.12.3" | a specific git tag/branch, defaults to latest tested                |
 | --count      | -c           | number              | amount of masternodes to be configured                              |
 | --update     | -u           | --                  | update specified masternode daemon, combine with -p flag            |
 | --sentinel   | -s           | --                  | install and configure sentinel for node monitoring                  |
@@ -117,25 +105,25 @@ The _install.sh_ script support the following parameters:
 
 ## Troubleshooting the masternode on the VPS
 
-If you want to check the status of your masternode, the best way is currently running the cli e.g. for $MUE via
+If you want to check the status of your masternode, the best way is currently running the cli e.g. for $PION via
 
 ```
-/usr/local/bin/mue-cli -conf=/etc/masternodes/mue_n1.conf getinfo
+/usr/local/bin/pion-cli -conf=/etc/masternodes/pion_n1.conf getinfo
 
 {
-  "version": 1000302,
-  "protocolversion": 70701,
+  "version": 120302,
+  "protocolversion": 70210,
   "walletversion": 61000,
   "balance": 0.00000000,
   "privatesend_balance": 0.00000000,
-  "blocks": 209481,
+  "blocks": 6231,
   "timeoffset": 0,
   "connections": 5,
   "proxy": "",
-  "difficulty": 42882.54964804553,
+  "difficulty": 682.54964804553,
   "testnet": false,
-  "keypoololdest": 1511380627,
-  "keypoolsize": 1001,
+  "keypoololdest": 1533489677,
+  "keypoolsize": 999,
   "paytxfee": 0.00000000,
   "relayfee": 0.00010000,
   "errors": ""
@@ -144,17 +132,12 @@ If you want to check the status of your masternode, the best way is currently ru
 
 # Help, Issues and Questions
 
-I activated the "[issues](https://github.com/masternodes/vps/issues)" option on github to give you a way to document defects and feature wishes. Feel free top [open issues](https://github.com/masternodes/vps/issues) for problems / features you are missing here: [https://github.com/masternodes/vps/issues](https://github.com/masternodes/vps/issues).
+I activated the "[issues](https://github.com/pioncoin/masternode-vps/issues)" option on github to give you a way to document defects and feature wishes. Feel free top [open issues](https://github.com/pioncoin/masternode-vps/issues) for problems / features you are missing here: [https://github.com/pioncoin/masternode-vps/issues](https://github.com/pioncoin/masternode-vps/issues).
 
 I might not be able to reply immediately, but i do usually within a couple of days at worst. I will also happily take any pull requests that make masternode installations easier for everyone ;-)
 
 If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
 
-**Have fun, this is crypto after all!**
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
 
 ## Management script (not yet implemented)
 
@@ -180,10 +163,4 @@ The management script release will follow within the next couple of days.
 
 * currently not fully idempotent
 
-Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
-**Have fun, this is crypto after all!**
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
