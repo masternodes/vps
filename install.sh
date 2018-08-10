@@ -245,6 +245,12 @@ function configure_firewall() {
     ufw --force enable                        &>> ${SCRIPT_LOGFILE}
     echo "* Firewall ufw is active and enabled on system startup"
 
+    echo "* Configuring Fail2Ban"
+    sudo apt-get -y install fail2ban          &>> ${SCRIPT_LOGFILE}
+    systemctl enable fail2ban                 &>> ${SCRIPT_LOGFILE}
+    systemctl start fail2ban                  &>> ${SCRIPT_LOGFILE}
+    echo "Fail2ban is active and enabled on system startup"
+
 }
 
 #
