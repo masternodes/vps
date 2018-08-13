@@ -10,9 +10,6 @@ Please also see the [README for this project](../README.md) that will give you a
 
 ## Intro
 
-This project started as handy bash script to setup my $PIVX masternodes in 2016 when there was almost zero documentation and anything that existed was either $DASH specific, sucked and in most cases both. For that reason, i started to work on a not-so-sucking way to install a lot of different masternodes with next to none manual intervention.
-
-If you are not already aware, visit the project site and join the slack. The website at [https://pivx.org/](https://pivx.org/) is also well worth a visit. 
 
 <img src="images/masternode_vps/intro.png" alt="introduction" class="inline"/>
 
@@ -21,7 +18,7 @@ If you are not already aware, visit the project site and join the slack. The web
 I will use vultr for my instructions, but in practice and with a bit of tuning any hoster that gives you multiple free IPv6 addresses. Register / login with vultr.
 
 Feel free to use my reflink to signup and receive a bonus w/ vultr:
-<a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
+<a href="https://www.vultr.com/?ref=7498135"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
 It's also great that you can use Bitcoin to pay!
 
@@ -81,7 +78,7 @@ Login to your newly installed node as "root".
 Clone this git repository first:
 
 ```
-git clone https://github.com/masternodes/vps.git && cd vps
+git clone https://github.com/pioncoin/masternode-vps.git vps && cd vps
 ```
 
 

@@ -192,7 +192,7 @@ function create_sentinel_setup() {
 	# if code directory does not exists, we create it clone the src
 	if [ ! -d ${SENTINEL_BASE} ]; then
 		cd /usr/share                                               &>> ${SCRIPT_LOGFILE}
-		git clone https://github.com/dashpay/sentinel.git sentinel  &>> ${SCRIPT_LOGFILE}
+		git clone https://github.com/pioncoin/pion-sentinel.git sentinel  &>> ${SCRIPT_LOGFILE}
 		cd sentinel                                                 &>> ${SCRIPT_LOGFILE}
 		rm -f rm sentinel.conf                                      &>> ${SCRIPT_LOGFILE}
 	else
@@ -210,7 +210,7 @@ function create_sentinel_setup() {
 	for NUM in $(seq 1 ${count}); do
 	    if [ ! -f "${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf" ]; then
 	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}    
-		     echo "dash_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"            > ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
+		     echo "pion_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"            > ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
              echo "network=mainnet"                                                  >> ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
              echo "db_name=${SENTINEL_BASE}/database/${CODENAME}_${NUM}_sentinel.db" >> ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
              echo "db_driver=sqlite"                                                 >> ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
@@ -244,6 +244,12 @@ function configure_firewall() {
     ufw limit OpenSSH	                      &>> ${SCRIPT_LOGFILE}
     ufw --force enable                        &>> ${SCRIPT_LOGFILE}
     echo "* Firewall ufw is active and enabled on system startup"
+
+    echo "* Configuring Fail2Ban"
+    sudo apt-get -y install fail2ban          &>> ${SCRIPT_LOGFILE}
+    systemctl enable fail2ban                 &>> ${SCRIPT_LOGFILE}
+    systemctl start fail2ban                  &>> ${SCRIPT_LOGFILE}
+    echo "Fail2ban is active and enabled on system startup"
 
 }
 
