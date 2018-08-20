@@ -318,33 +318,60 @@ function create_mn_configuration() {
 
         # always return to the script root
         cd ${SCRIPTPATH}
+        
+        for NUM in $(seq 1 ${count}); do
+          if [ -n "${PRIVKEY[${NUM}]}" ]; then
+            echo ${PRIVKEY[${NUM}]} >> tmp.txt
+          fi
+        done
+        
+        if [ -f tmp.txt ]; then
+            dup=$(sort -t 8 tmp.txt | uniq -c | sort -nr | head -1 | awk '{print substr($0, 7, 1)}')
+            if [ 1 -ne "$dup" ]; then
+                echo "Private key was duplicated. Please restart this script."
+                rm -r /etc/masternodes
+                rm tmp.txt
+                exit 1
+            fi
+            rm tmp.txt
+        fi
 
         # create one config file per masternode
         for NUM in $(seq 1 ${count}); do
         PASS=$(date | md5sum | cut -c1-24)
 
-            # we dont want to overwrite an existing config file
-            if [ ! -f ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ]; then
-                echo "individual masternode config doesn't exist, generate it!"                  &>> ${SCRIPT_LOGFILE}
-
-                # if a template exists, use this instead of the default
-                if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
-                    echo "custom configuration template for ${CODENAME} found, use this instead"                      &>> ${SCRIPT_LOGFILE}
-                    cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf  &>> ${SCRIPT_LOGFILE}
-                else
-                    echo "No ${CODENAME} template found, using the default configuration template"			          &>> ${SCRIPT_LOGFILE}
-                    cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf                  &>> ${SCRIPT_LOGFILE}
-                fi
-                # replace placeholders
-                echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"                                &>> ${SCRIPT_LOGFILE}
-                sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXY/${NUM}]/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
-                if [ "$startnodes" -eq 1 ]; then
-                    #uncomment masternode= and masternodeprivkey= so the node can autostart and sync
-                    sed 's/\(^.*masternode\(\|privkey\)=.*$\)/#\1/' -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
-                fi
-            fi
-
-        done
+	# we dont want to overwrite an existing config file
+	if [ ! -f ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf ]; then
+        	echo "individual masternode config doesn't exist, generate it!"                  &>> ${SCRIPT_LOGFILE}
+		# if a template exists, use this instead of the default
+		if [ -e config/${CODENAME}/${CODENAME}.conf ]; then
+			echo "custom configuration template for ${CODENAME} found, use this instead"                      &>> ${SCRIPT_LOGFILE}
+			cp ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf  &>> ${SCRIPT_LOGFILE}
+		else
+			echo "No ${CODENAME} template found, using the default configuration template"			          &>> ${SCRIPT_LOGFILE}
+			cp ${SCRIPTPATH}/config/default.conf ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf                  &>> ${SCRIPT_LOGFILE}
+		fi
+		# replace placeholders
+		echo "running sed on file ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"                                &>> ${SCRIPT_LOGFILE}
+	fi
+	
+        if [ -n "${PRIVKEY[${NUM}]}" ]; then
+        	if [ ${#PRIVKEY[${NUM}]} -eq 51 ]; then
+        		sed -e "s/HERE_GOES_YOUR_MASTERNODE_KEY_FOR_MASTERNODE_XXX_GIT_PROJECT_XXX_XXX_NUM_XXX/${PRIVKEY[${NUM}]}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
+          	else
+            		echo "input private key ${PRIVKEY[${NUM}]} was invalid. Please check the key, and restart this script."
+            		rm -r /etc/masternodes
+            		exit 1
+          	fi
+        else :
+        fi
+        sed -e "s/XXX_GIT_PROJECT_XXX/${CODENAME}/" -e "s/XXX_NUM_XXY/${NUM}]/" -e "s/XXX_NUM_XXX/${NUM}/" -e "s/XXX_PASS_XXX/${PASS}/" -e "s/XXX_IPV6_INT_BASE_XXX/[${IPV6_INT_BASE}/" -e "s/XXX_NETWORK_BASE_TAG_XXX/${NETWORK_BASE_TAG}/" -e "s/XXX_MNODE_INBOUND_PORT_XXX/${MNODE_INBOUND_PORT}/" -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
+	if [ -z "${PRIVKEY[${NUM}]}" ]; then
+		if [ "$startnodes" -eq 1 ]; then
+			#uncomment masternode= and masternodeprivkey= so the node can autostart and sync
+			sed 's/\(^.*masternode\(\|privkey\)=.*$\)/#\1/' -i ${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf
+		fi
+	fi
 
 }
 
@@ -354,14 +381,17 @@ function create_mn_configuration() {
 
 function create_control_configuration() {
 
-    # delete any old stuff that's still around
-    rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
-    # create one line per masternode with the data we have
-    for NUM in $(seq 1 ${count}); do
-		cat >> /tmp/${CODENAME}_masternode.conf <<-EOF
-			${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}
-		EOF
-    done
+   # delete any old stuff that's still around
+   rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
+   		
+  # create one line per masternode with the data we have
+	for NUM in $(seq 1 ${count}); do
+	    if [ -n "${PRIVKEY[${NUM}]}" ]; then
+    			echo ${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} ${PRIVKEY[${NUM}]} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM} >> /tmp/${CODENAME}_masternode.conf
+    	else
+					echo ${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM} >> /tmp/${CODENAME}_masternode.conf
+  		fi
+	done
 
 }
 
@@ -431,6 +461,25 @@ function wipe_all() {
     echo "DONE!"
     exit 0
 
+}
+
+#
+#Generate masternode private key
+#
+function generate_privkey() {
+	echo -e "rpcuser=test\nrpcpassword=passtest" >> ${MNODE_CONF_BASE}/${CODENAME}_test.conf
+  	mkdir -p ${MNODE_DATA_BASE}/${CODENAME}_test
+  	phored -daemon -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test
+  	sleep 5
+  	
+	for NUM in $(seq 1 ${count}); do
+    		if [ -z "${PRIVKEY[${NUM}]}" ]; then
+    			PRIVKEY[${NUM}]=$(phore-cli -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test masternode genkey)
+    		fi
+  	done
+  	phore-cli -conf=${MNODE_CONF_BASE}/${CODENAME}_test.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}_test stop
+  	sleep 5
+  	rm -r ${MNODE_CONF_BASE}/${CODENAME}_test.conf ${MNODE_DATA_BASE}/${CODENAME}_test
 }
 
 #
@@ -570,19 +619,32 @@ function source_config() {
         install_packages
         print_logo
         build_mn_from_source
+        
+        # startif update
         if [ "$update" -eq 0 ]; then
             create_mn_user
             create_mn_dirs
+ 
+            # private key initialize
+            if [ "$generate" -eq 1 ]; then
+                echo "Generating masternode private key" &>> ${SCRIPT_LOGFILE}
+                generate_privkey
+            fi
+
             # sentinel setup
             if [ "$sentinel" -eq 1 ]; then
-                echo "* Sentinel setup chosen" &>> ${SCRIPT_LOGFILE}
-                create_sentinel_setup
+                 echo "* Sentinel setup chosen" &>> ${SCRIPT_LOGFILE}
+                 create_sentinel_setup
             fi
+
             configure_firewall
             create_mn_configuration
             create_control_configuration
             create_systemd_configuration
+        
+        #  endif update
         fi
+        
         set_permissions
         cleanup_after
         showbanner
@@ -642,6 +704,13 @@ function build_mn_from_source() {
                     fi
                 fi
 
+                # print ascii banner if a logo exists
+                echo -e "* Starting the compilation process for ${CODENAME}, stay tuned"
+                if [ -f "${SCRIPTPATH}/assets/$CODENAME.jpg" ]; then
+                        jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/${CODENAME}.jpg
+                else
+                        jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/default.jpg
+                fi
                 # compilation starts here
                 source ${SCRIPTPATH}/config/${CODENAME}/${CODENAME}.compile | pv -t -i0.1
         else
@@ -695,6 +764,7 @@ function final_call() {
         ${MNODE_HELPER}_${CODENAME}
     fi
     tput sgr0
+
 }
 
 #
@@ -794,10 +864,11 @@ wipe=0;
 debug=0;
 update=0;
 sentinel=0;
+generate=0;
 startnodes=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wsudx" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug,startnodes" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wsudxgk:k2:k3:k4:k5:k6:k7:k8:k9:k10:" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug,startnodes,generate,key:,key2:,key3:,key4:,key5:,key6:,key7:,key8:,key9:,key10:" -n "install.sh" -- "$@");
 
 #Bad arguments
 if [ $? -ne 0 ];
@@ -809,11 +880,11 @@ eval set -- "$ARGS";
 
 while true; do
     case "$1" in
-        -h|--help)
+        -h |--help)
             shift;
             help;
             ;;
-        -p|--project)
+        -p |--project)
             shift;
                     if [ -n "$1" ];
                     then
@@ -821,7 +892,7 @@ while true; do
                         shift;
                     fi
             ;;
-        -n|--net)
+        -n |--net)
             shift;
                     if [ -n "$1" ];
                     then
@@ -829,7 +900,7 @@ while true; do
                         shift;
                     fi
             ;;
-        -c|--count)
+        -c |--count)
             shift;
                     if [ -n "$1" ];
                     then
@@ -837,7 +908,7 @@ while true; do
                         shift;
                     fi
             ;;
-        -r|--release)
+        -r |--release)
             shift;
                     if [ -n "$1" ];
                     then
@@ -846,20 +917,19 @@ while true; do
                         shift;
                     fi
             ;;
-        -w|--wipe)
+        -w |--wipe)
             shift;
                     wipe="1";
             ;;
-        -s|--sentinel)
+        -s |--sentinel)
             shift;
                     sentinel="1";
             ;;
-
-        -u|--update)
+        -u |--update)
             shift;
                     update="1";
             ;;
-        -d|--debug)
+        -d |--debug)
             shift;
                     debug="1";
             ;;
@@ -868,6 +938,90 @@ while true; do
                     startnodes="1";
             ;;
 
+        -g | --generate)
+            shift;
+                    generate="1";
+            ;;
+        -k |--key)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[1]="$1";
+                        shift;
+                    fi
+            ;;
+        -k2 |--key2)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[2]="$1";
+                        shift;
+                    fi
+            ;;
+        -k3 |--key3)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[3]="$1";
+                        shift;
+                    fi
+            ;;
+        -k4 |--key4)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[4]="$1";
+                        shift;
+                    fi
+            ;;
+        -k5 |--key5)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[5]="$1";
+                        shift;
+                    fi
+            ;;
+        -k6 |--key6)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[6]="$1";
+                        shift;
+                    fi
+            ;;
+        -k7 |--key7)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[7]="$1";
+                        shift;
+                    fi
+            ;;
+	      -k8 |--key8)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[8]="$1";
+                        shift;
+                    fi
+            ;;
+        -k9 |--key9)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[9]="$1";
+                        shift;
+                    fi
+            ;;
+	     -k10 |--key10)
+            shift;
+                    if [ -n "$1" ];
+                    then
+                        PRIVKEY[10]="$1";
+                        shift;
+                    fi
+            ;;
         --)
             shift;
             break;
