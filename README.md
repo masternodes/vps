@@ -1,22 +1,20 @@
-# Phore Masternode VPS Installation
+# Nodemaster VPS installation howto
 
-This masternode installation script vastly simplifies the setup of a Phore masternode running on a virtual private server (VPS), and it also adds a number of other powerful features, including:
+This masternode installation script vastly simplifies the setup of any masternode running on a virtual private server (VPS), and it also adds a number of other powerful features, including:
 
 * IPv6 Support
-* Installs 1-100 (or more!) Phore masternodes in parallel on one VPS, with individual phore.conf and data directories
-* It can install masternodes for other coins on the same VPS as Phore
+* Installs 1-100 (or more!) masternodes in parallel on one VPS, with individual config and data directories
+* It can install masternodes for other coins on the same VPS 
 * 100% auto-compilation and 99% of configuration on the masternode side of things
-* Automatically compiling from the latest Phore release tag, or another tag can be specified
+* Automatically compiling from the latest release tag, or another tag can be specified
 * Some security hardening is done, including firewalling and a separate user, increasing security
 * Automatic startup for all masternode daemons
 
 Some notes and requirements:
 
-* Script has only been tested on a Vultr VPS, but should work almost anywhere where IPv6 addresses are available
-* Currently only Ubunto 16.04 Linux is supported
+* Script has been tested on DigitalOcean, Hetzner & Vultr VPS, but should work almost anywhere where IPv6 addresses are available
+* Currently only Ubuntu 16.04 and 18.04 LTS are supported
 * This script needs to run as root or with sudo, the masternodes will and should not!
-
-This project was forked from https://github.com/masternodes/vps. @marsmensch (Florian) is the primary author behind this VPS installation script for masternodes. If you would like to donate to him, you can use the BTC address below
 
 **Have fun, this is crypto after all!**
 
@@ -24,15 +22,18 @@ This project was forked from https://github.com/masternodes/vps. @marsmensch (Fl
 BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 ```
 
-# Install guide on vultr
+# Install guide for Vultr
 
 ## How to get VPS server
 
-For new masternode owners, **Vultr** is recommended as a VPS hosting provider, but other providers that allow direct root SSH login access and offer Ubunto 16.04 may work.
+Feel free to use my reflink to signup and receive a bonus w/ vultr:
+<a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
 
-You can use the following referral link to sign up with Vultr for VPS hosting:
+## Supported masternode projects
 
-<a href="https://www.vultr.com/?ref=7316561"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
+The ever growing list of supported projects is now maintained at [https://nodemaster-vps.com/supported-masternode-projects/](https://nodemaster-vps.com/supported-masternode-projects/).
+
+For new masternode owners, **Vultr** is recommended as a VPS hosting provider, but other providers that allow direct root SSH login access may work.
 
 ## Deploy a new system
 
@@ -42,19 +43,19 @@ First, create a new VPS by clicking that small "+" button.
 
 ## Location choice
 
-You can choose any location. You may wish to have it hosted in a city/country near you, or choose a different area to help with the global decentralization of the Phore masternode network.
+You can choose any location. You may wish to have it hosted in a city/country near you, or choose a different area to help with the global decentralization your chosen masternode network.
 
 <img src="docs/images/masternode_vps/location-choice.png" alt="VPS location choice" class="inline"/>
 
-## Linux distribution (Ubuntu 16.04 LTS)
+## Linux distribution (Ubuntu 16.04 / 18.04 LTS)
 
-Select Ubuntu 16.04.
+Select Ubuntu 16.04 or 18.04 LTS
 
 <img src="docs/images/masternode_vps/linux-distribution--ubuntu-1604-lts-.png" alt="VPS location choice" class="inline"/>
 
 ## VPS size
 
-The 25 GB SSD / 1024MBB Memory instance is enough for 2-3 masternodes. You may need more memory as the Phore blockchain grows over time, or if you want to run more masternodes.
+The 25 GB SSD / 1024MBB Memory instance is enough for 2-3 masternodes. You may need more memory as the blockchain grows over time, or if you want to run more masternodes.
 
 <img src="docs/images/masternode_vps/vps-size.png" alt="VPS sizing" class="inline"/>
 
@@ -106,7 +107,7 @@ For Mac users, open Terminal (e.g., Press Command-Space and type Terminal and pr
 ```
 ssh -l root <IP address>
 ```
-## Install Masternode
+## Install a PHORE masternode
 
 Login to your newly installed node as "root".
 
@@ -115,13 +116,13 @@ Login to your newly installed node as "root".
 Enter this command to copy the Masternode installation script and install a single Phore Masternode:
 
 ```bash
-git clone https://github.com/phoreproject/vps.git && cd vps && ./install.sh -p phore
+git clone https://github.com/masternodes/vps.git && cd vps && ./install.sh -p phore
 ```
 
 If you have your masternode private key, please use this (you can generate masternode private key with Step 2 below).
 
 ```bash
-git clone https://github.com/phoreproject/vps.git && cd vps && ./install.sh -p phore -k **PRIVATE KEY**
+git clone https://github.com/masternodes/vps.git && cd vps && ./install.sh -p phore -k **PRIVATE KEY**
 ```
 Using this command, you can skip "Configure masternode configuration files" below, because the command abopve adds the masternode private key to the masternode configuration files.
 
@@ -136,7 +137,7 @@ While that is underway, go back to your local desktop and open phore-qt.
 If you wish to install more than one masternode on the same VPS, you can add a -c parameter to tell the script how many to configure, so for example this would install three Phore masternodes:
 
 ```bash
-git clone https://github.com/phoreproject/vps.git && cd vps
+git clone https://github.com/masternodes/vps.git && cd vps
 ./install.sh -p phore -c 3
 ```
 
@@ -152,7 +153,7 @@ Using this command, you can skip the step for "Configure masternode configuratio
 If you are upgrading your masternode(s) to a new release, you can add a -u parameter:
 
 ```bash
-git clone https://github.com/phoreproject/vps.git && cd vps
+git clone https://github.com/masternodes/vps.git && cd vps
 ./install.sh -p phore -u
 ```
 
@@ -204,6 +205,7 @@ When the script finishes, it will look similar to this:
 <img src="docs/images/masternode_vps/end-of-installation.png" alt="installation ended" class="inline"/>
 
 You only have a few steps remaining to complete your masternode configuration.
+
 ## Configure masternode configuration files
 Since this installation method supports multiple masternodes, the phore configuration files have a node number added to them (e.g., phore_n1.conf, phore_n2.conf), stored in the /etc/masternodes directory. If you have a single masternode on the VPS, you will only need to edit /etc/masternodes/phore_n1.conf.
 
@@ -215,6 +217,7 @@ nano /etc/masternodes/phore_n1.conf
 The next step adds your masternode private key.
 
 ## Add masternode private key
+
 What you need to change is only masternode private key.
 (We recommend using IPv6 which is the default, but if you choose IPv4 when you ran the installation script, please edit #NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER to your VPS IP address).
 After typing the nano command, you will see something similar to this.
@@ -231,7 +234,7 @@ Then press <font color="Green">Y</font> to save, and press Enter to exit.
 Finally, close and restart your Phore wallet so that it will have the new masternode configuration.
 
 ## Start your masternodes
-A script for starting all masternodes on the VPS has been created at /usr/local/bin/activate_masternodes_phore.sh.
+A script for starting all masternodes on the VPS has been created at /usr/local/bin/activate_masternodes_phore
 Run this command after your masternode configuration written above.
 
 ```bash
@@ -262,6 +265,7 @@ The image below shows another example using an IPv4 IP address. If you followed 
 <img src="docs/images/masternode_vps/masternode-conf.png" alt="editing masternode.conf" class="inline"/>
 
 If you are running multiple masternodes, you need to add one of these lines for each masternode, and make sure the private key on each line matches the corresponding private key you entered in the VPS phore configuration file for that masternode.
+
 ## Check syncing status of masternode
 The masternode cannot complete activation until it is fully synced with the Phore blockchain network.
 
@@ -339,11 +343,3 @@ It should say ENABLED, and within an hour, the timer in the Active column should
 Your Phore masternode is now set up and running! Depending on how many masternodes there are, it may take 12-24 hours before you see your first masternode reward--this is normal and rewards should come at more regular intervals after the first one.
 
 <img src="docs/images/masternode_vps/rewards.png" alt="rewards" class="inline"/>
-
-## Issues and Questions
-Please open a GitHub Issue if there are problems with this installation method. Many Phore team members activel support people installing masternodes and can provide assistance in the Phore Discord channel.
-Here is a Discord invitation:
-
-https://discord.gg/sbgdcdv
-
-If you would like to make a donation to Phore's ongoing development, you can send Phore to the core team at this address: PDjGJMDzvJnvbxxgR1bgPm77fFLxn3KAg8
