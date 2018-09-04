@@ -22,10 +22,10 @@ MAINTAINER 			 Florian Maier <contact@marsmenschen.com>
 ENV CONTAINER_USER   masternode
 ENV PROJECT          meme
 ENV GIT_URL          git://github.com/pepeteam/pepecoin.git
-ENV SVC_VERSION      tags/2.4.3.2
+ENV SVC_VERSION      tags/2.7.0.0
 ENV HOME_DIR         /usr/local/bin
 ENV NODE_PORT        29377
-ENV REFRESHED_AT     2017-07-27
+ENV REFRESHED_AT     2018-09-04
 
 # add unprivileged user
 RUN adduser --shell /bin/bash --disabled-password \
