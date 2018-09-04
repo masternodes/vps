@@ -22,10 +22,10 @@ MAINTAINER 			 Florian Maier <contact@marsmenschen.com>
 ENV CONTAINER_USER   masternode
 ENV PROJECT          pivx
 ENV GIT_URL          git://github.com/PIVX-Project/PIVX.git
-ENV SVC_VERSION      tags/v2.2.1
+ENV SVC_VERSION      tags/v3.1.1
 ENV HOME_DIR         /usr/local/bin
 ENV NODE_PORT        51472
-ENV REFRESHED_AT     2017-07-25
+ENV REFRESHED_AT     2018-09-04
 
 # add unprivileged user
 RUN adduser --shell /bin/bash --disabled-password \
