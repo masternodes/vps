@@ -863,6 +863,7 @@ main() {
         echo "MNODE_USER:           ${MNODE_USER}"
         echo "MNODE_HELPER:         ${MNODE_HELPER}"
         echo "MNODE_SWAPSIZE:       ${MNODE_SWAPSIZE}"
+        echo "NETWORK_BASE_TAG:     ${NETWORK_BASE_TAG}"        
         echo "CODE_DIR:             ${CODE_DIR}"
         echo "SCVERSION:            ${SCVERSION}"
         echo "RELEASE:              ${release}"
