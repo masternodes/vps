@@ -1,5 +1,4 @@
 #!/bin/bash   
-
 cd src/secp256k1 && chmod u+x ./autogen.sh && ./autogen.sh && ./configure --enable-module-recovery && make && make install && cd ../..
  
 chmod u+x share/genbuild.sh
