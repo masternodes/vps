@@ -1,6 +1,5 @@
 #!/bin/bash    
 # this file contains all commands to compile and install the daemon
-
 cd ./src
 make -f makefile.unix USE_UPNP=-
 chmod 755 ducatd
