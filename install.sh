@@ -264,7 +264,6 @@ function validate_netchoice() {
     # generate the required ipv6 config
     if [ "${net}" -eq 4 ]; then
         IPV6_INT_BASE="#NEW_IPv4_ADDRESS_FOR_MASTERNODE_NUMBER"
-        NETWORK_BASE_TAG=""
         echo "IPv4 address generation needs to be done manually atm!"  &>> ${SCRIPT_LOGFILE}
     fi	# end ifneteq4
 
@@ -398,7 +397,7 @@ function wipe_all() {
 function cleanup_after() {
 
     #apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoremove
-    apt-get -qqy -o=Dpkg::Use-Pty=0 --force-yes autoclean
+    apt-get -qqy -o=Dpkg::Use-Pty=0 --allow-downgrades --allow-change-held-packages autoclean
 
     echo "kernel.randomize_va_space=1" > /etc/sysctl.conf  &>> ${SCRIPT_LOGFILE}
     echo "net.ipv4.conf.all.rp_filter=1" >> /etc/sysctl.conf &>> ${SCRIPT_LOGFILE}
@@ -635,6 +634,7 @@ function final_call() {
         echo "">> ${MNODE_HELPER}_${CODENAME}
 
         for NUM in $(seq 1 ${count}); do
+            echo "systemctl daemon-reload" >> ${MNODE_HELPER}_${CODENAME}
             echo "systemctl enable ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
             echo "systemctl restart ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
         done
