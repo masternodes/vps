@@ -585,7 +585,7 @@ function install_mn_from_binary() {
     GITHUB_USER_NAME=$(echo ${GIT_URL} | awk -F 'github.com/' '{ print $2 }' | awk -F '/' '{ print $1 }')
     GITHUB_REPO_FULL=$(echo ${GIT_URL} | awk -F 'github.com/' '{ print $2 }' | awk -F '/' '{ print $2 }')
     GITHUB_REPO_NAME=${GITHUB_REPO_FULL%.git}
-    BINARY_URL=$(curl -s ${BASE_GITHUB_API}/${GITHUB_USER_NAME}/${GITHUB_REPO_NAME}/releases/latest | grep linux | grep 64 | grep url | awk -F '"' '{ print $4 }')
+    BINARY_URL=$(curl -s ${BASE_GITHUB_API}/${GITHUB_USER_NAME}/${GITHUB_REPO_NAME}/releases/latest | grep linux | grep x86_64 | grep url | awk -F '"' '{ print $4 }')
     if [ -z ${BINARY_URL+x} ]; then 
         echo "[ERROR] Failed to find Linux binaries for ${project}. Try compiling from source files."
         exit
