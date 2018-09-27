@@ -602,9 +602,18 @@ function install_mn_from_binary() {
         "[ERROR] Unexpected file extension. Aborting..."
         exit
     fi
-    cp -r $(find -type d -name bin)/* /usr/local/bin/
-    cp -r $(find -type d -name lib)/* /usr/local/lib/
-    cp -r $(find -type d -name include)/* /usr/local/include/
+    if [ $(find -type d -name bin | wc -l ) -eq 1 ]; then 
+        cp -r $(find -type d -name bin)/* /usr/local/bin/
+    else
+        echo "[ERROR] Unexpected file content. Aborting..."
+        exit
+    fi
+    if [ $(find -type d -name lib | wc -l ) -eq 1 ]; then
+        cp -r $(find -type d -name lib)/* /usr/local/lib/
+    fi
+    if [ $(find -type d -name include | wc -l ) -eq 1 ]; then
+        cp -r $(find -type d -name include)/* /usr/local/include/
+    fi
     cd -
     rm -rf $TMP_DIR
    
