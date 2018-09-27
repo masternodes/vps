@@ -606,6 +606,7 @@ function install_mn_from_binary() {
     cp -r $(find -type d -name lib)/* /usr/local/lib/
     cp -r $(find -type d -name include)/* /usr/local/include/
     cd -
+    rm -rf $TMP_DIR
    
 }
 
