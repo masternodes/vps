@@ -173,7 +173,6 @@ The management script release will follow within the next couple of days.
 
 * provide my Dockerfile & Vagrantfile
 * write more test cases
-* implement a binary option (?)
 * output all supported cryptos as list within help
 
 # Errors
