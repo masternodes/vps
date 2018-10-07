@@ -23,7 +23,7 @@
 # Twitter 	@marsmensch
 
 # Useful variables
-declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -n; echo`
+#declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -n; echo`
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH="$(cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P)"
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
@@ -614,7 +614,7 @@ function install_mn_from_binary() {
     if [ $(find -type d -name include | wc -l ) -eq 1 ]; then
         cp -r $(find -type d -name include)/* /usr/local/include/
     fi
-    cd -
+    cd ${SCRIPTPATH}
     rm -rf $TMP_DIR
    
 }
