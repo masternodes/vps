@@ -320,7 +320,7 @@ function create_control_configuration() {
     rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
     # create one line per masternode with the data we have
     for NUM in $(seq 1 ${count}); do
-		cat >> /tmp/${CODENAME}_masternode.conf <<-EOF
+		cat <<-EOF >> /tmp/${CODENAME}_masternode.conf
 			${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}
 		EOF
     done
@@ -337,7 +337,7 @@ function create_systemd_configuration() {
     for NUM in $(seq 1 ${count}); do
     PASS=$(date | md5sum | cut -c1-24)
         echo "* (over)writing systemd config file ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service"  &>> ${SCRIPT_LOGFILE}
-		cat > ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service <<-EOF
+		cat <<-EOF > ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service
 			[Unit]
 			Description=${CODENAME} distributed currency daemon
 			After=network.target
