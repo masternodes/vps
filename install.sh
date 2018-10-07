@@ -578,7 +578,7 @@ function print_logo() {
 
 function install_mn_from_binary() {
 
-    TMP_DIR=/tmp/$$
+    TMP_DIR=/tmp/binary$$
     mkdir -p $TMP_DIR
     cd $TMP_DIR
     BASE_GITHUB_API="https://api.github.com/repos"
