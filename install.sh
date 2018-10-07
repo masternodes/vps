@@ -320,9 +320,7 @@ function create_control_configuration() {
     rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
     # create one line per masternode with the data we have
     for NUM in $(seq 1 ${count}); do
-		cat <<-EOF >> /tmp/${CODENAME}_masternode.conf
-			${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}
-		EOF
+        echo "${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}" >> /tmp/${CODENAME}_masternode.conf
     done
 
 }
@@ -335,32 +333,31 @@ function create_systemd_configuration() {
     echo "* (over)writing systemd config files for masternodes"
     # create one config file per masternode
     for NUM in $(seq 1 ${count}); do
-    PASS=$(date | md5sum | cut -c1-24)
-        echo "* (over)writing systemd config file ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service"  &>> ${SCRIPT_LOGFILE}
-		cat <<-EOF > ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service
-			[Unit]
-			Description=${CODENAME} distributed currency daemon
-			After=network.target
-
-			[Service]
-			User=${MNODE_USER}
-			Group=${MNODE_USER}
-
-			Type=forking
-			PIDFile=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid
-			ExecStart=${MNODE_DAEMON} -daemon -pid=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid -conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}${NUM}
-
-			Restart=always
-			RestartSec=5
-			PrivateTmp=true
-			TimeoutStopSec=60s
-			TimeoutStartSec=5s
-			StartLimitInterval=120s
-			StartLimitBurst=15
-
-			[Install]
-			WantedBy=multi-user.target
-		EOF
+        PASS=$(date | md5sum | cut -c1-24)
+        SYSTEMD_CONF_FILE=${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service
+        echo "* (over)writing systemd config file ${SYSTEMD_CONF_FILE}"  &>> ${SCRIPT_LOGFILE}
+        echo "[Unit]" > ${SYSTEMD_CONF_FILE}
+        echo "Description=${CODENAME} distributed currency daemon" >> ${SYSTEMD_CONF_FILE}
+        echo "After=network.target" >> ${SYSTEMD_CONF_FILE}
+        echo "" >> ${SYSTEMD_CONF_FILE}
+        echo "[Service]" >> ${SYSTEMD_CONF_FILE}
+        echo "User=${MNODE_USER}" >> ${SYSTEMD_CONF_FILE}
+        echo "Group=${MNODE_USER}" >> ${SYSTEMD_CONF_FILE}
+        echo "" >> ${SYSTEMD_CONF_FILE}
+        echo "Type=forking" >> ${SYSTEMD_CONF_FILE}
+        echo "PIDFile=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid" >> ${SYSTEMD_CONF_FILE}
+        echo "ExecStart=${MNODE_DAEMON} -daemon -pid=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid -conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}${NUM}" >> ${SYSTEMD_CONF_FILE}
+        echo "" >> ${SYSTEMD_CONF_FILE}
+        echo "Restart=always" >> ${SYSTEMD_CONF_FILE}
+        echo "RestartSec=5" >> ${SYSTEMD_CONF_FILE}
+        echo "PrivateTmp=true" >> ${SYSTEMD_CONF_FILE}
+        echo "TimeoutStopSec=60s" >> ${SYSTEMD_CONF_FILE}
+        echo "TimeoutStartSec=5s" >> ${SYSTEMD_CONF_FILE}
+        echo "StartLimitInterval=120s" >> ${SYSTEMD_CONF_FILE}
+        echo "StartLimitBurst=15" >> ${SYSTEMD_CONF_FILE}
+        echo "" >> ${SYSTEMD_CONF_FILE}
+        echo "[Install]" >> ${SYSTEMD_CONF_FILE}
+        echo "WantedBy=multi-user.target" >> ${SYSTEMD_CONF_FILE}
     done
 
 }
