@@ -1,4 +1,5 @@
 #!/bin/bash  
+
 # monkey patching b/c ...
 cp ../../config/curium/secp256k1buildfix.patch src/
 patch -p0 < src/secp256k1buildfix.patch

@@ -1,8 +1,10 @@
 #!/bin/bash  
+
 # monkey patching b/c vivo ...
 cp ../../config/vivo/secp256k1buildfix.patch src/
 patch -p0 < src/secp256k1buildfix.patch
 # end monkey patching
+
 chmod u+x share/genbuild.sh
 chmod u+x src/leveldb/build_detect_platform
 chmod u+x ./autogen.sh && ./autogen.sh
