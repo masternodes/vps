@@ -6,4 +6,4 @@
 #make
 #make install
 cd src/
-make -f makefile.unix 
+make -f makefile.unix USE_UPNP=
