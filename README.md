@@ -56,13 +56,13 @@ Comparing with building from source manually, you will benefit from using this s
 SSH to your VPS and clone the Github repository:
 
 ```bash
-git clone https://github.com/masternodes/vps.git && cd vps
+git clone https://github.com/Velescore/Nodemaster.git && cd vps
 ```
 
 Install & configure your desired master node with options:
 
 ```bash
-./install.sh -p pivx
+./install.sh -p veles
 ```
 
 ## Examples for typical script invocation
@@ -72,31 +72,31 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 **Install & configure 4 PIVX masternodes:**
 
 ```bash
-./install.sh -p pivx -c 4
+./install.sh -p veles -c 4
 ```
 
 **Update daemon of previously installed PIVX masternodes:**
 
 ```bash
-./install.sh -p pivx -u
+./install.sh -p veles -u
 ```
 
 **Install 6 PIVX masternodes with the git release tag "tags/v3.0.5.1"**
 
 ```bash
-./install.sh -p pivx -c 6 -r "tags/v3.0.5.1"
+./install.sh -p veles -c 6 -r "tags/v3.0.5.1"
 ```
 
 **Wipe all PIVX masternode data:**
 
 ```bash
-./install.sh -p pivx -w
+./install.sh -p veles -w
 ```
 
 **Install 2 PIVX masternodes and configure sentinel monitoring:**
 
 ```bash
-./install.sh -p pivx -c 2 -s
+./install.sh -p veles -c 2 -s
 ```
 
 ## Options
@@ -117,29 +117,29 @@ The _install.sh_ script support the following parameters:
 
 ## Troubleshooting the masternode on the VPS
 
-If you want to check the status of your masternode, the best way is currently running the cli e.g. for $MUE via
+If you want to check the status of your masternode, the best way is currently running the cli e.g. for $VLS via
 
 ```
-/usr/local/bin/mue-cli -conf=/etc/masternodes/mue_n1.conf getinfo
+/usr/local/bin/veles-cli -conf=/etc/masternodes/veles_n1.conf -getinfo
 
 {
-  "version": 1000302,
-  "protocolversion": 70701,
-  "walletversion": 61000,
+  "version": 170018,
+  "protocolversion": 80010,
+  "walletversion": 169900,
   "balance": 0.00000000,
-  "privatesend_balance": 0.00000000,
-  "blocks": 209481,
+  "blocks": 46975,
   "timeoffset": 0,
-  "connections": 5,
+  "connections": 8,
   "proxy": "",
-  "difficulty": 42882.54964804553,
+  "difficulty": 3.811582813689561,
   "testnet": false,
-  "keypoololdest": 1511380627,
-  "keypoolsize": 1001,
+  "keypoololdest": 1547897984,
+  "keypoolsize": 1000,
   "paytxfee": 0.00000000,
-  "relayfee": 0.00010000,
-  "errors": ""
+  "relayfee": 0.00001000,
+  "warnings": ""
 }
+
 ```
 
 # Help, Issues and Questions
@@ -160,14 +160,14 @@ BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
 
 The management script release will follow within the next couple of days.
 
-| command                               | description                                  |
-| :------------------------------------ | -------------------------------------------- |
-| nodemaster start pivx (all\|number)   | start all or a specific pivx masternode(s)   |
-| nodemaster restart pivx (all\|number) | stop all or a specific pivx masternode(s)    |
-| nodemaster stop pivx (all\|number)    | restart all or a specific pivx masternode(s) |
-| nodemaster cleanup pivx (all\|number) | delete chain data for all pivx masternodes   |
-| nodemaster status pivx (all\|number)  | systemd process status for a pivx masternode |
-| nodemaster tail pivx (all\|number)    | tail debug logs for a pivx masternode        |
+| command                                | description                                  |
+| :------------------------------------  | -------------------------------------------- |
+| nodemaster start veles (all\|number)   | start all or a specific pivx masternode(s)   |
+| nodemaster restart veles (all\|number) | stop all or a specific pivx masternode(s)    |
+| nodemaster stop veles (all\|number)    | restart all or a specific pivx masternode(s) |
+| nodemaster cleanup veles (all\|number) | delete chain data for all pivx masternodes   |
+| nodemaster status veles (all\|number)  | systemd process status for a pivx masternode |
+| nodemaster tail veles (all\|number)    | tail debug logs for a pivx masternode        |
 
 # Todo
 
