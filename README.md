@@ -69,31 +69,31 @@ Install & configure your desired master node with options:
 
 These are only a couple of examples for typical setups. Check my [easy step-by-step guide for [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
 
-**Install & configure 4 PIVX masternodes:**
+**Install & configure 4 Veles masternodes:**
 
 ```bash
 ./install.sh -p veles -c 4
 ```
 
-**Update daemon of previously installed PIVX masternodes:**
+**Update daemon of previously installed Veles masternodes:**
 
 ```bash
 ./install.sh -p veles -u
 ```
 
-**Install 6 PIVX masternodes with the git release tag "tags/v3.0.5.1"**
+**Install 6 Veles masternodes with the git release tag "tags/v0.17.0.18"**
 
 ```bash
-./install.sh -p veles -c 6 -r "tags/v3.0.5.1"
+./install.sh -p veles -c 6 -r "tags/v0.17.0.18"
 ```
 
-**Wipe all PIVX masternode data:**
+**Wipe all Veles masternode data:**
 
 ```bash
 ./install.sh -p veles -w
 ```
 
-**Install 2 PIVX masternodes and configure sentinel monitoring:**
+**Install 2 Veles masternodes and configure sentinel monitoring:**
 
 ```bash
 ./install.sh -p veles -c 2 -s
@@ -162,12 +162,12 @@ The management script release will follow within the next couple of days.
 
 | command                                | description                                  |
 | :------------------------------------  | -------------------------------------------- |
-| nodemaster start veles (all\|number)   | start all or a specific pivx masternode(s)   |
-| nodemaster restart veles (all\|number) | stop all or a specific pivx masternode(s)    |
-| nodemaster stop veles (all\|number)    | restart all or a specific pivx masternode(s) |
-| nodemaster cleanup veles (all\|number) | delete chain data for all pivx masternodes   |
-| nodemaster status veles (all\|number)  | systemd process status for a pivx masternode |
-| nodemaster tail veles (all\|number)    | tail debug logs for a pivx masternode        |
+| nodemaster start veles (all\|number)   | start all or a specific Veles masternode(s)   |
+| nodemaster restart veles (all\|number) | stop all or a specific Veles masternode(s)    |
+| nodemaster stop veles (all\|number)    | restart all or a specific Veles masternode(s) |
+| nodemaster cleanup veles (all\|number) | delete chain data for all Veles masternodes   |
+| nodemaster status veles (all\|number)  | systemd process status for a Veles masternode |
+| nodemaster tail veles (all\|number)    | tail debug logs for a Veles masternode        |
 
 # Todo
 
