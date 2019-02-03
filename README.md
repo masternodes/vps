@@ -56,7 +56,7 @@ Comparing with building from source manually, you will benefit from using this s
 SSH to your VPS and clone the Github repository:
 
 ```bash
-git clone https://github.com/NewCapital/vps.git && cd vps
+git clone https://github.com/NewCapital/nodemaster.git && cd nodemaster
 ```
 
 Install & configure your desired master node with options:
