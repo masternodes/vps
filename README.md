@@ -81,10 +81,10 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 ./install.sh -p twins -u
 ```
 
-**Install 6 TWINS masternodes with the git release tag "tags/v3.2.0.4"**
+**Install 6 TWINS masternodes with the git release tag "tags/v3.2.0.6"**
 
 ```bash
-./install.sh -p pivx -c 6 -r "tags/v3.2.0.4"
+./install.sh -p twins -c 6 -r "tags/v3.2.0.6"
 ```
 
 **Wipe all TWINS masternode data:**
@@ -105,9 +105,9 @@ The _install.sh_ script support the following parameters:
 
 | Long Option  | Short Option | Values              | description                                                         |
 | :----------- | :----------- | ------------------- | ------------------------------------------------------------------- |
-| --project    | -p           | project, e.g. "pix" | shortname for the project                                           |
+| --project    | -p           | project,e.g."twins" | shortname for the project                                           |
 | --net        | -n           | "4" / "6"           | ip type for masternode. (ipv)6 is default                           |
-| --release    | -r           | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested                |
+| --release    | -r           | e.g. "tags/v3.2.0.6"| a specific git tag/branch, defaults to latest tested                |
 | --count      | -c           | number              | amount of masternodes to be configured                              |
 | --update     | -u           | --                  | update specified masternode daemon, combine with -p flag            |
 | --sentinel   | -s           | --                  | install and configure sentinel for node monitoring                  |
