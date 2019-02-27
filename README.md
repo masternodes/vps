@@ -75,7 +75,7 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 ./install.sh -p twins -c 4 -n 6
 ```
 
-**Update daemon of previously installed TWINS masternodes:**
+**Update daemon of previously installed TWINS masternodes to the latest version:**
 
 ```bash
 ./install.sh -p twins -u
