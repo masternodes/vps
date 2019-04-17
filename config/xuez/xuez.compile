@@ -2,6 +2,6 @@
 # this file contains all commands to compile and install the daemon
 
 ./autogen.sh
-./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb
+./configure --enable-tests=no --without-gui --with-incompatible-bdb CFLAGS="-march=native"
 make
 make install
