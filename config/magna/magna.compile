@@ -1,0 +1,6 @@
+#!/bin/bash   
+
+./autogen.sh
+./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb
+make
+make install

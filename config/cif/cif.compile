@@ -1,0 +1,9 @@
+#!/bin/bash    
+# this file contains all commands to compile and install the daemon
+chmod +x /root/vps/code/cif/autogen.sh
+chmod +x /root/vps/code/cif/share/genbuild.sh
+chmod +x /root/vps/code/cif/src/leveldb/build_detect_platform
+./autogen.sh
+./configure --disable-dependency-tracking --enable-tests=no --without-gui --without-miniupnpc --with-incompatible-bdb CFLAGS="-march=native" LIBS="-lcurl -lssl -lcrypto -lz"
+make
+make install
