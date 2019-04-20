@@ -78,14 +78,13 @@ function show_help(){
     echo "Options:";
     echo "-h or --help: Displays this information.";
     echo "-p or --project string: Project to be installed. REQUIRED.";
-    echo "-n or --net: IP address type t be used (4 vs. 6).";
+    echo "-n or --net: IP address type to be used (4 vs. 6).";
     echo "-c or --count: Number of masternodes to be installed.";
     echo "-b or --base: Starting number for masternode instances.";
     echo "-r or --release: Release version to be installed.";
     echo "-s or --sentinel: Add sentinel monitoring for a node type. Combine with the -p option";
     echo "-w or --wipe: Wipe ALL local data for a node type. Combine with the -p option";
     echo "-u or --update: Update a specific masternode daemon. Combine with the -p option";
-    echo "-r or --release: Release version to be installed.";
     echo "-x or --startnodes: Start masternodes after installation to sync with blockchain";
     exit 1;
 }
@@ -174,7 +173,7 @@ function create_mn_dirs() {
     # individual data dirs for now to avoid problems
     echo "* Creating masternode directories"
     mkdir -p ${MNODE_CONF_BASE}
-    for NUM in $(seq 1 ${count}); do
+    for ((NUM = ${base}; NUM < $[${base} + ${count}]; NUM++)); do
         if [ ! -d "${MNODE_DATA_BASE}/${CODENAME}${NUM}" ]; then
              echo "creating data directory ${MNODE_DATA_BASE}/${CODENAME}${NUM}" &>> ${SCRIPT_LOGFILE}
              mkdir -p ${MNODE_DATA_BASE}/${CODENAME}${NUM} &>> ${SCRIPT_LOGFILE}
@@ -196,12 +195,12 @@ function create_sentinel_setup() {
 		cd /usr/share                                               &>> ${SCRIPT_LOGFILE}
 		git clone https://github.com/dashpay/sentinel.git sentinel  &>> ${SCRIPT_LOGFILE}
 		cd sentinel                                                 &>> ${SCRIPT_LOGFILE}
-		rm -f rm sentinel.conf                                      &>> ${SCRIPT_LOGFILE}
+		rm -f sentinel.conf                                         &>> ${SCRIPT_LOGFILE}
 	else
 		echo "* Updating the existing sentinel GIT repo"
 		cd ${SENTINEL_BASE}           &>> ${SCRIPT_LOGFILE}
 		git pull                      &>> ${SCRIPT_LOGFILE}
-		rm -f rm sentinel.conf        &>> ${SCRIPT_LOGFILE}
+		rm -f sentinel.conf           &>> ${SCRIPT_LOGFILE}
 	fi
 	
 	# create a globally accessible venv and install sentinel requirements
@@ -209,7 +208,8 @@ function create_sentinel_setup() {
 	${SENTINEL_ENV}/bin/pip install -r requirements.txt    &>> ${SCRIPT_LOGFILE}
 
     # create one sentinel config file per masternode
-	for NUM in $(seq 1 ${count}); do
+        for ((NUM = ${base}; NUM < $[${base} + ${count}]; NUM++)); do
+
 	    if [ ! -f "${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf" ]; then
 	         echo "* Creating sentinel configuration for ${CODENAME} masternode number ${NUM}" &>> ${SCRIPT_LOGFILE}    
 		     echo "dash_conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf"            > ${SENTINEL_BASE}/${CODENAME}${NUM}_sentinel.conf
@@ -255,7 +255,7 @@ function validate_netchoice() {
 
     echo "* Validating network rules"
 
-    # break here of net isn't 4 or 6
+    # break here if net isn't 4 or 6
     if [ ${net} -ne 4 ] && [ ${net} -ne 6 ]; then
         echo "invalid NETWORK setting, can only be 4 or 6!"
         exit 1;
@@ -279,7 +279,8 @@ function create_mn_configuration() {
         cd ${SCRIPTPATH}
 
         # create one config file per masternode
-        for NUM in $(seq ${base} ${count}); do
+        for ((NUM = ${base}; NUM < $[${base} + ${count}]; NUM++)); do
+
         PASS=$(date | md5sum | cut -c1-24)
 
             # we dont want to overwrite an existing config file
@@ -314,7 +315,8 @@ function create_control_configuration() {
     # delete any old stuff that's still around
     rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
     # create one line per masternode with the data we have
-    for NUM in $(seq 1 ${count}); do
+    for ((NUM = ${base}; NUM < $[${base} + ${count}]; NUM++)); do
+
 		cat >> /tmp/${CODENAME}_masternode.conf <<-EOF
 			${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}
 		EOF
@@ -329,7 +331,8 @@ function create_systemd_configuration() {
 
     echo "* (over)writing systemd config files for masternodes"
     # create one config file per masternode
-    for NUM in $(seq 1 ${count}); do
+    for ((NUM = ${base}; NUM < $[${base} + ${count}]; NUM++)); do
+
     PASS=$(date | md5sum | cut -c1-24)
         echo "* (over)writing systemd config file ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service"  &>> ${SCRIPT_LOGFILE}
 		cat > ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service <<-EOF
@@ -357,7 +360,6 @@ function create_systemd_configuration() {
 			WantedBy=multi-user.target
 		EOF
     done
-
 }
 
 #
@@ -438,7 +440,15 @@ function source_config() {
         if [ -z "${count}" ]
         then
             count=${SETUP_MNODES_COUNT}
-            echo "No number given, installing default number of nodes: ${SETUP_MNODES_COUNT}" &>> ${SCRIPT_LOGFILE}
+            echo "No count given, installing default number of nodes: ${SETUP_MNODES_COUNT}" &>> ${SCRIPT_LOGFILE}
+        fi
+
+        # base is from the default config but can ultimately be
+        # overwritten at runtime
+        if [ -z "${base}" ]
+        then
+            base=${SETUP_MNODES_BASE}
+            echo "No base given, installing from default node number: ${SETUP_MNODES_BASE}" &>> ${SCRIPT_LOGFILE}
         fi
 
         # release is from the default project config but can ultimately be
@@ -480,7 +490,7 @@ function source_config() {
             echo "$(tput bold)$(tput setaf 2) => ${project} masternode(s) in version ${release} $(tput sgr0)"
         else
             echo "I am going to install and configure "
-            echo "$(tput bold)$(tput setaf 2) => ${count} ${project} masternode(s) in version ${release} $(tput sgr0)"
+            echo "$(tput bold)$(tput setaf 2) => ${count} ${project} masternode(s) at version ${release} starting with instance number ${base} $(tput sgr0)"
         fi
         echo "for you now."
         echo ""
@@ -521,9 +531,9 @@ function source_config() {
             prepare_mn_interfaces
             swaphack
         fi
-        install_packages
-        print_logo
-        build_mn_from_source
+#        install_packages
+#        print_logo
+#        build_mn_from_source
         if [ "$update" -eq 0 ]; then
             create_mn_user
             create_mn_dirs
@@ -532,7 +542,7 @@ function source_config() {
                 echo "* Sentinel setup chosen" &>> ${SCRIPT_LOGFILE}
                 create_sentinel_setup
             fi
-            configure_firewall
+#            configure_firewall
             create_mn_configuration
             create_control_configuration
             create_systemd_configuration
@@ -630,10 +640,13 @@ function final_call() {
 
     # place future helper script accordingly on fresh install
     if [ "$update" -eq 0 ]; then
-        cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
+        if [ ! -s ${MNODE_HELPER}_${CODENAME} ]; then   
+            cp ${SCRIPTPATH}/scripts/activate_masternodes.sh ${MNODE_HELPER}_${CODENAME}
+        fi
         echo "">> ${MNODE_HELPER}_${CODENAME}
 
-        for NUM in $(seq 1 ${count}); do
+        for ((NUM = ${base}; NUM < $[${base} + ${count}]; NUM++)); do
+
             echo "systemctl daemon-reload" >> ${MNODE_HELPER}_${CODENAME}
             echo "systemctl enable ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
             echo "systemctl restart ${CODENAME}_n${NUM}" >> ${MNODE_HELPER}_${CODENAME}
@@ -715,7 +728,8 @@ function prepare_mn_interfaces() {
         cp ${NETWORK_CONFIG} ${NETWORK_CONFIG}.${DATE_STAMP}.bkp &>> ${SCRIPT_LOGFILE}
 
         # create the additional ipv6 interfaces, rc.local because it's more generic
-        for NUM in $(seq 1 ${count}); do
+        for ((NUM = ${base}; NUM < $[${base} + ${count}]; NUM++)); do
+
 
             # check if the interfaces exist
             ip -6 addr | grep -qi "${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}"
@@ -749,7 +763,7 @@ sentinel=0;
 startnodes=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wsudx" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug,startnodes" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:b:r:wsudx" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug,startnodes" -n "install.sh" -- "$@");
 
 #Bad arguments
 if [ $? -ne 0 ];
@@ -876,6 +890,7 @@ main() {
         echo "SCVERSION:            ${SCVERSION}"
         echo "RELEASE:              ${release}"
         echo "SETUP_MNODES_COUNT:   ${SETUP_MNODES_COUNT}"
+        echo "SETUP_MNODES_BASE:    ${SETUP_MNODES_BASE}"
         echo "END DEFAULTS => "
     fi
 
@@ -899,6 +914,7 @@ main() {
         echo "RELEASE: ${release}"
         echo "PROJECT: ${project}"
         echo "SETUP_MNODES_COUNT: ${count}"
+        echo "SETUP_MNODES_BASE: ${base}"
         echo "NETWORK_TYPE: ${NETWORK_TYPE}"
         echo "NETWORK_TYPE: ${net}"
 
