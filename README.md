@@ -96,7 +96,7 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 **Install 2 TWINS masternodes and configure sentinel monitoring:**
 
 ```bash
-./install.sh -p TWINS -c 2 -s
+./install.sh -p twins -c 2 -s
 ```
 
 ## Options
