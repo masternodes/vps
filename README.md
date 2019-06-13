@@ -81,10 +81,10 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 ./install.sh -p twins -u
 ```
 
-**Install 6 TWINS masternodes with the git release tag "tags/v3.2.0.6"**
+**Install 6 TWINS masternodes with the git release tag "tags/v3.2.2.2"**
 
 ```bash
-./install.sh -p twins -c 6 -r "tags/v3.2.0.6"
+./install.sh -p twins -c 6 -r "tags/v3.2.2.2"
 ```
 
 **Wipe all TWINS masternode data:**
