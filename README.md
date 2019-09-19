@@ -4,14 +4,9 @@ The **Nodemaster** scripts is a collection of utilities to manage, setup and upd
 
 I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part.
 
-If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
+If this script helped you in any way, please contribute some feedback. Never forget:
 
 **Have fun, this is crypto after all!**
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
-
 
 Feel free to use my reflink to signup and receive a bonus w/ vultr:
 <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
@@ -148,13 +143,9 @@ I activated the "[issues](https://github.com/masternodes/vps/issues)" option on 
 
 I might not be able to reply immediately, but i do usually within a couple of days at worst. I will also happily take any pull requests that make masternode installations easier for everyone ;-)
 
-If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
+If this script helped you in any way, please contribute some feedback. Never forget:
 
 **Have fun, this is crypto after all!**
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
 
 ## Management script (not yet implemented)
 
@@ -183,7 +174,3 @@ The management script release will follow within the next couple of days.
 Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
 
 **Have fun, this is crypto after all!**
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
