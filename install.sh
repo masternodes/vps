@@ -7,8 +7,9 @@
 #  ╚═╝  ╚═══╝ ╚═════╝ ╚═════╝ ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
 #                                                              ╚╗ @marsmensch 2016-2018 ╔╝
 #
-# version 	v0.9.9
-# date    	2018-06-09
+# version 	v0.9.9.1
+# date    	2018-09-27
+# edited by     Eloy Gil (hello@eloygil.com)
 #
 # function:	part of the masternode scripts, source the proper config file
 #
@@ -22,11 +23,11 @@
 # Twitter 	@marsmensch
 
 # Useful variables
-declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -n; echo`
+#declare -r CRYPTOS=`ls -l config/ | egrep '^d' | awk '{print $9}' | xargs echo -n; echo`
 declare -r DATE_STAMP="$(date +%y-%m-%d-%s)"
 declare -r SCRIPTPATH="$(cd $(dirname ${BASH_SOURCE[0]}) > /dev/null; pwd -P)"
 declare -r MASTERPATH="$(dirname "${SCRIPTPATH}")"
-declare -r SCRIPT_VERSION="v0.9.9"
+declare -r SCRIPT_VERSION="v0.9.9.1"
 declare -r SCRIPT_LOGFILE="/tmp/nodemaster_${DATE_STAMP}_out.log"
 declare -r IPV4_DOC_LINK="https://www.vultr.com/docs/add-secondary-ipv4-address"
 declare -r DO_NET_CONF="/etc/network/interfaces.d/50-cloud-init.cfg"
@@ -44,7 +45,6 @@ cat << "EOF"
                                                              ╚╗ @marsmensch 2016-2018 ╔╝
 EOF
 echo "$(tput sgr0)$(tput setaf 3)Have fun, this is crypto after all!$(tput sgr0)"
-echo "$(tput setaf 6)Donations (BTC): 33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3"
 echo "Questions: marsmensch@protonmail.com$(tput sgr0)"
 }
 
@@ -74,11 +74,12 @@ function show_help(){
     showbanner
     echo "install.sh, version $SCRIPT_VERSION";
     echo "Usage example:";
-    echo "install.sh (-p|--project) string [(-h|--help)] [(-n|--net) int] [(-c|--count) int] [(-r|--release) string] [(-w|--wipe)] [(-u|--update)] [(-x|--startnodes)]";
+    echo "install.sh (-p|--project) string [(-h|--help)] [(-b|--binary)] [(-n|--net) int] [(-c|--count) int] [(-r|--release) string] [(-w|--wipe)] [(-u|--update)] [(-x|--startnodes)]";
     echo "Options:";
     echo "-h or --help: Displays this information.";
+    echo "-b or --binary: Tries to install using linux precompiled binaries.";
     echo "-p or --project string: Project to be installed. REQUIRED.";
-    echo "-n or --net: IP address type t be used (4 vs. 6).";
+    echo "-n or --net: IP address type to be used (4 vs. 6).";
     echo "-c or --count: Number of masternodes to be installed.";
     echo "-r or --release: Release version to be installed.";
     echo "-s or --sentinel: Add sentinel monitoring for a node type. Combine with the -p option";
@@ -107,6 +108,10 @@ function check_distro() {
     fi
 }
 
+function install_basic_packages() {
+    apt-get -qqy -o=Dpkg::Use-Pty=0 -o=Acquire::ForceIPv4=true install jp2a &>> ${SCRIPT_LOGFILE}
+}
+
 #
 # /* no parameters, installs the base set of packages that are required for all projects */
 #
@@ -120,7 +125,7 @@ function install_packages() {
     libcurl4-gnutls-dev protobuf-compiler libboost-all-dev autotools-dev automake \
     libboost-all-dev libssl-dev make autoconf libtool git apt-utils g++ \
     libprotobuf-dev pkg-config libudev-dev libqrencode-dev bsdmainutils \
-    pkg-config libgmp3-dev libevent-dev jp2a pv virtualenv libdb4.8-dev libdb4.8++-dev  &>> ${SCRIPT_LOGFILE}
+    pkg-config libgmp3-dev libevent-dev pv virtualenv libdb4.8-dev libdb4.8++-dev  &>> ${SCRIPT_LOGFILE}
     
     # only for 18.04 // openssl
     if [[ "${VERSION_ID}" == "18.04" ]] ; then
@@ -144,7 +149,7 @@ if [ $(free | awk '/^Swap:/ {exit !$2}') ] || [ ! -f "/var/mnode_swap.img" ];the
     swapon /var/mnode_swap.img &>> ${SCRIPT_LOGFILE}
     echo '/var/mnode_swap.img none swap sw 0 0' | tee -a /etc/fstab &>> ${SCRIPT_LOGFILE}
     echo 'vm.swappiness=10' | tee -a /etc/sysctl.conf               &>> ${SCRIPT_LOGFILE}
-    echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf		&>> ${SCRIPT_LOGFILE}
+    echo 'vm.vfs_cache_pressure=50' | tee -a /etc/sysctl.conf	    &>> ${SCRIPT_LOGFILE}
 else
     echo "* All good, we have a swap"
 fi
@@ -314,9 +319,7 @@ function create_control_configuration() {
     rm -f /tmp/${CODENAME}_masternode.conf &>> ${SCRIPT_LOGFILE}
     # create one line per masternode with the data we have
     for NUM in $(seq 1 ${count}); do
-		cat >> /tmp/${CODENAME}_masternode.conf <<-EOF
-			${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}
-		EOF
+        echo "${CODENAME}MN${NUM} [${IPV6_INT_BASE}:${NETWORK_BASE_TAG}::${NUM}]:${MNODE_INBOUND_PORT} MASTERNODE_PRIVKEY_FOR_${CODENAME}MN${NUM} COLLATERAL_TX_FOR_${CODENAME}MN${NUM} OUTPUT_NO_FOR_${CODENAME}MN${NUM}" >> /tmp/${CODENAME}_masternode.conf
     done
 
 }
@@ -329,32 +332,31 @@ function create_systemd_configuration() {
     echo "* (over)writing systemd config files for masternodes"
     # create one config file per masternode
     for NUM in $(seq 1 ${count}); do
-    PASS=$(date | md5sum | cut -c1-24)
-        echo "* (over)writing systemd config file ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service"  &>> ${SCRIPT_LOGFILE}
-		cat > ${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service <<-EOF
-			[Unit]
-			Description=${CODENAME} distributed currency daemon
-			After=network.target
-
-			[Service]
-			User=${MNODE_USER}
-			Group=${MNODE_USER}
-
-			Type=forking
-			PIDFile=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid
-			ExecStart=${MNODE_DAEMON} -daemon -pid=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid -conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}${NUM}
-
-			Restart=always
-			RestartSec=5
-			PrivateTmp=true
-			TimeoutStopSec=60s
-			TimeoutStartSec=5s
-			StartLimitInterval=120s
-			StartLimitBurst=15
-
-			[Install]
-			WantedBy=multi-user.target
-		EOF
+        PASS=$(date | md5sum | cut -c1-24)
+        SYSTEMD_CONF_FILE=${SYSTEMD_CONF}/${CODENAME}_n${NUM}.service
+        echo "* (over)writing systemd config file ${SYSTEMD_CONF_FILE}"  &>> ${SCRIPT_LOGFILE}
+        echo "[Unit]" > ${SYSTEMD_CONF_FILE}
+        echo "Description=${CODENAME} distributed currency daemon" >> ${SYSTEMD_CONF_FILE}
+        echo "After=network.target" >> ${SYSTEMD_CONF_FILE}
+        echo "" >> ${SYSTEMD_CONF_FILE}
+        echo "[Service]" >> ${SYSTEMD_CONF_FILE}
+        echo "User=${MNODE_USER}" >> ${SYSTEMD_CONF_FILE}
+        echo "Group=${MNODE_USER}" >> ${SYSTEMD_CONF_FILE}
+        echo "" >> ${SYSTEMD_CONF_FILE}
+        echo "Type=forking" >> ${SYSTEMD_CONF_FILE}
+        echo "PIDFile=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid" >> ${SYSTEMD_CONF_FILE}
+        echo "ExecStart=${MNODE_DAEMON} -daemon -pid=${MNODE_DATA_BASE}/${CODENAME}${NUM}/${CODENAME}.pid -conf=${MNODE_CONF_BASE}/${CODENAME}_n${NUM}.conf -datadir=${MNODE_DATA_BASE}/${CODENAME}${NUM}" >> ${SYSTEMD_CONF_FILE}
+        echo "" >> ${SYSTEMD_CONF_FILE}
+        echo "Restart=always" >> ${SYSTEMD_CONF_FILE}
+        echo "RestartSec=5" >> ${SYSTEMD_CONF_FILE}
+        echo "PrivateTmp=true" >> ${SYSTEMD_CONF_FILE}
+        echo "TimeoutStopSec=60s" >> ${SYSTEMD_CONF_FILE}
+        echo "TimeoutStartSec=5s" >> ${SYSTEMD_CONF_FILE}
+        echo "StartLimitInterval=120s" >> ${SYSTEMD_CONF_FILE}
+        echo "StartLimitBurst=15" >> ${SYSTEMD_CONF_FILE}
+        echo "" >> ${SYSTEMD_CONF_FILE}
+        echo "[Install]" >> ${SYSTEMD_CONF_FILE}
+        echo "WantedBy=multi-user.target" >> ${SYSTEMD_CONF_FILE}
     done
 
 }
@@ -364,9 +366,9 @@ function create_systemd_configuration() {
 #
 function set_permissions() {
 
-	# maybe add a sudoers entry later
-	mkdir -p /var/log/sentinel &>> ${SCRIPT_LOGFILE}
-	chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel ${SENTINEL_BASE}/database &>> ${SCRIPT_LOGFILE}
+    # maybe add a sudoers entry later
+    mkdir -p /var/log/sentinel &>> ${SCRIPT_LOGFILE}
+    chown -R ${MNODE_USER}:${MNODE_USER} ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel ${SENTINEL_BASE}/database &>> ${SCRIPT_LOGFILE}
     # make group permissions same as user, so vps-user can be added to masternode group
     chmod -R g=u ${MNODE_CONF_BASE} ${MNODE_DATA_BASE} /var/log/sentinel &>> ${SCRIPT_LOGFILE}
 
@@ -495,7 +497,7 @@ function source_config() {
             NETWORK_TYPE=4
             echo "WARNING:"
             echo "You selected IPv4 for networking but there is no automatic workflow for this part."
-            echo "This means you will have some mamual work to do to after this configuration run."
+            echo "This means you will have some manual work to do to after this configuration run."
             echo ""
             echo "See the following link for instructions how to add multiple ipv4 addresses on vultr:"
             echo "${IPV4_DOC_LINK}"
@@ -520,9 +522,16 @@ function source_config() {
             prepare_mn_interfaces
             swaphack
         fi
-        install_packages
+        install_basic_packages
+        if [ "$binary" -ne 1 ]; then
+            install_packages
+        fi
         print_logo
-        build_mn_from_source
+        if [ "$binary" -eq 1 ]; then
+            install_mn_from_binary
+        else
+            build_mn_from_source
+        fi
         if [ "$update" -eq 0 ]; then
             create_mn_user
             create_mn_dirs
@@ -561,6 +570,49 @@ function print_logo() {
             jp2a -b --colors --width=56 ${SCRIPTPATH}/assets/default.jpg
     fi
 
+}
+
+function install_mn_from_binary() {
+
+    TMP_DIR=/tmp/binary
+    mkdir -p $TMP_DIR
+    cd $TMP_DIR
+    BASE_GITHUB_API="https://api.github.com/repos"
+    GITHUB_USER_NAME=$(echo ${GIT_URL} | awk -F 'github.com/' '{ print $2 }' | awk -F '/' '{ print $1 }')
+    GITHUB_REPO_FULL=$(echo ${GIT_URL} | awk -F 'github.com/' '{ print $2 }' | awk -F '/' '{ print $2 }')
+    GITHUB_REPO_NAME=${GITHUB_REPO_FULL%.git}
+    BINARY_URL=$(curl -s ${BASE_GITHUB_API}/${GITHUB_USER_NAME}/${GITHUB_REPO_NAME}/releases/latest | grep linux | grep x86_64 | grep url | awk -F '"' '{ print $4 }')
+    if [ -z ${BINARY_URL+x} ]; then 
+        echo "[ERROR] Failed to find Linux binaries for ${project}. Try compiling from source files."
+        exit
+    fi
+    echo "* Downloading linux binaries from ${BINARY_URL}..."
+    BINARY_FILE=$(echo $BINARY_URL | awk -F '/' '{ print $NF }')
+    wget --quiet -O $BINARY_FILE $BINARY_URL
+    echo "* Done."
+    if [ ${BINARY_FILE: -7} == ".tar.gz" ]; then
+        tar xzvf $BINARY_FILE 
+    elif [ ${BINARY_FILE: -4} == ".zip" ]; then
+        unzip $BINARY_FILE
+    else
+        "[ERROR] Unexpected file extension. Aborting..."
+        exit
+    fi
+    if [ $(find -type d -name bin | wc -l ) -eq 1 ]; then 
+        cp -r $(find -type d -name bin)/* /usr/local/bin/
+    else
+        echo "[ERROR] Unexpected file content. Aborting..."
+        exit
+    fi
+    if [ $(find -type d -name lib | wc -l ) -eq 1 ]; then
+        cp -r $(find -type d -name lib)/* /usr/local/lib/
+    fi
+    if [ $(find -type d -name include | wc -l ) -eq 1 ]; then
+        cp -r $(find -type d -name include)/* /usr/local/include/
+    fi
+    cd ${SCRIPTPATH}
+    rm -rf $TMP_DIR
+   
 }
 
 #
@@ -748,7 +800,7 @@ sentinel=0;
 startnodes=0;
 
 # Execute getopt
-ARGS=$(getopt -o "hp:n:c:r:wsudx" -l "help,project:,net:,count:,release:,wipe,sentinel,update,debug,startnodes" -n "install.sh" -- "$@");
+ARGS=$(getopt -o "hp:n:c:r:wbsudx" -l "help,project:,net:,count:,release:,wipe,binary,sentinel,update,debug,startnodes" -n "install.sh" -- "$@");
 
 #Bad arguments
 if [ $? -ne 0 ];
@@ -800,6 +852,10 @@ while true; do
         -w|--wipe)
             shift;
                     wipe="1";
+            ;;
+        -b|--binary)
+            shift;
+                    binary="1";
             ;;
         -s|--sentinel)
             shift;
