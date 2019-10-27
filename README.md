@@ -152,6 +152,8 @@ I might not be able to reply immediately, but i do usually within a couple of da
 
 If this script helped you in any way, please contribute some feedback. Never forget:
 
+**Have fun, this is crypto after all!**
+
 ## Management script (not yet implemented)
 
 The management script release will follow within the next couple of days.
