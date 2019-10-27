@@ -4,14 +4,9 @@ The **Nodemaster** scripts is a collection of utilities to manage, setup and upd
 
 I am quite confident this is the single best and almost effortless way to setup different crypto masternodes, without bothering too much about the setup part.
 
-If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
+If this script helped you in any way, please contribute some feedback. Never forget:
 
 **Have fun, this is crypto after all!**
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
-
 
 Feel free to use my reflink to signup and receive a bonus w/ vultr:
 <a href="https://www.vultr.com/?ref=6903922"><img src="https://www.vultr.com/media/banner_2.png" width="468" height="60"></a>
@@ -99,6 +94,12 @@ These are only a couple of examples for typical setups. Check my [easy step-by-s
 ./install.sh -p pivx -c 2 -s
 ```
 
+**Install 2 PIVX masternodes using binary build instead of compiling the source code:**
+
+```bash
+./install.sh -p pivx -c 2 -b
+```
+
 ## Options
 
 The _install.sh_ script support the following parameters:
@@ -108,6 +109,7 @@ The _install.sh_ script support the following parameters:
 | --project    | -p           | project, e.g. "pix" | shortname for the project                                           |
 | --net        | -n           | "4" / "6"           | ip type for masternode. (ipv)6 is default                           |
 | --release    | -r           | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested                |
+| --binary     | -b           | --                  | use linux binaries instead of compiling from source code            |
 | --count      | -c           | number              | amount of masternodes to be configured                              |
 | --update     | -u           | --                  | update specified masternode daemon, combine with -p flag            |
 | --sentinel   | -s           | --                  | install and configure sentinel for node monitoring                  |
@@ -148,13 +150,7 @@ I activated the "[issues](https://github.com/masternodes/vps/issues)" option on 
 
 I might not be able to reply immediately, but i do usually within a couple of days at worst. I will also happily take any pull requests that make masternode installations easier for everyone ;-)
 
-If this script helped you in any way, please contribute some feedback. BTC donations also welcome and never forget:
-
-**Have fun, this is crypto after all!**
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
+If this script helped you in any way, please contribute some feedback. Never forget:
 
 ## Management script (not yet implemented)
 
@@ -179,10 +175,6 @@ The management script release will follow within the next couple of days.
 
 * currently not fully idempotent
 
-Ping me at contact@marsmenschen.com for questions and send some crypto my way if you are happy.
+Ping me at contact@marsmenschen.com for questions.
 
 **Have fun, this is crypto after all!**
-
-```
-BTC  33ENWZ9RCYBG7nv6ac8KxBUSuQX64Hx3x3
-```
