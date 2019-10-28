@@ -80,6 +80,7 @@ function show_help(){
     echo "-p or --project string: Project to be installed. REQUIRED.";
     echo "-n or --net: IP address type t be used (4 vs. 6).";
     echo "-c or --count: Number of masternodes to be installed.";
+    echo "-b or --base: Starting number for masternode instances.";
     echo "-r or --release: Release version to be installed.";
     echo "-s or --sentinel: Add sentinel monitoring for a node type. Combine with the -p option";
     echo "-w or --wipe: Wipe ALL local data for a node type. Combine with the -p option";
@@ -278,7 +279,7 @@ function create_mn_configuration() {
         cd ${SCRIPTPATH}
 
         # create one config file per masternode
-        for NUM in $(seq 1 ${count}); do
+        for NUM in $(seq ${base} ${count}); do
         PASS=$(date | md5sum | cut -c1-24)
 
             # we dont want to overwrite an existing config file
@@ -785,6 +786,14 @@ while true; do
                     if [ -n "$1" ];
                     then
                         count="$1";
+                        shift;
+                    fi
+            ;;
+        -b|--base)
+            shift;
+                    if [ -n "$1" ]; 
+                    then
+                        base="$1";
                         shift;
                     fi
             ;;
