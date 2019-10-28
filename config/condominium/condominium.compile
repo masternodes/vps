@@ -1,0 +1,10 @@
+#!/bin/bash    
+# this file contains all commands to compile and install the daemon
+
+sudo apt-get install build-essential libtool autotools-dev autoconf pkg-config libssl-dev
+sudo apt-get install libboost-all-dev
+../dist/configure --enable-cxx --disable-shared --with-pic --prefix=$BDB_PREFIX
+./autogen.sh
+./configure
+make
+make install
