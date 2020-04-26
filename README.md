@@ -51,47 +51,47 @@ Comparing with building from source manually, you will benefit from using this s
 SSH to your VPS and clone the Github repository:
 
 ```bash
-git clone https://github.com/masternodes/vps.git && cd vps
+git clone https://github.com/NewCapital/nodemaster.git && cd nodemaster
 ```
 
 Install & configure your desired master node with options:
 
 ```bash
-./install.sh -p pivx
+./install.sh -p twins
 ```
 
 ## Examples for typical script invocation
 
 These are only a couple of examples for typical setups. Check my [easy step-by-step guide for [vultr](/docs/masternode_vps.md) that will guide you through the hardest parts.
 
-**Install & configure 4 PIVX masternodes:**
+**Install & configure 4 TWINS masternodes with IPv6 support:**
 
 ```bash
-./install.sh -p pivx -c 4
+./install.sh -p twins -c 4 -n 6
 ```
 
-**Update daemon of previously installed PIVX masternodes:**
+**Update daemon of previously installed TWINS masternodes to the latest version:**
 
 ```bash
-./install.sh -p pivx -u
+./install.sh -p twins -u
 ```
 
-**Install 6 PIVX masternodes with the git release tag "tags/v3.0.5.1"**
+**Install 6 TWINS masternodes with the git release tag "tags/v3.2.2.2"**
 
 ```bash
-./install.sh -p pivx -c 6 -r "tags/v3.0.5.1"
+./install.sh -p twins -c 6 -r "tags/v3.2.2.2"
 ```
 
-**Wipe all PIVX masternode data:**
+**Wipe all TWINS masternode data:**
 
 ```bash
-./install.sh -p pivx -w
+./install.sh -p twins -w
 ```
 
-**Install 2 PIVX masternodes and configure sentinel monitoring:**
+**Install 2 TWINS masternodes and configure sentinel monitoring:**
 
 ```bash
-./install.sh -p pivx -c 2 -s
+./install.sh -p twins -c 2 -s
 ```
 
 ## Options
@@ -100,9 +100,9 @@ The _install.sh_ script support the following parameters:
 
 | Long Option  | Short Option | Values              | description                                                         |
 | :----------- | :----------- | ------------------- | ------------------------------------------------------------------- |
-| --project    | -p           | project, e.g. "pix" | shortname for the project                                           |
+| --project    | -p           | project,e.g."twins" | shortname for the project                                           |
 | --net        | -n           | "4" / "6"           | ip type for masternode. (ipv)6 is default                           |
-| --release    | -r           | e.g. "tags/v3.0.4"  | a specific git tag/branch, defaults to latest tested                |
+| --release    | -r           | e.g. "tags/v3.2.0.6"| a specific git tag/branch, defaults to latest tested                |
 | --count      | -c           | number              | amount of masternodes to be configured                              |
 | --update     | -u           | --                  | update specified masternode daemon, combine with -p flag            |
 | --sentinel   | -s           | --                  | install and configure sentinel for node monitoring                  |
@@ -112,10 +112,10 @@ The _install.sh_ script support the following parameters:
 
 ## Troubleshooting the masternode on the VPS
 
-If you want to check the status of your masternode, the best way is currently running the cli e.g. for $MUE via
+If you want to check the status of your masternode, the best way is currently running the cli e.g. for TWINS via
 
 ```
-/usr/local/bin/mue-cli -conf=/etc/masternodes/mue_n1.conf getinfo
+/usr/local/bin/twins-cli -conf=/etc/masternodes/twins_n1.conf getinfo
 
 {
   "version": 1000302,
@@ -153,12 +153,12 @@ The management script release will follow within the next couple of days.
 
 | command                               | description                                  |
 | :------------------------------------ | -------------------------------------------- |
-| nodemaster start pivx (all\|number)   | start all or a specific pivx masternode(s)   |
-| nodemaster restart pivx (all\|number) | stop all or a specific pivx masternode(s)    |
-| nodemaster stop pivx (all\|number)    | restart all or a specific pivx masternode(s) |
-| nodemaster cleanup pivx (all\|number) | delete chain data for all pivx masternodes   |
-| nodemaster status pivx (all\|number)  | systemd process status for a pivx masternode |
-| nodemaster tail pivx (all\|number)    | tail debug logs for a pivx masternode        |
+| nodemaster start twins (all\|number)   | start all or a specific twins masternode(s)   |
+| nodemaster restart twins (all\|number) | stop all or a specific twins masternode(s)    |
+| nodemaster stop twins (all\|number)    | restart all or a specific twins masternode(s) |
+| nodemaster cleanup twins(all\|number) | delete chain data for all twins masternodes   |
+| nodemaster status twins (all\|number)  | systemd process status for a twins masternode |
+| nodemaster tail twins (all\|number)    | tail debug logs for a twins masternode        |
 
 # Todo
 
